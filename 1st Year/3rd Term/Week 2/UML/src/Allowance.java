@@ -1,9 +1,18 @@
 public class Allowance {
-    float riceSubsidy;
-    float phoneAllowance;
-    float clothingAllowance;
+    double riceSubsidy;
+    double phoneAllowance;
+    double clothingAllowance;
 
-    public void calculateSalaryDeduction(){
+    public Allowance (double riceSubsidy, double phoneAllowance, double clothingAllowance) {
+        this. riceSubsidy = riceSubsidy;
+        this. phoneAllowance = phoneAllowance;
+        this. clothingAllowance = clothingAllowance;
+
+        //getter method
+
+        public double getriceSubsidy (){
+            return riceSubsidy
+        }
 
     }
 
