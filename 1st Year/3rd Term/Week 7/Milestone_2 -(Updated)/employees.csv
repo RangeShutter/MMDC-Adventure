@@ -1,0 +1,4 @@
+EmployeeNumber,LastName,FirstName,SSS,PhilHealth,TIN,PagIBIG,Email,Position,Address,Phone
+1001,Bactong,Colin,123456789,123456789012,123-456-789,123456789012,Colin@MotorPH.com,Developer,09602707931,Leyte Palo
+1002,Bactong,Charlize,987654321,210987654321,987-654-321,210987654321,Charlize@MotorPH.com,Manager,555-0202,Negros Occidental Silay City
+1003,Calipayan,Angelica,123456789,12345678912,123-456-789,12345678912,Angelica@MotorPH.com,Developer,Philippines,555-555-5555
