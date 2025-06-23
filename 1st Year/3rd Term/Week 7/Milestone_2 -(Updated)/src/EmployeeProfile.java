@@ -56,11 +56,13 @@ public class EmployeeProfile {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
         JButton viewButton = new JButton("View Employee");
         JButton newButton = new JButton("New Employee");
+        JButton updateButton = new JButton("Update Employee");
         JButton deleteButton = new JButton("Delete Employee");
         JButton refreshButton = new JButton("Refresh");
 
         buttonPanel.add(viewButton);
         buttonPanel.add(newButton);
+        buttonPanel.add(updateButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(refreshButton);
 
@@ -84,6 +86,20 @@ public class EmployeeProfile {
 
         // Action listener for New button - shows form to create new employee
         newButton.addActionListener(e -> showNewEmployeeForm(frame));
+
+        // Action listener for Update button - shows form to update selected employee
+        updateButton.addActionListener(e -> {
+            int selectedRow = employeeTable.getSelectedRow();
+            if (selectedRow >= 0) {
+                String empNumber = (String) employeeTable.getValueAt(selectedRow, 0);
+                Employee selectedEmployee = findEmployeeById(empNumber);
+                if (selectedEmployee != null) {
+                    showUpdateEmployeeForm(frame, selectedEmployee);
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Please select an employee first", "No Selection", JOptionPane.WARNING_MESSAGE);
+            }
+        });
 
         // Action listener for Delete button - removes selected employee after confirmation
         deleteButton.addActionListener(e -> {
@@ -186,6 +202,84 @@ public class EmployeeProfile {
 
         detailsFrame.add(mainPanel);
         detailsFrame.setVisible(true);
+    }
+
+    /**
+     * Displays a form to update an existing employee record
+     * @param parentFrame The parent frame for positioning
+     * @param employee The employee to update
+     */
+    private static void showUpdateEmployeeForm(JFrame parentFrame, Employee employee) {
+        JFrame updateEmpFrame = new JFrame("Update Employee");
+        updateEmpFrame.setSize(600, 600);
+        updateEmpFrame.setLocationRelativeTo(parentFrame);
+
+        // Main form panel with grid layout
+        JPanel mainPanel = new JPanel(new GridLayout(0, 2, 5, 5));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Form fields for all employee attributes, pre-populated with existing data
+        JTextField empNumberField = new JTextField(employee.getEmployeeNumber());
+        empNumberField.setEditable(false); // Employee number shouldn't be changed
+        JTextField lastNameField = new JTextField(employee.getLastName());
+        JTextField firstNameField = new JTextField(employee.getFirstName());
+        JTextField sssField = new JTextField(employee.getSssNumber());
+        JTextField philHealthField = new JTextField(employee.getPhilHealthNumber());
+        JTextField tinField = new JTextField(employee.getTin());
+        JTextField pagIbigField = new JTextField(employee.getPagIbigNumber());
+        JTextField emailField = new JTextField(employee.getEmail());
+        JTextField positionField = new JTextField(employee.getPosition());
+        JTextField addressField = new JTextField(employee.getAddress());
+        JTextField phoneField = new JTextField(employee.getPhone());
+
+        // Add all fields to the form panel
+        addFormField(mainPanel, "Employee Number:", empNumberField);
+        addFormField(mainPanel, "Last Name*:", lastNameField);
+        addFormField(mainPanel, "First Name*:", firstNameField);
+        addFormField(mainPanel, "SSS Number:", sssField);
+        addFormField(mainPanel, "PhilHealth Number:", philHealthField);
+        addFormField(mainPanel, "TIN:", tinField);
+        addFormField(mainPanel, "Pag-IBIG Number:", pagIbigField);
+        addFormField(mainPanel, "Email*:", emailField);
+        addFormField(mainPanel, "Position*:", positionField);
+        addFormField(mainPanel, "Address:", addressField);
+        addFormField(mainPanel, "Phone:", phoneField);
+
+        // Submit button action - validates and updates employee
+        JButton submitButton = new JButton("Update");
+        submitButton.addActionListener(e -> {
+            // Validate required fields
+            if (lastNameField.getText().isEmpty() || firstNameField.getText().isEmpty() ||
+                emailField.getText().isEmpty() || positionField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(updateEmpFrame, "Please fill all required fields (*)", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Update the employee object with new values
+            employee.setLastName(lastNameField.getText());
+            employee.setFirstName(firstNameField.getText());
+            employee.setSssNumber(sssField.getText());
+            employee.setPhilHealthNumber(philHealthField.getText());
+            employee.setTin(tinField.getText());
+            employee.setPagIbigNumber(pagIbigField.getText());
+            employee.setEmail(emailField.getText());
+            employee.setPosition(positionField.getText());
+            employee.setAddress(addressField.getText());
+            employee.setPhone(phoneField.getText());
+
+            // Save to CSV and update table
+            saveEmployeesToCSV();
+            updateEmployeeTable();
+            updateEmpFrame.dispose();
+            JOptionPane.showMessageDialog(parentFrame, "Employee updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(submitButton);
+
+        updateEmpFrame.add(mainPanel, BorderLayout.CENTER);
+        updateEmpFrame.add(buttonPanel, BorderLayout.SOUTH);
+        updateEmpFrame.setVisible(true);
     }
 
     /**
@@ -454,5 +548,17 @@ public class EmployeeProfile {
         public String getPosition() { return position; }
         public String getAddress() { return address; }
         public String getPhone() { return phone; }
+
+        // Setter methods for all employee properties
+        public void setLastName(String lastName) { this.lastName = lastName; }
+        public void setFirstName(String firstName) { this.firstName = firstName; }
+        public void setSssNumber(String sssNumber) { this.sssNumber = sssNumber; }
+        public void setPhilHealthNumber(String philHealthNumber) { this.philHealthNumber = philHealthNumber; }
+        public void setTin(String tin) { this.tin = tin; }
+        public void setPagIbigNumber(String pagIbigNumber) { this.pagIbigNumber = pagIbigNumber; }
+        public void setEmail(String email) { this.email = email; }
+        public void setPosition(String position) { this.position = position; }
+        public void setAddress(String address) { this.address = address; }
+        public void setPhone(String phone) { this.phone = phone; }
     }
 }
