@@ -1,0 +1,6 @@
+EmployeeID,BaseSalary,SSSRate,PhilHealthRate,PagIBIGRate,WithholdingTax,RiceSubsidy,PhoneAllowance,ClothingAllowance
+Colin,35000.0,0.045,0.04,0.02,0.15,1500.0,1000.0,800.0
+1003,35000.0,0.045,0.04,0.02,0.15,1500.0,1000.0,800.0
+1001,40000.0,0.045,0.04,0.02,0.15,1500.0,1000.0,800.0
+Charlize,60000.0,0.045,0.04,0.02,0.12,1500.0,800.0,600.0
+Angelica,35000.0,0.045,0.04,0.02,0.12,1500.0,800.0,600.0
