@@ -4,15 +4,16 @@ import java.io.*;
 import java.nio.file.*;
 
 /**
- * Handles salary computation for employees including base salary, allowances, and deductions
- * Note: Contains sample data for demonstration purposes
+ * SalaryComputation class handles employee salary calculations and payroll data management
+ * Provides comprehensive salary computation including base salary, allowances, and deductions
+ * Note: All information in this program are sample data for demonstration purposes
  */
 public class SalaryComputation {
-    // Maps employee IDs to their payroll records
-    private static Map<String, PayrollData> payrollData = new HashMap<>();
-    private static final String PAYROLL_CSV = "payroll_records.csv";
+    // Payroll data storage: employeeId -> PayrollData
+    private static final Map<String, PayrollData> payrollData = new HashMap<>();
+    private static final String PAYROLL_CSV_FILE = "payroll_records.csv";
 
-    // Static initializer - loads payroll data from CSV
+    // Initialize payroll data from CSV file
     static {
         loadPayrollDataFromCSV();
         if (payrollData.isEmpty()) {
@@ -23,79 +24,60 @@ public class SalaryComputation {
 
     /**
      * Computes and formats the salary details for an employee
+     * Calculates gross salary, deductions, allowances, and net salary
      * @param employee The employee object containing personal details
      * @param month The month for which salary is being computed
      * @return Formatted string with detailed salary breakdown
      */
     public static String computeSalary(EmployeeProfile.Employee employee, String month) {
-        // Get employee ID (use employee number as ID)
-        String employeeId = employee.getEmployeeNumber();
+        PayrollData data = getPayrollData(employee.getEmployeeNumber());
         
-        // Get payroll data for this employee, use default if not found
-        PayrollData data = payrollData.getOrDefault(employeeId, getDefaultPayrollData());
-        
-        // Calculate total allowances
-        double totalAllowances = data.riceSubsidy + data.phoneAllowance + data.clothingAllowance;
-        
-        // Calculate total deductions
-        double sssDeduction = data.baseSalary * data.sssRate;
-        double philHealthDeduction = data.baseSalary * data.philHealthRate;
-        double pagIbigDeduction = data.baseSalary * data.pagIbigRate;
-        double taxDeduction = data.baseSalary * data.withholdingTax;
-        double totalDeductions = sssDeduction + philHealthDeduction + pagIbigDeduction + taxDeduction;
-        
-        // Calculate net salary
-        double netSalary = data.baseSalary - totalDeductions + totalAllowances;
+        double baseSalary = data.baseSalary;
+        double sssDeduction = data.getSSSDeduction();
+        double philHealthDeduction = data.getPhilHealthDeduction();
+        double pagIbigDeduction = data.getPagIbigDeduction();
+        double taxDeduction = data.getTaxDeduction();
+        double totalDeductions = data.calculateTotalDeductions();
+        double totalAllowances = data.calculateTotalAllowances();
+        double netSalary = data.calculateNetSalary();
 
-        // Format and return detailed salary computation
-        return String.format(
-            "Salary Computation for %s %s (%s)\n" +
-            "Month: %s\n\n" +
-            "Base Salary: ₱%,.2f\n\n" +
-            "Allowances:\n" +
-            "  Rice Subsidy: ₱%,.2f\n" +
-            "  Phone Allowance: ₱%,.2f\n" +
-            "  Clothing Allowance: ₱%,.2f\n" +
-            "  Total Allowances: ₱%,.2f\n\n" +
-            "Deductions:\n" +
-            "  SSS (%.1f%%): ₱%,.2f\n" +
-            "  PhilHealth (%.1f%%): ₱%,.2f\n" +
-            "  Pag-IBIG (%.1f%%): ₱%,.2f\n" +
-            "  Withholding Tax (%.1f%%): ₱%,.2f\n" +
-            "  Total Deductions: ₱%,.2f\n\n" +
-            "-------------------------\n" +
-            "Net Salary: ₱%,.2f",
-            employee.getFirstName(),
-            employee.getLastName(),
-            employee.getEmployeeNumber(),
-            month,
-            data.baseSalary,
-            data.riceSubsidy,
-            data.phoneAllowance,
-            data.clothingAllowance,
-            totalAllowances,
-            data.sssRate * 100,
-            sssDeduction,
-            data.philHealthRate * 100,
-            philHealthDeduction,
-            data.pagIbigRate * 100,
-            pagIbigDeduction,
-            data.withholdingTax * 100,
-            taxDeduction,
-            totalDeductions,
-            netSalary
-        );
+        StringBuilder result = new StringBuilder();
+        result.append("SALARY COMPUTATION FOR ").append(month.toUpperCase()).append("\n");
+        result.append("=====================================\n\n");
+        result.append("Employee: ").append(employee.getFirstName()).append(" ").append(employee.getLastName()).append("\n");
+        result.append("Employee ID: ").append(employee.getEmployeeNumber()).append("\n");
+        result.append("Position: ").append(employee.getPosition()).append("\n\n");
+        
+        result.append("GROSS SALARY:\n");
+        result.append("Base Salary: ₱").append(String.format("%,.2f", baseSalary)).append("\n\n");
+        
+        result.append("DEDUCTIONS:\n");
+        result.append("SSS: ₱").append(String.format("%,.2f", sssDeduction)).append("\n");
+        result.append("PhilHealth: ₱").append(String.format("%,.2f", philHealthDeduction)).append("\n");
+        result.append("Pag-IBIG: ₱").append(String.format("%,.2f", pagIbigDeduction)).append("\n");
+        result.append("Withholding Tax: ₱").append(String.format("%,.2f", taxDeduction)).append("\n");
+        result.append("Total Deductions: ₱").append(String.format("%,.2f", totalDeductions)).append("\n\n");
+        
+        result.append("ALLOWANCES:\n");
+        result.append("Rice Subsidy: ₱").append(String.format("%,.2f", data.getRiceSubsidy())).append("\n");
+        result.append("Phone Allowance: ₱").append(String.format("%,.2f", data.getPhoneAllowance())).append("\n");
+        result.append("Clothing Allowance: ₱").append(String.format("%,.2f", data.getClothingAllowance())).append("\n");
+        result.append("Total Allowances: ₱").append(String.format("%,.2f", totalAllowances)).append("\n\n");
+        
+        result.append("NET SALARY: ₱").append(String.format("%,.2f", netSalary)).append("\n");
+        
+        return result.toString();
     }
 
     /**
-     * Loads payroll data from CSV file
+     * Loads payroll data from CSV file into memory
      */
     private static void loadPayrollDataFromCSV() {
-        if (!Files.exists(Paths.get(PAYROLL_CSV))) {
+        if (!Files.exists(Paths.get(PAYROLL_CSV_FILE))) {
             return;
         }
 
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(PAYROLL_CSV))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(PAYROLL_CSV_FILE))) {
             reader.readLine(); // Skip header line
 
             String line;
@@ -127,11 +109,11 @@ public class SalaryComputation {
      * Saves payroll data to CSV file
      */
     private static void savePayrollDataToCSV() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(PAYROLL_CSV))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(PAYROLL_CSV_FILE))) {
             // Write CSV header
             writer.println("EmployeeID,BaseSalary,SSSRate,PhilHealthRate,PagIBIGRate,WithholdingTax,RiceSubsidy,PhoneAllowance,ClothingAllowance");
             
-            // Write each record
+            // Write each payroll record
             for (Map.Entry<String, PayrollData> entry : payrollData.entrySet()) {
                 PayrollData data = entry.getValue();
                 writer.println(String.join(",",
@@ -152,17 +134,16 @@ public class SalaryComputation {
     }
 
     /**
-     * Initializes sample payroll data
+     * Initializes sample payroll data for demonstration purposes
      */
     private static void initializeSamplePayrollData() {
-        payrollData.put("1001", new PayrollData(40000.0, 0.045f, 0.04f, 0.02f, 0.15f, 1500.0f, 1000.0f, 800.0f));
+        payrollData.put("1001", new PayrollData(35000.0, 0.045f, 0.04f, 0.02f, 0.15f, 1500.0f, 1000.0f, 800.0f));
         payrollData.put("1002", new PayrollData(60000.0, 0.045f, 0.04f, 0.02f, 0.12f, 1500.0f, 800.0f, 600.0f));
-        payrollData.put("1003", new PayrollData(35000.0, 0.045f, 0.04f, 0.02f, 0.12f, 1500.0f, 800.0f, 600.0f));
-        payrollData.put("1004", new PayrollData(40000.0, 0.045f, 0.04f, 0.02f, 0.15f, 1500.0f, 1000.0f, 800.0f));
+        payrollData.put("1003", new PayrollData(45000.0, 0.045f, 0.04f, 0.02f, 0.13f, 1500.0f, 900.0f, 700.0f));
     }
 
     /**
-     * Returns default payroll data for employees not found in the system
+     * Returns default payroll data for new employees
      */
     private static PayrollData getDefaultPayrollData() {
         return new PayrollData(30000.0, 0.045f, 0.04f, 0.02f, 0.15f, 1500.0f, 1000.0f, 800.0f);
@@ -189,6 +170,7 @@ public class SalaryComputation {
 
     /**
      * Removes payroll data for an employee
+     * Called when an employee is deleted from the system
      * @param employeeId The employee ID to remove
      */
     public static void removePayrollData(String employeeId) {
@@ -197,20 +179,33 @@ public class SalaryComputation {
     }
 
     /**
-     * Inner class to hold payroll data
+     * Inner class to hold payroll data for an employee
+     * Contains all salary-related information including rates and allowances
      */
-    public static class PayrollData {
-        public double baseSalary;
-        public float sssRate;
-        public float philHealthRate;
-        public float pagIbigRate;
-        public float withholdingTax;
-        public float riceSubsidy;
-        public float phoneAllowance;
-        public float clothingAllowance;
+    static class PayrollData {
+        private final double baseSalary;
+        private final float sssRate;
+        private final float philHealthRate;
+        private final float pagIbigRate;
+        private final float withholdingTax;
+        private final float riceSubsidy;
+        private final float phoneAllowance;
+        private final float clothingAllowance;
 
-        public PayrollData(double baseSalary, float sssRate, float philHealthRate, float pagIbigRate,
-                          float withholdingTax, float riceSubsidy, float phoneAllowance, float clothingAllowance) {
+        /**
+         * Creates a new PayrollData object with all salary components
+         * @param baseSalary The base monthly salary
+         * @param sssRate SSS contribution rate
+         * @param philHealthRate PhilHealth contribution rate
+         * @param pagIbigRate Pag-IBIG contribution rate
+         * @param withholdingTax Withholding tax rate
+         * @param riceSubsidy Monthly rice subsidy amount
+         * @param phoneAllowance Monthly phone allowance amount
+         * @param clothingAllowance Monthly clothing allowance amount
+         */
+        public PayrollData(double baseSalary, 
+                          float sssRate, float philHealthRate, float pagIbigRate, float withholdingTax,
+                          float riceSubsidy, float phoneAllowance, float clothingAllowance) {
             this.baseSalary = baseSalary;
             this.sssRate = sssRate;
             this.philHealthRate = philHealthRate;
@@ -219,6 +214,42 @@ public class SalaryComputation {
             this.riceSubsidy = riceSubsidy;
             this.phoneAllowance = phoneAllowance;
             this.clothingAllowance = clothingAllowance;
+        }
+
+        // Getter methods for deductions
+        public double getSSSDeduction() { return baseSalary * sssRate; }
+        public double getPhilHealthDeduction() { return baseSalary * philHealthRate; }
+        public double getPagIbigDeduction() { return baseSalary * pagIbigRate; }
+        public double getTaxDeduction() { return baseSalary * withholdingTax; }
+
+        // Getter methods for allowances
+        public double getRiceSubsidy() { return riceSubsidy; }
+        public double getPhoneAllowance() { return phoneAllowance; }
+        public double getClothingAllowance() { return clothingAllowance; }
+
+        /**
+         * Calculates the total deductions from the base salary
+         * @return Total amount of all deductions
+         */
+        public double calculateTotalDeductions() {
+            return getSSSDeduction() + getPhilHealthDeduction() + 
+                   getPagIbigDeduction() + getTaxDeduction();
+        }
+
+        /**
+         * Calculates the total allowances
+         * @return Total amount of all allowances
+         */
+        public double calculateTotalAllowances() {
+            return riceSubsidy + phoneAllowance + clothingAllowance;
+        }
+
+        /**
+         * Calculates the net salary after deductions and allowances
+         * @return Net salary amount
+         */
+        public double calculateNetSalary() {
+            return baseSalary - calculateTotalDeductions() + calculateTotalAllowances();
         }
     }
 }

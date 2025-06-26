@@ -2,87 +2,107 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.RoundRectangle2D;
 
-/* 
+/**
  * Main class for the Employee Management System
+ * Provides the central dashboard with navigation to different modules
  * Note: All information in this program are sample data for demonstration purposes
  */
 public class Main {
-    // Static variables to store current user information
+    // Current user session information
     private static String currentUserId;
     private static String currentUserRole;
     private static String currentUserEmail;
 
-    // Modern formal color scheme (matching User.java)
-    private static final Color BG_WHITE = Color.WHITE;
-    private static final Color HEADER_DARK = new Color(34, 34, 34); // #222222
+    // Application color scheme
+    private static final Color BACKGROUND_WHITE = Color.WHITE;
+    private static final Color HEADER_DARK = new Color(34, 34, 34);
     private static final Color CARD_WHITE = Color.WHITE;
-    private static final Color BORDER_GREY = new Color(68, 68, 68); // #444444
+    private static final Color BORDER_GREY = new Color(68, 68, 68);
     private static final Color TEXT_WHITE = Color.WHITE;
     private static final Color TEXT_GREY = new Color(180, 180, 180);
     private static final Color TEXT_BLACK = Color.BLACK;
-    private static final Color ACCENT = new Color(120, 120, 120); // Subtle accent
-    private static final Color BUTTON_BLUE = new Color(52, 152, 219); // #3498db
+    private static final Color ACCENT_GREY = new Color(120, 120, 120);
+    private static final Color BUTTON_ORANGE = new Color(255, 153, 28);
+    private static final Color GRADIENT_START = new Color(93, 224, 230);
+    private static final Color GRADIENT_END = new Color(0, 74, 173);
 
     /**
-     * Displays the main application screen after successful login
+     * Displays the main application dashboard after successful login
+     * Creates the central navigation interface with access to all modules
      * @param userId The logged-in user's ID
-     * @param role The user's role (e.g., Admin, HR, Employee)
+     * @param role The user's role (e.g., Developer, Manager)
      * @param email The user's email address
      */
     public static void showMainScreen(String userId, String role, String email) {
-        // Store current user information
+        // Store current user session information
         currentUserId = userId;
         currentUserRole = role;
         currentUserEmail = email;
 
         // Create and configure main application frame
-        JFrame frame = new JFrame("Employee Management System");
-        frame.setSize(1000, 750);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null); // Center the window
-        frame.setResizable(false);
-
-        // Set application icon (if available)
-        try {
-            frame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
-        } catch (Exception e) {
-            // Icon not found, continue without it
-        }
-
-        // Create menu bar with File menu
-        JMenuBar menuBar = createMenuBar(frame);
-        frame.setJMenuBar(menuBar);
+        JFrame mainFrame = createMainFrame();
+        
+        // Create menu bar with logout functionality
+        JMenuBar menuBar = createMenuBar(mainFrame);
+        mainFrame.setJMenuBar(menuBar);
 
         // Create main panel with modern design
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(BG_WHITE);
-
-        // Create header panel
+        JPanel mainPanel = createMainPanel();
+        
+        // Create and add header panel
         JPanel headerPanel = createHeaderPanel(userId, role, email);
         mainPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // Create content panel with cards
-        JPanel contentPanel = createContentPanel(frame, userId, role);
+        // Create and add content panel with feature cards
+        JPanel contentPanel = createContentPanel(mainFrame, userId, role);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
         mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-        // Create footer panel
+        // Create and add footer panel
         JPanel footerPanel = createFooterPanel();
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
 
-        frame.add(mainPanel);
-        frame.setVisible(true);
+        mainFrame.add(mainPanel);
+        mainFrame.setVisible(true);
     }
 
     /**
-     * Creates a modern menu bar
+     * Creates and configures the main application frame
      */
-    private static JMenuBar createMenuBar(JFrame frame) {
+    private static JFrame createMainFrame() {
+        JFrame mainFrame = new JFrame("Employee Management System");
+        mainFrame.setSize(1000, 750);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setResizable(false);
+
+        // Set application icon if available
+        try {
+            mainFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("Logo/Icon.png"));
+        } catch (Exception e) {
+            // Icon not found, continue without it
+        }
+        
+        return mainFrame;
+    }
+
+    /**
+     * Creates the main panel with background styling
+     */
+    private static JPanel createMainPanel() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(BACKGROUND_WHITE);
+        return mainPanel;
+    }
+
+    /**
+     * Creates a menu bar with logout functionality
+     */
+    private static JMenuBar createMenuBar(JFrame mainFrame) {
         JMenuBar menuBar = new JMenuBar();
-        menuBar.setBackground(BUTTON_BLUE);
+        menuBar.setBackground(new Color(128, 128, 128));
         menuBar.setBorderPainted(false);
 
         JMenu fileMenu = new JMenu("File");
@@ -91,18 +111,7 @@ public class Main {
         
         JMenuItem logoutItem = new JMenuItem("Logout");
         logoutItem.setFont(new Font("Garet", Font.PLAIN, 12));
-        logoutItem.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(
-                frame, 
-                "Are you sure you want to logout?", 
-                "Confirm Logout", 
-                JOptionPane.YES_NO_OPTION
-            );
-            if (confirm == JOptionPane.YES_OPTION) {
-                frame.dispose();
-                User.showLoginScreen(null);
-            }
-        });
+        logoutItem.addActionListener(e -> handleLogout(mainFrame));
         
         fileMenu.add(logoutItem);
         menuBar.add(fileMenu);
@@ -111,86 +120,167 @@ public class Main {
     }
 
     /**
-     * Creates a modern header panel with user information
+     * Handles user logout with confirmation dialog
+     */
+    private static void handleLogout(JFrame mainFrame) {
+        int confirm = JOptionPane.showConfirmDialog(
+            mainFrame, 
+            "Are you sure you want to logout?", 
+            "Confirm Logout", 
+            JOptionPane.YES_NO_OPTION
+        );
+        if (confirm == JOptionPane.YES_OPTION) {
+            mainFrame.dispose();
+            User.showLoginScreen(null);
+        }
+    }
+
+    /**
+     * Creates the header panel with gradient background and user information
      */
     private static JPanel createHeaderPanel(String userId, String role, String email) {
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new BorderLayout());
-        headerPanel.setBackground(HEADER_DARK);
+        JPanel headerPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                
+                // Create gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, GRADIENT_START,
+                    getWidth(), 0, GRADIENT_END
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
+            }
+        };
+        headerPanel.setOpaque(false);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 10, 40));
 
-        JLabel titleLabel = new JLabel("GEAR.HR");
-        titleLabel.setFont(new Font("Garet", Font.BOLD, 32));
-        titleLabel.setForeground(TEXT_WHITE);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // Create title section with logo
+        JPanel titleSection = createTitleSection();
+        
+        // Create user information section
+        JPanel userInfoSection = createUserInfoSection(role, userId, email);
 
-        JLabel subtitleLabel = new JLabel("Choose a module to manage");
-        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
-        subtitleLabel.setForeground(TEXT_GREY);
-        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.setOpaque(false);
-        titlePanel.add(titleLabel, BorderLayout.NORTH);
-        titlePanel.add(subtitleLabel, BorderLayout.CENTER);
-
-        // User info panel (optional, can be below title)
-        JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
-        userInfoPanel.setOpaque(false);
-        JLabel userLabel = new JLabel(role + ": " + userId);
-        userLabel.setFont(new Font("Garet", Font.PLAIN, 16));
-        userLabel.setForeground(TEXT_WHITE);
-        JLabel emailLabel = new JLabel(email);
-        emailLabel.setFont(new Font("Garet", Font.PLAIN, 16));
-        emailLabel.setForeground(TEXT_WHITE);
-        userInfoPanel.add(userLabel);
-        userInfoPanel.add(new JLabel("|"));
-        userInfoPanel.add(emailLabel);
-
+        // Combine title and user info
         JPanel headerContent = new JPanel(new BorderLayout());
         headerContent.setOpaque(false);
-        headerContent.add(titlePanel, BorderLayout.CENTER);
-        headerContent.add(userInfoPanel, BorderLayout.SOUTH);
+        headerContent.add(titleSection, BorderLayout.CENTER);
+        headerContent.add(userInfoSection, BorderLayout.SOUTH);
 
         headerPanel.add(headerContent, BorderLayout.CENTER);
         return headerPanel;
     }
 
     /**
+     * Creates the title section with company logo
+     */
+    private static JPanel createTitleSection() {
+        JLabel titleLabel = createTitleLabel();
+        JLabel subtitleLabel = createSubtitleLabel();
+
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.setOpaque(false);
+        titlePanel.add(titleLabel, BorderLayout.NORTH);
+        titlePanel.add(subtitleLabel, BorderLayout.CENTER);
+
+        return titlePanel;
+    }
+
+    /**
+     * Creates the title label with company logo or fallback text
+     */
+    private static JLabel createTitleLabel() {
+        try {
+            ImageIcon logoIcon = new ImageIcon("Logo/3.png");
+            Image logoImage = logoIcon.getImage();
+            Image resizedLogo = logoImage.getScaledInstance(290, 90, Image.SCALE_SMOOTH);
+            ImageIcon resizedIcon = new ImageIcon(resizedLogo);
+            JLabel titleLabel = new JLabel(resizedIcon);
+            titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            return titleLabel;
+        } catch (Exception e) {
+            // Fallback to text if logo not found
+            JLabel titleLabel = new JLabel("GEAR.HR");
+            titleLabel.setFont(new Font("Garet", Font.BOLD, 32));
+            titleLabel.setForeground(TEXT_WHITE);
+            titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            return titleLabel;
+        }
+    }
+
+    /**
+     * Creates the subtitle label
+     */
+    private static JLabel createSubtitleLabel() {
+        JLabel subtitleLabel = new JLabel("Choose a module to manage");
+        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
+        subtitleLabel.setForeground(TEXT_GREY);
+        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return subtitleLabel;
+    }
+
+    /**
+     * Creates the user information section
+     */
+    private static JPanel createUserInfoSection(String role, String userId, String email) {
+        JPanel userInfoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 5));
+        userInfoPanel.setOpaque(false);
+        
+        JLabel roleLabel = new JLabel(role + ": " + userId);
+        roleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
+        roleLabel.setForeground(TEXT_WHITE);
+        
+        JLabel emailLabel = new JLabel(email);
+        emailLabel.setFont(new Font("Garet", Font.PLAIN, 16));
+        emailLabel.setForeground(TEXT_WHITE);
+        
+        userInfoPanel.add(roleLabel);
+        userInfoPanel.add(new JLabel("|"));
+        userInfoPanel.add(emailLabel);
+
+        return userInfoPanel;
+    }
+
+    /**
      * Creates the main content panel with feature cards
      */
-    private static JPanel createContentPanel(JFrame frame, String userId, String role) {
+    private static JPanel createContentPanel(JFrame mainFrame, String userId, String role) {
         JPanel contentPanel = new JPanel(new GridBagLayout());
-        contentPanel.setBackground(BG_WHITE);
+        contentPanel.setBackground(BACKGROUND_WHITE);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(15, 15, 15, 15);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(15, 15, 15, 15);
 
-        // Create feature cards
+        // Create attendance management card
         JPanel attendanceCard = createFeatureCard(
             "Attendance Management",
             "Track employee attendance, view reports, and manage time records",
             "Manage Attendance",
-            e -> Attendance.showAttendanceScreen(frame, userId, role),
-            BUTTON_BLUE
+            e -> Attendance.showAttendanceScreen(mainFrame, userId, role),
+            BUTTON_ORANGE
         );
 
+        // Create employee profile card
         JPanel profileCard = createFeatureCard(
             "Employee Profiles",
             "View, add, edit, and manage employee information and payroll",
             "Manage Profiles",
-            e -> EmployeeProfile.showProfileScreen(frame, userId, role),
-            BUTTON_BLUE
+            e -> EmployeeProfile.showProfileScreen(mainFrame, userId, role),
+            BUTTON_ORANGE
         );
 
         // Add cards to content panel
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        contentPanel.add(attendanceCard, gbc);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        contentPanel.add(attendanceCard, constraints);
 
-        gbc.gridx = 1;
-        contentPanel.add(profileCard, gbc);
+        constraints.gridx = 1;
+        contentPanel.add(profileCard, constraints);
 
         return contentPanel;
     }
@@ -204,15 +294,15 @@ public class Main {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 int arc = 40;
-                g2.setColor(CARD_WHITE);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
-                g2.setColor(BORDER_GREY);
-                g2.setStroke(new BasicStroke(2));
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, arc, arc);
-                g2.dispose();
+                g2d.setColor(CARD_WHITE);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                g2d.setColor(BORDER_GREY);
+                g2d.setStroke(new BasicStroke(2));
+                g2d.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, arc, arc);
+                g2d.dispose();
             }
         };
         card.setLayout(new BorderLayout());
@@ -221,57 +311,81 @@ public class Main {
         card.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
         card.setPreferredSize(new Dimension(350, 250));
 
-        // Title
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(new Font("Garet", Font.BOLD, 18));
-        titleLabel.setForeground(TEXT_BLACK);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        // Create title label
+        JLabel titleLabel = createCardTitleLabel(title);
 
-        // Description
-        JTextArea descArea = new JTextArea(description);
-        descArea.setFont(new Font("Garet", Font.PLAIN, 14));
-        descArea.setForeground(ACCENT);
-        descArea.setLineWrap(true);
-        descArea.setWrapStyleWord(true);
-        descArea.setEditable(false);
-        descArea.setOpaque(false);
-        descArea.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        // Create description area
+        JTextArea descriptionArea = createCardDescriptionArea(description);
 
-        // Button
-        JButton actionButton = createModernButton(buttonText, buttonColor, TEXT_WHITE);
-        actionButton.addActionListener(action);
+        // Create action button
+        JButton actionButton = createCardButton(buttonText, buttonColor, action);
 
         // Layout components
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setOpaque(false);
-        topPanel.add(titleLabel, BorderLayout.NORTH);
-        topPanel.add(descArea, BorderLayout.CENTER);
+        JPanel topSection = new JPanel(new BorderLayout());
+        topSection.setOpaque(false);
+        topSection.add(titleLabel, BorderLayout.NORTH);
+        topSection.add(descriptionArea, BorderLayout.CENTER);
 
-        card.add(topPanel, BorderLayout.CENTER);
+        card.add(topSection, BorderLayout.CENTER);
         card.add(actionButton, BorderLayout.SOUTH);
 
         return card;
     }
 
     /**
-     * Creates a modern styled button
+     * Creates the title label for a feature card
      */
-    private static JButton createModernButton(String text, Color bg, Color fg) {
+    private static JLabel createCardTitleLabel(String title) {
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(new Font("Garet", Font.BOLD, 18));
+        titleLabel.setForeground(TEXT_BLACK);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return titleLabel;
+    }
+
+    /**
+     * Creates the description area for a feature card
+     */
+    private static JTextArea createCardDescriptionArea(String description) {
+        JTextArea descriptionArea = new JTextArea(description);
+        descriptionArea.setFont(new Font("Garet", Font.PLAIN, 14));
+        descriptionArea.setForeground(ACCENT_GREY);
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setEditable(false);
+        descriptionArea.setOpaque(false);
+        descriptionArea.setBorder(BorderFactory.createEmptyBorder(10, 0, 20, 0));
+        return descriptionArea;
+    }
+
+    /**
+     * Creates the action button for a feature card
+     */
+    private static JButton createCardButton(String buttonText, Color buttonColor, ActionListener action) {
+        JButton actionButton = createStyledButton(buttonText, buttonColor, TEXT_WHITE);
+        actionButton.addActionListener(action);
+        return actionButton;
+    }
+
+    /**
+     * Creates a modern styled button with rounded corners
+     */
+    private static JButton createStyledButton(String text, Color backgroundColor, Color foregroundColor) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 int arc = getHeight();
-                g2.setColor(bg);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
-                g2.dispose();
+                g2d.setColor(backgroundColor);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                g2d.dispose();
                 super.paintComponent(g);
             }
         };
         button.setFont(new Font("Garet", Font.BOLD, 16));
-        button.setForeground(fg);
-        button.setBackground(bg);
+        button.setForeground(foregroundColor);
+        button.setBackground(backgroundColor);
         button.setOpaque(false);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
@@ -281,31 +395,51 @@ public class Main {
     }
 
     /**
-     * Creates a footer panel with system information
+     * Creates the footer panel with gradient background
      */
     private static JPanel createFooterPanel() {
-        JPanel footerPanel = new JPanel(new BorderLayout());
-        footerPanel.setBackground(HEADER_DARK);
+        JPanel footerPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                
+                // Create gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, GRADIENT_START,
+                    getWidth(), 0, GRADIENT_END
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
+            }
+        };
+        footerPanel.setOpaque(false);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
-        JLabel footerLabel = new JLabel("© 2025 GEAR.HR - All rights reserved");
-        footerLabel.setFont(new Font("Garet", Font.PLAIN, 12));
-        footerLabel.setForeground(TEXT_WHITE);
-        footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel copyrightLabel = new JLabel("© 2025 GEAR.HR - All rights reserved");
+        copyrightLabel.setFont(new Font("Garet", Font.PLAIN, 12));
+        copyrightLabel.setForeground(TEXT_WHITE);
+        copyrightLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
         JLabel versionLabel = new JLabel("Version 2.0 - Enhanced UI & Functionality");
         versionLabel.setFont(new Font("Garet", Font.PLAIN, 12));
         versionLabel.setForeground(TEXT_GREY);
         versionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        footerPanel.add(footerLabel, BorderLayout.NORTH);
+        
+        footerPanel.add(copyrightLabel, BorderLayout.NORTH);
         footerPanel.add(versionLabel, BorderLayout.SOUTH);
         return footerPanel;
     }
 
     /**
      * Main entry point for the application
+     * Shows splash screen first, then launches login interface
      * @param args Command line arguments (not used)
      */
     public static void main(String[] args) {
-        // Start the application by showing the login screen
-        User.showLoginScreen(null);
+        // Show splash screen first, then launch login
+        SplashScreen.showSplash(() -> User.showLoginScreen(null));
     }
 }

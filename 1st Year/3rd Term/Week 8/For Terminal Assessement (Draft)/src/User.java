@@ -6,350 +6,370 @@ import java.awt.event.ActionListener;
 import java.awt.geom.RoundRectangle2D;
 import java.util.HashMap;
 
-/*
+/**
  * User class handles user authentication and login functionality
+ * Provides a modern login interface with credential validation
  * Note: All information in this program are sample data for demonstration purposes
  */
 public class User {
-    // Stores user credentials and information (userID: [password, role, email])
-    private static HashMap<String, String[]> users = new HashMap<>();
+    // User credentials storage: userId -> [password, role, email]
+    private static final HashMap<String, String[]> userCredentials = new HashMap<>();
 
-    // Modern formal color scheme
-    private static final Color BG_WHITE = Color.WHITE;
-    private static final Color HEADER_DARK = new Color(34, 34, 34); // #222222
-    private static final Color CARD_WHITE = Color.WHITE;
-    private static final Color BORDER_GREY = new Color(68, 68, 68); // #444444
+    // Application color scheme
+    private static final Color BACKGROUND_WHITE = Color.WHITE;
+    private static final Color HEADER_DARK = new Color(34, 34, 34);
     private static final Color TEXT_WHITE = Color.WHITE;
     private static final Color TEXT_GREY = new Color(180, 180, 180);
     private static final Color TEXT_BLACK = Color.BLACK;
-    private static final Color ACCENT = new Color(120, 120, 120); // Subtle accent
-    private static final Color BUTTON_BLUE = new Color(52, 152, 219); // #3498db
+    private static final Color ACCENT_GREY = new Color(120, 120, 120);
+    private static final Color LOGIN_BUTTON_ORANGE = new Color(255, 153, 28);
+    private static final Color GRADIENT_START = new Color(93, 224, 230);
+    private static final Color GRADIENT_END = new Color(0, 74, 173);
 
-    // Static initializer - loads sample user data
+    // Initialize sample user data
     static {
-        // Pre-populated users (userID: [password, role, email])
-        users.put("1003", new String[]{"developer123", "Developer", "Angelica@MotorPH.com"});
-        users.put("1002", new String[]{"manager123", "Manager", "Charlize@MotorPH.com"});
-        users.put("1001", new String[]{"Satsuma18", "Developer", "Colin@MotorPH.com"});
-        users.put("Guest", new String[]{"Guest", "Guest", "Guest@MotorPH.com"});
+        initializeSampleUsers();
     }
 
     /**
-     * Displays the login screen for the application
+     * Initializes sample user credentials for demonstration
+     */
+    private static void initializeSampleUsers() {
+        userCredentials.put("1003", new String[]{"developer123", "Developer", "Angelica@MotorPH.com"});
+        userCredentials.put("1002", new String[]{"manager123", "Manager", "Charlize@MotorPH.com"});
+        userCredentials.put("1001", new String[]{"Satsuma18", "Developer", "Colin@MotorPH.com"});
+        userCredentials.put("Guest", new String[]{"Guest", "Guest", "Guest@MotorPH.com"});
+    }
+
+    /**
+     * Displays the main login screen for the application
+     * Creates a split-panel design with gradient background and login form
      * @param parentFrame The parent frame for positioning (can be null)
      */
     public static void showLoginScreen(JFrame parentFrame) {
-        JFrame loginFrame = new JFrame("GEAR.HR - Login");
-        loginFrame.setSize(1000, 750);
-        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        loginFrame.setLocationRelativeTo(parentFrame);
-        loginFrame.setResizable(false);
-
-        // Set application icon (if available)
-        try {
-            loginFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
-        } catch (Exception e) {}
-
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(BG_WHITE);
-
-        JPanel headerPanel = createHeaderPanel();
-        mainPanel.add(headerPanel, BorderLayout.NORTH);
-
-        JPanel loginCardPanel = createLoginCardPanel(loginFrame);
-        loginCardPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
-        mainPanel.add(loginCardPanel, BorderLayout.CENTER);
-
-        JPanel footerPanel = createFooterPanel();
-        mainPanel.add(footerPanel, BorderLayout.SOUTH);
-
+        JFrame loginFrame = createLoginFrame(parentFrame);
+        JPanel mainPanel = createMainPanel();
+        
+        // Create left panel with gradient background and logo
+        JPanel leftPanel = createLeftPanel();
+        
+        // Create right panel with login form
+        JPanel rightPanel = createRightPanel(loginFrame);
+        
+        // Assemble the interface
+        mainPanel.add(leftPanel);
+        mainPanel.add(rightPanel);
         loginFrame.add(mainPanel);
         loginFrame.setVisible(true);
     }
 
     /**
-     * Creates a modern header panel
+     * Creates and configures the main login frame
      */
-    private static JPanel createHeaderPanel() {
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new BorderLayout());
-        headerPanel.setBackground(HEADER_DARK);
-        headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 10, 40));
-
-        JLabel titleLabel = new JLabel("GEAR.HR");
-        titleLabel.setFont(new Font("Garet", Font.BOLD, 32));
-        titleLabel.setForeground(TEXT_WHITE);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel subtitleLabel = new JLabel("Please sign in to continue");
-        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
-        subtitleLabel.setForeground(TEXT_GREY);
-        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JPanel titlePanel = new JPanel(new BorderLayout());
-        titlePanel.setOpaque(false);
-        titlePanel.add(titleLabel, BorderLayout.NORTH);
-        titlePanel.add(subtitleLabel, BorderLayout.CENTER);
-
-        headerPanel.add(titlePanel, BorderLayout.CENTER);
-        return headerPanel;
+    private static JFrame createLoginFrame(JFrame parentFrame) {
+        JFrame loginFrame = new JFrame("GEAR.HR - Login");
+        loginFrame.setSize(1000, 750);
+        loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        loginFrame.setLocationRelativeTo(parentFrame);
+        loginFrame.setResizable(false);
+        
+        // Set application icon if available
+        try {
+            loginFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("Logo/Icon.png"));
+        } catch (Exception e) {
+            // Icon not found, continue without it
+        }
+        
+        return loginFrame;
     }
 
     /**
-     * Creates the main login card panel
+     * Creates the main panel with split layout
      */
-    private static JPanel createLoginCardPanel(JFrame loginFrame) {
-        JPanel cardPanel = new JPanel(new GridBagLayout());
-        cardPanel.setBackground(BG_WHITE);
-        cardPanel.setBorder(BorderFactory.createEmptyBorder(40, 60, 40, 60));
-        JPanel loginCard = createLoginCard(loginFrame);
-        cardPanel.add(loginCard);
-        return cardPanel;
+    private static JPanel createMainPanel() {
+        JPanel mainPanel = new JPanel(new GridLayout(1, 2));
+        mainPanel.setPreferredSize(new Dimension(1000, 750));
+        return mainPanel;
     }
 
     /**
-     * Creates the login card with form elements
+     * Creates the left panel with gradient background, logo, and branding
      */
-    private static JPanel createLoginCard(JFrame loginFrame) {
-        JPanel card = new JPanel() {
+    private static JPanel createLeftPanel() {
+        JPanel leftPanel = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int arc = 40; // Fixed arc for rounded rectangle
-                g2.setColor(getBackground());
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
-                g2.setColor(BORDER_GREY);
-                g2.setStroke(new BasicStroke(2));
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, arc, arc);
-                g2.dispose();
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                
+                // Create gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, GRADIENT_START,
+                    getWidth(), 0, GRADIENT_END
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
             }
         };
-        card.setLayout(new BorderLayout());
-        card.setBackground(CARD_WHITE);
-        card.setOpaque(false); // We'll paint the background ourselves
-        card.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
-        card.setPreferredSize(new Dimension(500, 450));
+        leftPanel.setOpaque(false);
+        leftPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 40, 30));
 
-        // Add shadow effect (optional, for modern look)
-        card.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createEmptyBorder(5, 5, 5, 5),
-            card.getBorder()
-        ));
+        // Add logo
+        JLabel logoLabel = createLogoLabel();
+        leftPanel.add(logoLabel, BorderLayout.CENTER);
 
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setOpaque(false);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 0, 10, 0);
+        // Add header text
+        JLabel headerLabel = createHeaderLabel();
+        leftPanel.add(headerLabel, BorderLayout.NORTH);
 
-        // Logo
+        // Add footer text
+        JLabel footerLabel = createFooterLabel();
+        leftPanel.add(footerLabel, BorderLayout.SOUTH);
+
+        return leftPanel;
+    }
+
+    /**
+     * Creates the logo label with company logo or fallback text
+     */
+    private static JLabel createLogoLabel() {
         try {
             ImageIcon logoIcon = new ImageIcon("Logo/Icon.png");
             Image logoImage = logoIcon.getImage();
-            Image resizedLogo = logoImage.getScaledInstance(180, 70, Image.SCALE_SMOOTH);
+            Image resizedLogo = logoImage.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedLogo);
             JLabel logoLabel = new JLabel(resizedIcon);
             logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.gridwidth = 2;
-            formPanel.add(logoLabel, gbc);
+            return logoLabel;
         } catch (Exception e) {
-            System.out.println("Logo not found: " + e.getMessage());
+            // Fallback to text if logo not found
+            JLabel logoLabel = new JLabel("GEAR.HR");
+            logoLabel.setFont(new Font("Garet", Font.BOLD, 32));
+            logoLabel.setForeground(TEXT_WHITE);
+            logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
+            return logoLabel;
         }
-
-        // Welcome message
-        JLabel welcomeLabel = new JLabel("Welcome Back");
-        welcomeLabel.setFont(new Font("Garet", Font.BOLD, 22));
-        welcomeLabel.setForeground(TEXT_BLACK);
-        welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 2;
-        formPanel.add(welcomeLabel, gbc);
-
-        // Subtitle
-        JLabel subtitleLabel = new JLabel("Please sign in to continue");
-        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 14));
-        subtitleLabel.setForeground(ACCENT);
-        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        gbc.gridy = 2;
-        formPanel.add(subtitleLabel, gbc);
-
-        // Username field
-        gbc.gridwidth = 1;
-        gbc.gridy = 3;
-        gbc.anchor = GridBagConstraints.WEST;
-        JLabel usernameLabel = new JLabel("Username:");
-        usernameLabel.setFont(new Font("Garet", Font.BOLD, 14));
-        usernameLabel.setForeground(TEXT_BLACK);
-        formPanel.add(usernameLabel, gbc);
-        JTextField usernameField = new JTextField(20);
-        usernameField.setFont(new Font("Garet", Font.PLAIN, 14));
-        usernameField.setBackground(new Color(245, 245, 245));
-        usernameField.setForeground(TEXT_BLACK);
-        usernameField.setOpaque(true);
-        usernameField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(BORDER_GREY, 1, true),
-            BorderFactory.createEmptyBorder(10, 15, 10, 15)
-        ));
-        gbc.gridx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        formPanel.add(usernameField, gbc);
-
-        // Password field
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.weightx = 0.0;
-        JLabel passwordLabel = new JLabel("Password:");
-        passwordLabel.setFont(new Font("Garet", Font.BOLD, 14));
-        passwordLabel.setForeground(TEXT_BLACK);
-        formPanel.add(passwordLabel, gbc);
-        JPasswordField passwordField = new JPasswordField(20);
-        passwordField.setFont(new Font("Garet", Font.PLAIN, 14));
-        passwordField.setBackground(new Color(245, 245, 245));
-        passwordField.setForeground(TEXT_BLACK);
-        passwordField.setOpaque(true);
-        passwordField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(BORDER_GREY, 1, true),
-            BorderFactory.createEmptyBorder(10, 15, 10, 15)
-        ));
-        gbc.gridx = 1;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        formPanel.add(passwordField, gbc);
-
-        // Guest access information
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        gbc.gridwidth = 2;
-        gbc.fill = GridBagConstraints.NONE;
-        gbc.weightx = 0.0;
-        JLabel guestLabel = new JLabel("Guest Access: Use 'Guest' for both ID and Password");
-        guestLabel.setFont(new Font("Garet", Font.ITALIC, 12));
-        guestLabel.setForeground(ACCENT);
-        guestLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        formPanel.add(guestLabel, gbc);
-
-        // Login button
-        gbc.gridy = 6;
-        JButton loginButton = createModernButton("Sign In", BUTTON_BLUE, TEXT_WHITE);
-        formPanel.add(loginButton, gbc);
-
-        // Login button action handler
-        loginButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String userId = usernameField.getText();
-                String password = new String(passwordField.getPassword());
-                if (users.containsKey(userId) && users.get(userId)[0].equals(password)) {
-                    loginFrame.dispose();
-                    String role = users.get(userId)[1];
-                    String email = users.get(userId)[2];
-                    Main.showMainScreen(userId, role, email);
-                } else {
-                    JOptionPane.showMessageDialog(loginFrame, 
-                        "Invalid credentials! Please check your User ID and Password.", 
-                        "Login Error", 
-                        JOptionPane.ERROR_MESSAGE);
-                    passwordField.setText("");
-                    passwordField.requestFocus();
-                }
-            }
-        });
-
-        // Add enter key listener for quick login
-        Action enterAction = new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                loginButton.doClick();
-            }
-        };
-        usernameField.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "enter");
-        usernameField.getActionMap().put("enter", enterAction);
-        passwordField.getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "enter");
-        passwordField.getActionMap().put("enter", enterAction);
-
-        card.add(formPanel, BorderLayout.CENTER);
-        return card;
     }
 
     /**
-     * Creates a modern styled text field
+     * Creates the header welcome text
      */
-    private static JTextField createModernTextField() {
-        JTextField field = new JTextField(20);
-        field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        field.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(8, 12, 8, 12)
-        ));
-        field.setPreferredSize(new Dimension(250, 35));
-        return field;
+    private static JLabel createHeaderLabel() {
+        JLabel headerLabel = new JLabel("Welcome to GEAR.HR");
+        headerLabel.setFont(new Font("Garet", Font.BOLD, 22));
+        headerLabel.setForeground(TEXT_WHITE);
+        headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return headerLabel;
     }
 
     /**
-     * Creates a modern styled password field
+     * Creates the footer copyright text
      */
-    private static JPasswordField createModernPasswordField() {
-        JPasswordField field = new JPasswordField(20);
-        field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        field.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(8, 12, 8, 12)
-        ));
-        field.setPreferredSize(new Dimension(250, 35));
-        return field;
-    }
-
-    /**
-     * Creates a modern styled button
-     */
-    private static JButton createModernButton(String text, Color bg, Color fg) {
-        JButton button = new JButton(text) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                int arc = getHeight(); // Use full height for a pill/oval look
-                g2.setColor(bg);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
-                g2.dispose();
-                super.paintComponent(g);
-            }
-        };
-        button.setFont(new Font("Garet", Font.BOLD, 16));
-        button.setForeground(fg);
-        button.setBackground(bg);
-        button.setOpaque(false); // Let paintComponent handle background
-        button.setBorderPainted(false);
-        button.setFocusPainted(false);
-        button.setPreferredSize(new Dimension(220, 56)); // Wider and taller for a pill look
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        return button;
-    }
-
-    /**
-     * Creates a footer panel with system information
-     */
-    private static JPanel createFooterPanel() {
-        JPanel footerPanel = new JPanel(new BorderLayout());
-        footerPanel.setBackground(HEADER_DARK);
-        footerPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
-        JLabel footerLabel = new JLabel("© 2025 GEAR.HR - Secure Login");
+    private static JLabel createFooterLabel() {
+        JLabel footerLabel = new JLabel("© 2025 GEAR.HR    |    Secure Login");
         footerLabel.setFont(new Font("Garet", Font.PLAIN, 12));
         footerLabel.setForeground(TEXT_WHITE);
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        JLabel versionLabel = new JLabel("Version 2.0 - Enhanced Security & UI & Functionality");
-        versionLabel.setFont(new Font("Garet", Font.PLAIN, 12));
-        versionLabel.setForeground(TEXT_GREY);
-        versionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        footerPanel.add(footerLabel, BorderLayout.NORTH);
-        footerPanel.add(versionLabel, BorderLayout.SOUTH);
-        return footerPanel;
+        return footerLabel;
+    }
+
+    /**
+     * Creates the right panel containing the login form
+     */
+    private static JPanel createRightPanel(JFrame loginFrame) {
+        JPanel rightPanel = new JPanel(new GridBagLayout());
+        rightPanel.setBackground(BACKGROUND_WHITE);
+        rightPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 40, 30));
+        
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(10, 0, 10, 0);
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.gridwidth = 2;
+
+        // Add title and subtitle
+        JLabel titleLabel = createTitleLabel();
+        rightPanel.add(titleLabel, constraints);
+
+        constraints.gridy++;
+        JLabel subtitleLabel = createSubtitleLabel();
+        rightPanel.add(subtitleLabel, constraints);
+
+        // Add username field
+        constraints.gridy++;
+        constraints.gridx = 0;
+        constraints.gridwidth = 2;
+        constraints.anchor = GridBagConstraints.WEST;
+        JLabel usernameLabel = createFieldLabel("Username:");
+        rightPanel.add(usernameLabel, constraints);
+        
+        constraints.gridy++;
+        constraints.insets = new Insets(0, 0, 20, 0);
+        JTextField usernameField = createTextField();
+        rightPanel.add(usernameField, constraints);
+        constraints.insets = new Insets(10, 0, 10, 0);
+
+        // Add password field
+        constraints.gridy++;
+        JLabel passwordLabel = createFieldLabel("Password:");
+        rightPanel.add(passwordLabel, constraints);
+        
+        constraints.gridy++;
+        constraints.insets = new Insets(0, 0, 20, 0);
+        JPasswordField passwordField = createPasswordField();
+        rightPanel.add(passwordField, constraints);
+        constraints.insets = new Insets(10, 0, 10, 0);
+
+        // Add guest access info
+        constraints.gridy++;
+        constraints.gridx = 0;
+        constraints.gridwidth = 2;
+        JLabel guestInfoLabel = createGuestInfoLabel();
+        rightPanel.add(guestInfoLabel, constraints);
+
+        // Add login button
+        constraints.gridy++;
+        constraints.gridwidth = 2;
+        constraints.anchor = GridBagConstraints.WEST;
+        JButton loginButton = createLoginButton(loginFrame, usernameField, passwordField);
+        rightPanel.add(loginButton, constraints);
+
+        return rightPanel;
+    }
+
+    /**
+     * Creates the main title label
+     */
+    private static JLabel createTitleLabel() {
+        JLabel titleLabel = new JLabel("Sign In");
+        titleLabel.setFont(new Font("Garet", Font.BOLD, 22));
+        titleLabel.setForeground(TEXT_BLACK);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return titleLabel;
+    }
+
+    /**
+     * Creates the subtitle label
+     */
+    private static JLabel createSubtitleLabel() {
+        JLabel subtitleLabel = new JLabel("Please enter your credentials");
+        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 14));
+        subtitleLabel.setForeground(ACCENT_GREY);
+        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return subtitleLabel;
+    }
+
+    /**
+     * Creates a field label with consistent styling
+     */
+    private static JLabel createFieldLabel(String text) {
+        JLabel label = new JLabel(text);
+        label.setFont(new Font("Garet", Font.BOLD, 14));
+        label.setForeground(TEXT_BLACK);
+        return label;
+    }
+
+    /**
+     * Creates a styled text field for input
+     */
+    private static JTextField createTextField() {
+        JTextField textField = new JTextField();
+        textField.setFont(new Font("Garet", Font.PLAIN, 14));
+        textField.setBackground(BACKGROUND_WHITE);
+        textField.setForeground(TEXT_BLACK);
+        textField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(52, 152, 219)));
+        textField.setPreferredSize(new Dimension(260, 32));
+        return textField;
+    }
+
+    /**
+     * Creates a styled password field for secure input
+     */
+    private static JPasswordField createPasswordField() {
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setFont(new Font("Garet", Font.PLAIN, 14));
+        passwordField.setBackground(BACKGROUND_WHITE);
+        passwordField.setForeground(TEXT_BLACK);
+        passwordField.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, new Color(52, 152, 219)));
+        passwordField.setPreferredSize(new Dimension(260, 32));
+        return passwordField;
+    }
+
+    /**
+     * Creates the guest access information label
+     */
+    private static JLabel createGuestInfoLabel() {
+        JLabel guestLabel = new JLabel("Guest Access: Use 'Guest' for both ID and Password");
+        guestLabel.setFont(new Font("Garet", Font.ITALIC, 12));
+        guestLabel.setForeground(ACCENT_GREY);
+        guestLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return guestLabel;
+    }
+
+    /**
+     * Creates the login button with authentication logic
+     */
+    private static JButton createLoginButton(JFrame loginFrame, JTextField usernameField, JPasswordField passwordField) {
+        JButton loginButton = createStyledButton("Sign In", LOGIN_BUTTON_ORANGE, TEXT_WHITE);
+        loginButton.setPreferredSize(new Dimension(120, 36));
+        
+        loginButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                authenticateUser(loginFrame, usernameField, passwordField);
+            }
+        });
+        
+        return loginButton;
+    }
+
+    /**
+     * Authenticates user credentials and handles login success/failure
+     */
+    private static void authenticateUser(JFrame loginFrame, JTextField usernameField, JPasswordField passwordField) {
+        String userId = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        
+        if (userCredentials.containsKey(userId) && userCredentials.get(userId)[0].equals(password)) {
+            // Login successful
+            loginFrame.dispose();
+            String role = userCredentials.get(userId)[1];
+            String email = userCredentials.get(userId)[2];
+            Main.showMainScreen(userId, role, email);
+        } else {
+            // Login failed
+            JOptionPane.showMessageDialog(loginFrame, 
+                "Invalid credentials! Please check your User ID and Password.", 
+                "Login Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Creates a modern styled button with rounded corners
+     */
+    private static JButton createStyledButton(String text, Color backgroundColor, Color foregroundColor) {
+        JButton button = new JButton(text) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int arc = getHeight();
+                g2d.setColor(backgroundColor);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                g2d.dispose();
+                super.paintComponent(g);
+            }
+        };
+        button.setFont(new Font("Garet", Font.BOLD, 14));
+        button.setForeground(foregroundColor);
+        button.setBackground(backgroundColor);
+        button.setOpaque(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        return button;
     }
 }

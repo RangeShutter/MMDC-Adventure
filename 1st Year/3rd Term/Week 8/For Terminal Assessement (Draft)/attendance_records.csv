@@ -1,1 +1,5 @@
 EmployeeID,Date,Status,TimeIn,TimeOut
+1001,2024-01-15,Present,08:00,17:00
+1003,2024-01-16,Present,08:00,17:00
+1002,2024-01-15,Present,08:30,17:30
+1001,2024-01-16,Late,09:15,17:00

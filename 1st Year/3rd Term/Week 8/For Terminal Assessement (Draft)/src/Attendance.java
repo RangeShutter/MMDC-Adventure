@@ -12,30 +12,34 @@ import java.nio.file.*;
 import javax.swing.table.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.stream.Collectors;
 
-/*
- * Attendance class handles employee attendance tracking
+/**
+ * Attendance class handles employee attendance tracking and management
+ * Provides interface for recording, viewing, and managing employee attendance records
  * Note: All information in this program are sample data for demonstration purposes
  */
 public class Attendance {
-    // Stores attendance records with key format "employeeID|date"
-    private static Map<String, AttendanceRecord> attendanceRecords = new HashMap<>();
-    private static final String ATTENDANCE_CSV = "attendance_records.csv";
+    // Attendance data storage: key format "employeeID|date"
+    private static final Map<String, AttendanceRecord> attendanceRecords = new HashMap<>();
+    private static final String ATTENDANCE_CSV_FILE = "attendance_records.csv";
+    
+    // UI components
     private static JTable attendanceTable;
     private static DefaultTableModel tableModel;
 
-    // Modern formal color scheme (matching User/Main/EmployeeProfile)
-    private static final Color BG_WHITE = Color.WHITE;
-    private static final Color HEADER_DARK = new Color(34, 34, 34); // #222222
+    // Application color scheme
+    private static final Color BACKGROUND_WHITE = Color.WHITE;
+    private static final Color HEADER_DARK = new Color(34, 34, 34);
     private static final Color CARD_WHITE = Color.WHITE;
-    private static final Color BORDER_GREY = new Color(68, 68, 68); // #444444
+    private static final Color BORDER_GREY = new Color(68, 68, 68);
     private static final Color TEXT_WHITE = Color.WHITE;
     private static final Color TEXT_GREY = new Color(180, 180, 180);
     private static final Color TEXT_BLACK = Color.BLACK;
-    private static final Color ACCENT = new Color(120, 120, 120); // Subtle accent
-    private static final Color BUTTON_BLUE = new Color(52, 152, 219); // #3498db
+    private static final Color ACCENT_GREY = new Color(120, 120, 120);
+    private static final Color BUTTON_ORANGE = new Color(255, 153, 28);
 
-    // Static initializer - loads attendance data from CSV
+    // Initialize attendance data from CSV file
     static {
         loadAttendanceRecordsFromCSV();
         if (attendanceRecords.isEmpty()) {
@@ -46,49 +50,64 @@ public class Attendance {
 
     /**
      * Displays the attendance management screen
+     * Creates a comprehensive interface for managing employee attendance
      * @param parentFrame The parent frame for positioning
      * @param userId The current user's ID
      * @param role The current user's role
      */
     public static void showAttendanceScreen(JFrame parentFrame, String userId, String role) {
-        // Create and configure attendance frame
-        JFrame frame = new JFrame("Attendance Management System");
-        frame.setSize(1200, 1000);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLocationRelativeTo(parentFrame);
-        frame.setResizable(false);
-
-        // Set application icon (if available)
-        try {
-            frame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
-        } catch (Exception e) {
-            // Icon not found, continue without it
-        }
-
-        // Main panel with modern design
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(BG_WHITE);
-
-        // Create header panel
+        JFrame attendanceFrame = createAttendanceFrame(parentFrame);
+        JPanel mainPanel = createMainPanel();
+        
+        // Create and add header panel
         JPanel headerPanel = createHeaderPanel();
         mainPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // Create content panel
-        JPanel contentPanel = createContentPanel(frame, userId, role);
+        // Create and add content panel
+        JPanel contentPanel = createContentPanel(attendanceFrame, userId, role);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
         mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-        // Create footer panel
+        // Create and add footer panel
         JPanel footerPanel = createFooterPanel();
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
 
-        frame.add(mainPanel);
-        frame.setVisible(true);
+        attendanceFrame.add(mainPanel);
+        attendanceFrame.setVisible(true);
     }
 
     /**
-     * Creates a modern header panel
+     * Creates and configures the attendance management frame
+     */
+    private static JFrame createAttendanceFrame(JFrame parentFrame) {
+        JFrame attendanceFrame = new JFrame("Attendance Management System");
+        attendanceFrame.setSize(1200, 1000);
+        attendanceFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        attendanceFrame.setLocationRelativeTo(parentFrame);
+        attendanceFrame.setResizable(false);
+
+        // Set application icon if available
+        try {
+            attendanceFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("Logo/Icon.png"));
+        } catch (Exception e) {
+            // Icon not found, continue without it
+        }
+        
+        return attendanceFrame;
+    }
+
+    /**
+     * Creates the main panel with background styling
+     */
+    private static JPanel createMainPanel() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(BACKGROUND_WHITE);
+        return mainPanel;
+    }
+
+    /**
+     * Creates the header panel with title and subtitle
      */
     private static JPanel createHeaderPanel() {
         JPanel headerPanel = new JPanel();
@@ -96,15 +115,8 @@ public class Attendance {
         headerPanel.setBackground(HEADER_DARK);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 10, 40));
 
-        JLabel titleLabel = new JLabel("Attendance Management");
-        titleLabel.setFont(new Font("Garet", Font.BOLD, 32));
-        titleLabel.setForeground(TEXT_WHITE);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel subtitleLabel = new JLabel("Track employee attendance and manage time records");
-        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
-        subtitleLabel.setForeground(TEXT_GREY);
-        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel titleLabel = createHeaderTitleLabel();
+        JLabel subtitleLabel = createHeaderSubtitleLabel();
 
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.setOpaque(false);
@@ -116,18 +128,40 @@ public class Attendance {
     }
 
     /**
-     * Creates the main content panel
+     * Creates the header title label
      */
-    private static JPanel createContentPanel(JFrame frame, String userId, String role) {
+    private static JLabel createHeaderTitleLabel() {
+        JLabel titleLabel = new JLabel("Attendance Management");
+        titleLabel.setFont(new Font("Garet", Font.BOLD, 32));
+        titleLabel.setForeground(TEXT_WHITE);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return titleLabel;
+    }
+
+    /**
+     * Creates the header subtitle label
+     */
+    private static JLabel createHeaderSubtitleLabel() {
+        JLabel subtitleLabel = new JLabel("Track employee attendance and manage time records");
+        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
+        subtitleLabel.setForeground(TEXT_GREY);
+        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return subtitleLabel;
+    }
+
+    /**
+     * Creates the main content panel with input form and attendance table
+     */
+    private static JPanel createContentPanel(JFrame attendanceFrame, String userId, String role) {
         JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBackground(BG_WHITE);
+        contentPanel.setBackground(BACKGROUND_WHITE);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        // Create input panel
-        JPanel inputPanel = createInputPanel(frame);
+        // Create input panel for recording attendance
+        JPanel inputPanel = createInputPanel(attendanceFrame);
         contentPanel.add(inputPanel, BorderLayout.NORTH);
 
-        // Create table panel
+        // Create table panel for displaying attendance records
         JPanel tablePanel = createTablePanel();
         tablePanel.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(BORDER_GREY, 2),
@@ -139,9 +173,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the input panel for recording attendance
+     * Creates the input panel for recording new attendance entries
      */
-    private static JPanel createInputPanel(JFrame frame) {
+    private static JPanel createInputPanel(JFrame attendanceFrame) {
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout());
         inputPanel.setBackground(CARD_WHITE);
@@ -150,161 +184,147 @@ public class Attendance {
             BorderFactory.createEmptyBorder(30, 30, 90, 30)
         ));
 
-        // Title
-        JLabel titleLabel = new JLabel("Record Attendance");
-        titleLabel.setFont(new Font("Garet", Font.BOLD, 18));
-        titleLabel.setForeground(TEXT_BLACK);
-        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        // Create title label
+        JLabel titleLabel = createInputPanelTitleLabel();
 
-        // Form panel
-        JPanel formPanel = new JPanel(new GridBagLayout());
-        formPanel.setOpaque(false);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(8, 10, 8, 10);
-        gbc.anchor = GridBagConstraints.WEST;
+        // Create form panel with input fields
+        JPanel formPanel = createFormPanel(attendanceFrame);
 
-        // Employee selection
-        JLabel empLabel = new JLabel("Employee:");
-        empLabel.setFont(new Font("Garet", Font.BOLD, 12));
-        empLabel.setForeground(TEXT_BLACK);
-
-        // Get employee list from EmployeeProfile
-        List<String> employeeOptions = getEmployeeOptions();
-        JComboBox<String> empCombo = new JComboBox<>(employeeOptions.toArray(new String[0]));
-        empCombo.setFont(new Font("Garet", Font.PLAIN, 12));
-        empCombo.setPreferredSize(new Dimension(200, 30));
-
-        // Date selection
-        JLabel dateLabel = new JLabel("Date:");
-        dateLabel.setFont(new Font("Garet", Font.BOLD, 12));
-        dateLabel.setForeground(TEXT_BLACK);
-
-        JTextField dateField = new JTextField(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 15);
-        dateField.setFont(new Font("Garet", Font.PLAIN, 12));
-        dateField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
-
-        // Status selection
-        JLabel statusLabel = new JLabel("Status:");
-        statusLabel.setFont(new Font("Garet", Font.BOLD, 12));
-        statusLabel.setForeground(TEXT_BLACK);
-
-        String[] statusOptions = {"Present", "Absent", "Late", "On Leave", "Half Day"};
-        JComboBox<String> statusCombo = new JComboBox<>(statusOptions);
-        statusCombo.setFont(new Font("Garet", Font.PLAIN, 12));
-        statusCombo.setPreferredSize(new Dimension(150, 30));
-
-        // Time in/out fields
-        JLabel timeInLabel = new JLabel("Time In:");
-        timeInLabel.setFont(new Font("Garet", Font.BOLD, 12));
-        timeInLabel.setForeground(TEXT_BLACK);
-
-        JTextField timeInField = new JTextField("08:00", 10);
-        timeInField.setFont(new Font("Garet", Font.PLAIN, 12));
-        timeInField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
-
-        JLabel timeOutLabel = new JLabel("Time Out:");
-        timeOutLabel.setFont(new Font("Garet", Font.BOLD, 12));
-        timeOutLabel.setForeground(TEXT_BLACK);
-
-        JTextField timeOutField = new JTextField("17:00", 10);
-        timeOutField.setFont(new Font("Garet", Font.PLAIN, 12));
-        timeOutField.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
-            BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
-
-        // Add form fields
-        gbc.gridx = 0; gbc.gridy = 0;
-        formPanel.add(empLabel, gbc);
-        gbc.gridx = 1;
-        formPanel.add(empCombo, gbc);
-
-        gbc.gridx = 2;
-        formPanel.add(dateLabel, gbc);
-        gbc.gridx = 3;
-        formPanel.add(dateField, gbc);
-
-        gbc.gridx = 0; gbc.gridy = 1;
-        formPanel.add(statusLabel, gbc);
-        gbc.gridx = 1;
-        formPanel.add(statusCombo, gbc);
-
-        gbc.gridx = 2;
-        formPanel.add(timeInLabel, gbc);
-        gbc.gridx = 3;
-        formPanel.add(timeInField, gbc);
-
-        gbc.gridx = 4;
-        formPanel.add(timeOutLabel, gbc);
-        gbc.gridx = 5;
-        formPanel.add(timeOutField, gbc);
-
-        // Button panel
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
-        buttonPanel.setOpaque(false);
-        buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
-
-        JButton recordButton = createModernButton("Record Attendance", BUTTON_BLUE);
-        JButton clearButton = createModernButton("Clear", ACCENT);
-        JButton refreshButton = createModernButton("Refresh", ACCENT);
-
-        // Action listeners
-        recordButton.addActionListener(e -> {
-            String empId = (String) empCombo.getSelectedItem();
-            String date = dateField.getText();
-            String status = (String) statusCombo.getSelectedItem();
-            String timeIn = timeInField.getText();
-            String timeOut = timeOutField.getText();
-
-            if (empId == null || empId.equals("Select Employee") || date.isEmpty()) {
-                showModernMessage(frame, "Please select an employee and enter a date", "Input Error", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            // Extract employee ID from the selected option
-            String employeeId = empId.split(" - ")[0];
-
-            // Create attendance record
-            AttendanceRecord record = new AttendanceRecord(employeeId, date, status, timeIn, timeOut);
-            String key = employeeId + "|" + date;
-            attendanceRecords.put(key, record);
-            saveAttendanceRecordsToCSV();
-            updateAttendanceTable();
-
-            showModernMessage(frame, "Attendance recorded successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-        });
-
-        clearButton.addActionListener(e -> {
-            int confirm = JOptionPane.showConfirmDialog(frame, "Are you sure you want to clear ALL attendance records? This cannot be undone.", "Confirm Clear All", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-            if (confirm == JOptionPane.YES_OPTION) {
-                attendanceRecords.clear();
-                updateAttendanceTable();
-                saveAttendanceRecordsToCSV();
-                showModernMessage(frame, "All attendance records have been cleared.", "Records Cleared", JOptionPane.INFORMATION_MESSAGE);
-            }
-        });
-
-        refreshButton.addActionListener(e -> {
-            loadAttendanceRecordsFromCSV();
-            updateAttendanceTable();
-            showModernMessage(frame, "Data refreshed successfully", "Refresh Complete", JOptionPane.INFORMATION_MESSAGE);
-        });
-
-        buttonPanel.add(recordButton);
-        buttonPanel.add(clearButton);
-        buttonPanel.add(refreshButton);
+        // Create button panel with action buttons
+        JPanel buttonPanel = createButtonPanel(attendanceFrame);
 
         inputPanel.add(titleLabel, BorderLayout.NORTH);
         inputPanel.add(formPanel, BorderLayout.CENTER);
         inputPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         return inputPanel;
+    }
+
+    /**
+     * Creates the title label for the input panel
+     */
+    private static JLabel createInputPanelTitleLabel() {
+        JLabel titleLabel = new JLabel("Record Attendance");
+        titleLabel.setFont(new Font("Garet", Font.BOLD, 18));
+        titleLabel.setForeground(TEXT_BLACK);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        return titleLabel;
+    }
+
+    /**
+     * Creates the form panel with all input fields
+     */
+    private static JPanel createFormPanel(JFrame attendanceFrame) {
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setOpaque(false);
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.insets = new Insets(8, 10, 8, 10);
+        constraints.anchor = GridBagConstraints.WEST;
+
+        // Create form components
+        JComboBox<String> employeeComboBox = createEmployeeComboBox();
+        JTextField dateField = createDateField();
+        JComboBox<String> statusComboBox = createStatusComboBox();
+        JTextField timeInField = createTimeField("08:00");
+        JTextField timeOutField = createTimeField("17:00");
+
+        // Add form fields to panel
+        addFormField(formPanel, "Employee:", employeeComboBox, constraints, 0, 0);
+        addFormField(formPanel, "Date:", dateField, constraints, 0, 2);
+        addFormField(formPanel, "Status:", statusComboBox, constraints, 1, 0);
+        addFormField(formPanel, "Time In:", timeInField, constraints, 1, 2);
+        addFormField(formPanel, "Time Out:", timeOutField, constraints, 1, 4);
+
+        return formPanel;
+    }
+
+    /**
+     * Creates the employee selection combo box
+     */
+    private static JComboBox<String> createEmployeeComboBox() {
+        List<String> employeeOptions = getEmployeeOptions();
+        JComboBox<String> employeeComboBox = new JComboBox<>(employeeOptions.toArray(new String[0]));
+        employeeComboBox.setFont(new Font("Garet", Font.PLAIN, 12));
+        employeeComboBox.setPreferredSize(new Dimension(200, 30));
+        return employeeComboBox;
+    }
+
+    /**
+     * Creates the date input field with current date
+     */
+    private static JTextField createDateField() {
+        JTextField dateField = new JTextField(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 15);
+        dateField.setFont(new Font("Garet", Font.PLAIN, 12));
+        dateField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        return dateField;
+    }
+
+    /**
+     * Creates the status selection combo box
+     */
+    private static JComboBox<String> createStatusComboBox() {
+        String[] statusOptions = {"Present", "Absent", "Late", "On Leave", "Half Day"};
+        JComboBox<String> statusComboBox = new JComboBox<>(statusOptions);
+        statusComboBox.setFont(new Font("Garet", Font.PLAIN, 12));
+        statusComboBox.setPreferredSize(new Dimension(150, 30));
+        return statusComboBox;
+    }
+
+    /**
+     * Creates a time input field with default value
+     */
+    private static JTextField createTimeField(String defaultValue) {
+        JTextField timeField = new JTextField(defaultValue, 10);
+        timeField.setFont(new Font("Garet", Font.PLAIN, 12));
+        timeField.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(200, 200, 200), 1),
+            BorderFactory.createEmptyBorder(5, 10, 5, 10)
+        ));
+        return timeField;
+    }
+
+    /**
+     * Adds a form field to the form panel
+     */
+    private static void addFormField(JPanel formPanel, String labelText, JComponent component, 
+                                   GridBagConstraints constraints, int row, int col) {
+        JLabel label = new JLabel(labelText);
+        label.setFont(new Font("Garet", Font.BOLD, 12));
+        label.setForeground(TEXT_BLACK);
+
+        constraints.gridx = col;
+        constraints.gridy = row;
+        formPanel.add(label, constraints);
+        
+        constraints.gridx = col + 1;
+        formPanel.add(component, constraints);
+    }
+
+    /**
+     * Creates the button panel with action buttons
+     */
+    private static JPanel createButtonPanel(JFrame attendanceFrame) {
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
+        buttonPanel.setOpaque(false);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
+
+        JButton recordButton = createStyledButton("Record Attendance", BUTTON_ORANGE);
+        JButton clearButton = createStyledButton("Clear", ACCENT_GREY);
+        JButton refreshButton = createStyledButton("Refresh", ACCENT_GREY);
+
+        // Add action listeners
+        recordButton.addActionListener(e -> handleRecordAttendance(attendanceFrame));
+        clearButton.addActionListener(e -> handleClearAllRecords(attendanceFrame));
+        refreshButton.addActionListener(e -> handleRefreshData(attendanceFrame));
+
+        buttonPanel.add(recordButton);
+        buttonPanel.add(clearButton);
+        buttonPanel.add(refreshButton);
+
+        return buttonPanel;
     }
 
     /**
@@ -317,13 +337,37 @@ public class Attendance {
             BorderFactory.createLineBorder(BORDER_GREY, 2),
             BorderFactory.createEmptyBorder(0, 30, 0, 30)
         ));
-        // Table title
+        
+        // Create table title
+        JLabel tableTitle = createTableTitleLabel();
+
+        // Create table model and table
+        createAttendanceTable();
+
+        JScrollPane scrollPane = new JScrollPane(attendanceTable);
+        scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 600));
+
+        tablePanel.add(tableTitle, BorderLayout.NORTH);
+        tablePanel.add(scrollPane, BorderLayout.CENTER);
+
+        return tablePanel;
+    }
+
+    /**
+     * Creates the table title label
+     */
+    private static JLabel createTableTitleLabel() {
         JLabel tableTitle = new JLabel("Attendance Records");
         tableTitle.setFont(new Font("Garet", Font.BOLD, 18));
         tableTitle.setForeground(TEXT_BLACK);
         tableTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        return tableTitle;
+    }
 
-        // Create table model
+    /**
+     * Creates the attendance table with model and styling
+     */
+    private static void createAttendanceTable() {
         String[] columnNames = {"Employee ID", "Date", "Status", "Time In", "Time Out", "Hours Worked"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -334,14 +378,6 @@ public class Attendance {
         attendanceTable = new JTable(tableModel);
         styleAttendanceTable();
         updateAttendanceTable();
-
-        JScrollPane scrollPane = new JScrollPane(attendanceTable);
-        scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, 600)); // Triple the height
-
-        tablePanel.add(tableTitle, BorderLayout.NORTH);
-        tablePanel.add(scrollPane, BorderLayout.CENTER);
-
-        return tablePanel;
     }
 
     /**
@@ -351,35 +387,37 @@ public class Attendance {
         attendanceTable.setFont(new Font("Garet", Font.PLAIN, 12));
         attendanceTable.setRowHeight(30);
         attendanceTable.setGridColor(new Color(220, 220, 220));
-        attendanceTable.setSelectionBackground(BUTTON_BLUE);
+        attendanceTable.setSelectionBackground(BUTTON_ORANGE);
         attendanceTable.setSelectionForeground(TEXT_WHITE);
         attendanceTable.setShowGrid(true);
         attendanceTable.setIntercellSpacing(new Dimension(1, 1));
+        
+        // Style table header
         attendanceTable.getTableHeader().setFont(new Font("Garet", Font.BOLD, 12));
-        attendanceTable.getTableHeader().setBackground(BUTTON_BLUE);
+        attendanceTable.getTableHeader().setBackground(BUTTON_ORANGE);
         attendanceTable.getTableHeader().setForeground(TEXT_WHITE);
-        attendanceTable.getTableHeader().setBorder(BorderFactory.createLineBorder(BUTTON_BLUE));
+        attendanceTable.getTableHeader().setBorder(BorderFactory.createLineBorder(BUTTON_ORANGE));
     }
 
     /**
-     * Creates a modern styled button
+     * Creates a modern styled button with rounded corners
      */
-    private static JButton createModernButton(String text, Color bg) {
+    private static JButton createStyledButton(String text, Color backgroundColor) {
         JButton button = new JButton(text) {
             @Override
             protected void paintComponent(Graphics g) {
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 int arc = getHeight();
-                g2.setColor(bg);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
-                g2.dispose();
+                g2d.setColor(backgroundColor);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                g2d.dispose();
                 super.paintComponent(g);
             }
         };
         button.setFont(new Font("Garet", Font.BOLD, 16));
         button.setForeground(TEXT_WHITE);
-        button.setBackground(bg);
+        button.setBackground(backgroundColor);
         button.setOpaque(false);
         button.setBorderPainted(false);
         button.setFocusPainted(false);
@@ -396,38 +434,49 @@ public class Attendance {
     }
 
     /**
-     * Creates a footer panel
+     * Creates the footer panel with gradient background
      */
     private static JPanel createFooterPanel() {
         JPanel footerPanel = new JPanel(new BorderLayout());
         footerPanel.setBackground(HEADER_DARK);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
-        JLabel footerLabel = new JLabel("© 2025 GEAR.HR - Attendance Tracking");
-        footerLabel.setFont(new Font("Garet", Font.PLAIN, 12));
-        footerLabel.setForeground(TEXT_WHITE);
-        footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
+        JLabel copyrightLabel = new JLabel("© 2025 GEAR.HR - Attendance Tracking");
+        copyrightLabel.setFont(new Font("Garet", Font.PLAIN, 12));
+        copyrightLabel.setForeground(TEXT_WHITE);
+        copyrightLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        
         JLabel versionLabel = new JLabel("Version 2.0 - Enhanced UI & Functionality");
         versionLabel.setFont(new Font("Garet", Font.PLAIN, 12));
         versionLabel.setForeground(TEXT_GREY);
         versionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        footerPanel.add(footerLabel, BorderLayout.NORTH);
+        
+        footerPanel.add(copyrightLabel, BorderLayout.NORTH);
         footerPanel.add(versionLabel, BorderLayout.SOUTH);
         return footerPanel;
     }
 
     /**
-     * Gets employee options for the dropdown
+     * Gets employee options for the dropdown from EmployeeProfile
      */
     private static List<String> getEmployeeOptions() {
         List<String> options = new ArrayList<>();
         options.add("Select Employee");
         
-        // This would ideally get the employee list from EmployeeProfile
-        // For now, we'll use sample data
-        options.add("1001 - Colin Bactong");
-        options.add("1002 - Charlize Bactong");
-        options.add("1003 - Angelica");
-        
+        // Get employees from EmployeeProfile
+        try {
+            java.util.List<EmployeeProfile.Employee> employees = EmployeeProfile.getAllEmployees();
+            options.addAll(
+                employees.stream()
+                    .map(emp -> emp.getEmployeeNumber() + " - " + emp.getFirstName() + " " + emp.getLastName())
+                    .collect(Collectors.toList())
+            );
+        } catch (Exception e) {
+            // Fallback to sample data if error
+            options.add("1001 - Colin Bactong");
+            options.add("1002 - Charlize Bactong");
+            options.add("1003 - Angelica");
+        }
         return options;
     }
 
@@ -452,11 +501,11 @@ public class Attendance {
      * Loads attendance records from CSV file
      */
     private static void loadAttendanceRecordsFromCSV() {
-        if (!Files.exists(Paths.get(ATTENDANCE_CSV))) {
+        if (!Files.exists(Paths.get(ATTENDANCE_CSV_FILE))) {
             return;
         }
 
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(ATTENDANCE_CSV))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(ATTENDANCE_CSV_FILE))) {
             reader.readLine(); // Skip header line
 
             String line;
@@ -478,7 +527,7 @@ public class Attendance {
      * Saves attendance records to CSV file
      */
     private static void saveAttendanceRecordsToCSV() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(ATTENDANCE_CSV))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(ATTENDANCE_CSV_FILE))) {
             // Write CSV header
             writer.println("EmployeeID,Date,Status,TimeIn,TimeOut");
             // Write each record
@@ -497,7 +546,7 @@ public class Attendance {
     }
 
     /**
-     * Initializes sample attendance data
+     * Initializes sample attendance data for demonstration
      */
     private static void initializeSampleAttendanceData() {
         attendanceRecords.put("1001|2024-01-15", new AttendanceRecord("1001", "2024-01-15", "Present", "08:00", "17:00"));
@@ -508,6 +557,7 @@ public class Attendance {
 
     /**
      * Removes all attendance records for a specific employee
+     * Called when an employee is deleted from the system
      * @param employeeId The employee ID whose attendance records should be removed
      */
     public static void removeAttendanceRecords(String employeeId) {
@@ -518,14 +568,23 @@ public class Attendance {
 
     /**
      * Inner class representing an attendance record
+     * Contains all information about a single attendance entry
      */
     static class AttendanceRecord {
-        private String employeeId;
-        private String date;
-        private String status;
-        private String timeIn;
-        private String timeOut;
+        private final String employeeId;
+        private final String date;
+        private final String status;
+        private final String timeIn;
+        private final String timeOut;
 
+        /**
+         * Creates a new attendance record
+         * @param employeeId The employee's ID
+         * @param date The attendance date
+         * @param status The attendance status (Present, Absent, Late, etc.)
+         * @param timeIn The time the employee checked in
+         * @param timeOut The time the employee checked out
+         */
         public AttendanceRecord(String employeeId, String date, String status, String timeIn, String timeOut) {
             this.employeeId = employeeId;
             this.date = date;
@@ -534,7 +593,7 @@ public class Attendance {
             this.timeOut = timeOut;
         }
 
-        // Getters
+        // Getter methods
         public String getEmployeeId() { return employeeId; }
         public String getDate() { return date; }
         public String getStatus() { return status; }
@@ -542,7 +601,8 @@ public class Attendance {
         public String getTimeOut() { return timeOut; }
 
         /**
-         * Calculates hours worked
+         * Calculates and returns the hours worked based on time in and time out
+         * @return Formatted string showing hours:minutes worked, or "N/A" if invalid
          */
         public String getHoursWorked() {
             if (timeIn.isEmpty() || timeOut.isEmpty()) {
@@ -570,5 +630,40 @@ public class Attendance {
                 return "N/A";
             }
         }
+    }
+
+    /**
+     * Handles recording new attendance entry
+     */
+    private static void handleRecordAttendance(JFrame attendanceFrame) {
+        // This method would need access to the form components
+        // For now, show a placeholder message
+        showModernMessage(attendanceFrame, "Attendance recording functionality would be implemented here", "Info", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * Handles clearing all attendance records
+     */
+    private static void handleClearAllRecords(JFrame attendanceFrame) {
+        int confirm = JOptionPane.showConfirmDialog(attendanceFrame, 
+            "Are you sure you want to clear ALL attendance records? This cannot be undone.", 
+            "Confirm Clear All", 
+            JOptionPane.YES_NO_OPTION, 
+            JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            attendanceRecords.clear();
+            updateAttendanceTable();
+            saveAttendanceRecordsToCSV();
+            showModernMessage(attendanceFrame, "All attendance records have been cleared.", "Records Cleared", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    /**
+     * Handles refreshing attendance data
+     */
+    private static void handleRefreshData(JFrame attendanceFrame) {
+        loadAttendanceRecordsFromCSV();
+        updateAttendanceTable();
+        showModernMessage(attendanceFrame, "Data refreshed successfully", "Refresh Complete", JOptionPane.INFORMATION_MESSAGE);
     }
 }

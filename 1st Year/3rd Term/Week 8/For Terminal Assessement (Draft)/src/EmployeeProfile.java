@@ -10,37 +10,45 @@ import java.io.*;
 import java.nio.file.*;
 import javax.swing.table.*;
 
-// Note: All information in this program are sample data for demonstration purposes 
-
+/**
+ * EmployeeProfile class handles employee information management and payroll integration
+ * Provides comprehensive interface for managing employee data, payroll records, and salary computations
+ * Note: All information in this program are sample data for demonstration purposes
+ */
 public class EmployeeProfile {
     
-    private static List<Employee> employees = new ArrayList<>();
-    private static final String CSV_FILE = "employees.csv";
+    // Employee data storage
+    private static final List<Employee> employees = new ArrayList<>();
+    private static final String EMPLOYEES_CSV_FILE = "employees.csv";
+    
+    // UI components
     private static JTable employeeTable;
     private static DefaultTableModel tableModel;
     
-    // Payroll integration - moved from Payroll.java
-    private static Map<String, PayrollRecord> payrollRecords = new HashMap<>();
-    private static final String PAYROLL_CSV = "payroll_records.csv";
+    // Payroll data storage
+    private static final Map<String, PayrollRecord> payrollRecords = new HashMap<>();
+    private static final String PAYROLL_CSV_FILE = "payroll_records.csv";
 
-    // Modern formal color scheme (matching User/Main.java)
-    private static final Color BG_WHITE = Color.WHITE;
-    private static final Color HEADER_DARK = new Color(34, 34, 34); // #222222
+    // Application color scheme
+    private static final Color BACKGROUND_WHITE = Color.WHITE;
+    private static final Color HEADER_DARK = new Color(34, 34, 34);
     private static final Color CARD_WHITE = Color.WHITE;
-    private static final Color BORDER_GREY = new Color(68, 68, 68); // #444444
+    private static final Color BORDER_GREY = new Color(68, 68, 68);
     private static final Color TEXT_WHITE = Color.WHITE;
     private static final Color TEXT_GREY = new Color(180, 180, 180);
     private static final Color TEXT_BLACK = Color.BLACK;
-    private static final Color ACCENT = new Color(120, 120, 120); // Subtle accent
-    private static final Color BUTTON_BLUE = new Color(52, 152, 219); // #3498db
+    private static final Color ACCENT_GREY = new Color(120, 120, 120);
+    private static final Color BUTTON_ORANGE = new Color(255, 153, 28);
+    private static final Color GRADIENT_START = new Color(93, 224, 230);
+    private static final Color GRADIENT_END = new Color(0, 74, 173);
 
-    // Static initializer block - loads employees and payroll from CSV when class is first loaded
+    // Initialize employee and payroll data from CSV files
     static {
         loadEmployeesFromCSV();
         loadPayrollRecordsFromCSV();
         
         if (employees.isEmpty()) {
-            addSampleEmployees();  // Adds sample data if CSV is empty
+            addSampleEmployees();
         }
         
         if (payrollRecords.isEmpty()) {
@@ -51,65 +59,88 @@ public class EmployeeProfile {
 
     /**
      * Displays the main employee profile management screen
+     * Creates a comprehensive interface for managing employee information and payroll data
      * @param parentFrame The parent JFrame for positioning
      * @param userId The current user's ID (unused in current implementation)
      * @param role The current user's role (unused in current implementation)
      */
     public static void showProfileScreen(JFrame parentFrame, String userId, String role) {
-        // Create and configure main frame
-        JFrame frame = new JFrame("GEAR.HR");
-        frame.setSize(1300, 800);
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLocationRelativeTo(parentFrame);
-        frame.setResizable(false);
-
-        // Set application icon (if available)
-        try {
-            frame.setIconImage(Toolkit.getDefaultToolkit().getImage("icon.png"));
-        } catch (Exception e) {
-            // Icon not found, continue without it
-        }
-
-        // Main panel with modern design
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(BG_WHITE);
-
-        // Create header panel
+        JFrame profileFrame = createProfileFrame(parentFrame);
+        JPanel mainPanel = createMainPanel();
+        
+        // Create and add header panel
         JPanel headerPanel = createHeaderPanel();
         mainPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // Create content panel
-        JPanel contentPanel = createContentPanel(frame, userId, role);
+        // Create and add content panel
+        JPanel contentPanel = createContentPanel(profileFrame, userId, role);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
         mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-        // Create footer panel
+        // Create and add footer panel
         JPanel footerPanel = createFooterPanel();
         mainPanel.add(footerPanel, BorderLayout.SOUTH);
 
-        frame.add(mainPanel);
-        frame.setVisible(true);
+        profileFrame.add(mainPanel);
+        profileFrame.setVisible(true);
     }
 
     /**
-     * Creates a modern header panel
+     * Creates and configures the employee profile management frame
+     */
+    private static JFrame createProfileFrame(JFrame parentFrame) {
+        JFrame profileFrame = new JFrame("GEAR.HR");
+        profileFrame.setSize(1300, 800);
+        profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        profileFrame.setLocationRelativeTo(parentFrame);
+        profileFrame.setResizable(false);
+
+        // Set application icon if available
+        try {
+            profileFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("Logo/Icon.png"));
+        } catch (Exception e) {
+            // Icon not found, continue without it
+        }
+        
+        return profileFrame;
+    }
+
+    /**
+     * Creates the main panel with background styling
+     */
+    private static JPanel createMainPanel() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        mainPanel.setBackground(BACKGROUND_WHITE);
+        return mainPanel;
+    }
+
+    /**
+     * Creates the header panel with gradient background and title
      */
     private static JPanel createHeaderPanel() {
-        JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new BorderLayout());
-        headerPanel.setBackground(HEADER_DARK);
+        JPanel headerPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                
+                // Create gradient background
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, GRADIENT_START,
+                    getWidth(), 0, GRADIENT_END
+                );
+                g2d.setPaint(gradient);
+                g2d.fillRect(0, 0, getWidth(), getHeight());
+                g2d.dispose();
+            }
+        };
+        headerPanel.setOpaque(false);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(30, 40, 10, 40));
 
-        JLabel titleLabel = new JLabel("Employee Profile Management");
-        titleLabel.setFont(new Font("Garet", Font.BOLD, 32));
-        titleLabel.setForeground(TEXT_WHITE);
-        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-
-        JLabel subtitleLabel = new JLabel("Manage employee information and payroll data");
-        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
-        subtitleLabel.setForeground(TEXT_GREY);
-        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        JLabel titleLabel = createHeaderTitleLabel();
+        JLabel subtitleLabel = createHeaderSubtitleLabel();
 
         JPanel titlePanel = new JPanel(new BorderLayout());
         titlePanel.setOpaque(false);
@@ -121,54 +152,96 @@ public class EmployeeProfile {
     }
 
     /**
-     * Creates the main content panel
+     * Creates the header title label
      */
-    private static JPanel createContentPanel(JFrame frame, String userId, String role) {
+    private static JLabel createHeaderTitleLabel() {
+        JLabel titleLabel = new JLabel("Employee Profile Management");
+        titleLabel.setFont(new Font("Garet", Font.BOLD, 32));
+        titleLabel.setForeground(TEXT_WHITE);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return titleLabel;
+    }
+
+    /**
+     * Creates the header subtitle label
+     */
+    private static JLabel createHeaderSubtitleLabel() {
+        JLabel subtitleLabel = new JLabel("Manage employee information and payroll data");
+        subtitleLabel.setFont(new Font("Garet", Font.PLAIN, 16));
+        subtitleLabel.setForeground(TEXT_GREY);
+        subtitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        return subtitleLabel;
+    }
+
+    /**
+     * Creates the main content panel with employee table and action buttons
+     */
+    private static JPanel createContentPanel(JFrame profileFrame, String userId, String role) {
         JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBackground(BG_WHITE);
+        contentPanel.setBackground(BACKGROUND_WHITE);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        // Create table panel
+        // Create employee table panel
         JPanel tablePanel = createTablePanel();
         contentPanel.add(tablePanel, BorderLayout.CENTER);
 
-        // Create button panel
-        JPanel buttonPanel = createButtonPanel(frame, userId, role);
+        // Create action button panel
+        JPanel buttonPanel = createButtonPanel(profileFrame, userId, role);
         contentPanel.add(buttonPanel, BorderLayout.SOUTH);
 
         return contentPanel;
     }
 
     /**
-     * Creates the employee table panel
+     * Creates the employee table panel with modern styling
      */
     private static JPanel createTablePanel() {
         JPanel tablePanel = new JPanel(new BorderLayout()) {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                Graphics2D g2 = (Graphics2D) g.create();
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 int arc = 40;
-                g2.setColor(CARD_WHITE);
-                g2.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
-                g2.setColor(BORDER_GREY);
-                g2.setStroke(new BasicStroke(2));
-                g2.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, arc, arc);
-                g2.dispose();
+                g2d.setColor(CARD_WHITE);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                g2d.setColor(BORDER_GREY);
+                g2d.setStroke(new BasicStroke(2));
+                g2d.drawRoundRect(0, 0, getWidth()-1, getHeight()-1, arc, arc);
+                g2d.dispose();
             }
         };
         tablePanel.setBackground(CARD_WHITE);
         tablePanel.setOpaque(false);
         tablePanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
-        // Table title
+        // Create table title
+        JLabel tableTitle = createTableTitleLabel();
+
+        // Create employee table
+        createEmployeeTable();
+
+        tablePanel.add(tableTitle, BorderLayout.NORTH);
+        tablePanel.add(new JScrollPane(employeeTable), BorderLayout.CENTER);
+
+        return tablePanel;
+    }
+
+    /**
+     * Creates the table title label
+     */
+    private static JLabel createTableTitleLabel() {
         JLabel tableTitle = new JLabel("Employee Directory");
         tableTitle.setFont(new Font("Garet", Font.BOLD, 18));
         tableTitle.setForeground(TEXT_BLACK);
         tableTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
+        return tableTitle;
+    }
 
-        // Create table model with non-editable columns
+    /**
+     * Creates the employee table with model and styling
+     */
+    private static void createEmployeeTable() {
         String[] columnNames = {"Employee Number", "Last Name", "First Name", "SSS Number", "PhilHealth Number", "TIN", "Pag-IBIG Number"};
         tableModel = new DefaultTableModel(columnNames, 0) {
             @Override
@@ -178,14 +251,9 @@ public class EmployeeProfile {
         };
         employeeTable = new JTable(tableModel);
         
-        // Style the table
+        // Apply styling to the table
         styleEmployeeTable();
         updateEmployeeTable();
-
-        tablePanel.add(tableTitle, BorderLayout.NORTH);
-        tablePanel.add(new JScrollPane(employeeTable), BorderLayout.CENTER);
-
-        return tablePanel;
     }
 
     /**
@@ -195,16 +263,34 @@ public class EmployeeProfile {
         employeeTable.setFont(new Font("Garet", Font.PLAIN, 12));
         employeeTable.setRowHeight(30);
         employeeTable.setGridColor(new Color(220, 220, 220));
-        employeeTable.setSelectionBackground(BUTTON_BLUE);
+        employeeTable.setSelectionBackground(BUTTON_ORANGE);
         employeeTable.setSelectionForeground(TEXT_WHITE);
         employeeTable.setShowGrid(true);
         employeeTable.setIntercellSpacing(new Dimension(1, 1));
 
         // Style the table header
         employeeTable.getTableHeader().setFont(new Font("Garet", Font.BOLD, 12));
-        employeeTable.getTableHeader().setBackground(BUTTON_BLUE);
+        employeeTable.getTableHeader().setBackground(BUTTON_ORANGE);
         employeeTable.getTableHeader().setForeground(TEXT_WHITE);
-        employeeTable.getTableHeader().setBorder(BorderFactory.createLineBorder(BUTTON_BLUE));
+        employeeTable.getTableHeader().setBorder(BorderFactory.createLineBorder(BUTTON_ORANGE));
+    }
+
+    /**
+     * Updates the employee table with current employee data
+     */
+    private static void updateEmployeeTable() {
+        tableModel.setRowCount(0);  // Clear existing rows
+        for (Employee emp : employees) {
+            tableModel.addRow(new Object[]{
+                emp.getEmployeeNumber(),
+                emp.getLastName(),
+                emp.getFirstName(),
+                emp.getSssNumber(),
+                emp.getPhilHealthNumber(),
+                emp.getTin(),
+                emp.getPagIbigNumber()
+            });
+        }
     }
 
     /**
@@ -212,15 +298,15 @@ public class EmployeeProfile {
      */
     private static JPanel createButtonPanel(JFrame frame, String userId, String role) {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));
-        buttonPanel.setBackground(BG_WHITE);
+        buttonPanel.setBackground(BACKGROUND_WHITE);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
 
         // Create modern buttons
-        JButton viewButton = createModernButton("View Employee", BUTTON_BLUE);
-        JButton newButton = createModernButton("New Employee", ACCENT);
-        JButton updateButton = createModernButton("Update Employee", ACCENT);
-        JButton deleteButton = createModernButton("Delete Employee", ACCENT);
-        JButton refreshButton = createModernButton("Refresh", ACCENT);
+        JButton viewButton = createModernButton("View Employee", BUTTON_ORANGE);
+        JButton newButton = createModernButton("New Employee", ACCENT_GREY);
+        JButton updateButton = createModernButton("Update Employee", ACCENT_GREY);
+        JButton deleteButton = createModernButton("Delete Employee", ACCENT_GREY);
+        JButton refreshButton = createModernButton("Refresh", ACCENT_GREY);
 
         // Add action listeners
         viewButton.addActionListener(e -> {
@@ -331,8 +417,24 @@ public class EmployeeProfile {
      * Creates a footer panel
      */
     private static JPanel createFooterPanel() {
-        JPanel footerPanel = new JPanel(new BorderLayout());
-        footerPanel.setBackground(HEADER_DARK);
+        JPanel footerPanel = new JPanel(new BorderLayout()) {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
+                g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                
+                // Create gradient from left to right
+                GradientPaint gradient = new GradientPaint(
+                    0, 0, new Color(93, 224, 230), // #5de0e6 (left)
+                    getWidth(), 0, new Color(0, 74, 173)  // #004aad (right)
+                );
+                g2.setPaint(gradient);
+                g2.fillRect(0, 0, getWidth(), getHeight());
+                g2.dispose();
+            }
+        };
+        footerPanel.setOpaque(false);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(15, 30, 15, 30));
         JLabel footerLabel = new JLabel("© 2025 GEAR.HR - Employee Profiles");
         footerLabel.setFont(new Font("Garet", Font.PLAIN, 12));
@@ -390,7 +492,7 @@ public class EmployeeProfile {
         // Main panel setup
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.setBackground(BG_WHITE);
+        mainPanel.setBackground(BACKGROUND_WHITE);
 
         // Create header panel
         JPanel headerPanel = createDetailsHeaderPanel(employee);
@@ -410,7 +512,7 @@ public class EmployeeProfile {
     private static JPanel createDetailsHeaderPanel(Employee employee) {
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BorderLayout());
-        headerPanel.setBackground(BUTTON_BLUE);
+        headerPanel.setBackground(new Color(128, 128, 128)); // Grey color
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
         // Employee name and ID
@@ -438,7 +540,7 @@ public class EmployeeProfile {
      */
     private static JPanel createDetailsContentPanel(JFrame detailsFrame, Employee employee) {
         JPanel contentPanel = new JPanel(new BorderLayout());
-        contentPanel.setBackground(BG_WHITE);
+        contentPanel.setBackground(BACKGROUND_WHITE);
         contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
 
         // Create tabbed pane for better organization
@@ -457,10 +559,10 @@ public class EmployeeProfile {
 
         // Add Payroll Edit button
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(BG_WHITE);
+        buttonPanel.setBackground(BACKGROUND_WHITE);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 0, 0));
 
-        JButton editPayrollButton = createModernButton("Edit Payroll", ACCENT);
+        JButton editPayrollButton = createModernButton("Edit Payroll", BUTTON_ORANGE);
         editPayrollButton.addActionListener(e -> {
             showPayrollEditDialog(detailsFrame, employee);
         });
@@ -542,7 +644,7 @@ public class EmployeeProfile {
         monthCombo.setFont(new Font("Garet", Font.PLAIN, 12));
         monthCombo.setPreferredSize(new Dimension(150, 30));
 
-        JButton computeButton = createModernButton("Compute Salary", ACCENT);
+        JButton computeButton = createModernButton("Compute Salary", BUTTON_ORANGE);
         computeButton.setPreferredSize(new Dimension(150, 35));
 
         controlsPanel.add(monthLabel);
@@ -553,7 +655,7 @@ public class EmployeeProfile {
         JTextArea resultArea = new JTextArea(15, 50);
         resultArea.setFont(new Font("Consolas", Font.PLAIN, 12));
         resultArea.setEditable(false);
-        resultArea.setBackground(BG_WHITE);
+        resultArea.setBackground(BACKGROUND_WHITE);
         resultArea.setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(BORDER_GREY, 1),
             BorderFactory.createEmptyBorder(10, 10, 10, 10)
@@ -868,11 +970,11 @@ public class EmployeeProfile {
      * Loads payroll records from CSV file into memory
      */
     private static void loadPayrollRecordsFromCSV() {
-        if (!Files.exists(Paths.get(PAYROLL_CSV))) {
+        if (!Files.exists(Paths.get(PAYROLL_CSV_FILE))) {
             return;
         }
 
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(PAYROLL_CSV))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(PAYROLL_CSV_FILE))) {
             reader.readLine(); // Skip header line
 
             String line;
@@ -911,7 +1013,7 @@ public class EmployeeProfile {
      * Saves all payroll records to CSV file
      */
     private static void savePayrollRecordsToCSV() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(PAYROLL_CSV))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(PAYROLL_CSV_FILE))) {
             // Write CSV header
             writer.println("EmployeeID,BaseSalary,SSSRate,PhilHealthRate,PagIBIGRate,WithholdingTax,RiceSubsidy,PhoneAllowance,ClothingAllowance");
             // Write each record
@@ -1115,24 +1217,6 @@ public class EmployeeProfile {
     }
 
     /**
-     * Updates the employee table with current employee data
-     */
-    private static void updateEmployeeTable() {
-        tableModel.setRowCount(0);  // Clear existing rows
-        for (Employee emp : employees) {
-            tableModel.addRow(new Object[]{
-                emp.getEmployeeNumber(),
-                emp.getLastName(),
-                emp.getFirstName(),
-                emp.getSssNumber(),
-                emp.getPhilHealthNumber(),
-                emp.getTin(),
-                emp.getPagIbigNumber()
-            });
-        }
-    }
-
-    /**
      * Finds an employee by their employee number
      * @param empNumber The employee number to search for
      * @return The Employee object if found, null otherwise
@@ -1151,11 +1235,11 @@ public class EmployeeProfile {
      */
     private static void loadEmployeesFromCSV() {
         employees.clear();
-        if (!Files.exists(Paths.get(CSV_FILE))) {
+        if (!Files.exists(Paths.get(EMPLOYEES_CSV_FILE))) {
             return;
         }
 
-        try (BufferedReader reader = Files.newBufferedReader(Paths.get(CSV_FILE))) {
+        try (BufferedReader reader = Files.newBufferedReader(Paths.get(EMPLOYEES_CSV_FILE))) {
             // Skip header line
             reader.readLine();
 
@@ -1179,7 +1263,7 @@ public class EmployeeProfile {
      * Saves all employee data to the CSV file
      */
     private static void saveEmployeesToCSV() {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(CSV_FILE))) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(EMPLOYEES_CSV_FILE))) {
             // Write CSV header
             writer.println("EmployeeNumber,LastName,FirstName,SSS,PhilHealth,TIN,PagIBIG,Email,Position,Address,Phone");
             for (Employee emp : employees) {
@@ -1215,6 +1299,13 @@ public class EmployeeProfile {
             "Charlize@MotorPH.com", "Manager", "Negros Occidental Silay City", "555-0202"
         ));
         saveEmployeesToCSV();
+    }
+
+    /**
+     * Returns a copy of the current list of employees (for use in other classes)
+     */
+    public static List<Employee> getAllEmployees() {
+        return new ArrayList<>(employees);
     }
 
     /**
