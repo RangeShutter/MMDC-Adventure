@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class Attendance {
     // Attendance data storage: key format "employeeID|date"
     private static final Map<String, AttendanceRecord> attendanceRecords = new HashMap<>();
-    private static final String ATTENDANCE_CSV_FILE = "attendance_records.csv";
+    private static final String ATTENDANCE_CSV_FILE = "GEAR.HR/attendance_records.csv";
     
     // UI components
     private static JTable attendanceTable;
@@ -39,17 +39,25 @@ public class Attendance {
     private static final Color ACCENT_GREY = new Color(120, 120, 120);
     private static final Color BUTTON_ORANGE = new Color(255, 153, 28);
 
+    // Add static references for form fields
+    private static JComboBox<String> employeeComboBox;
+    private static JTextField dateField;
+    private static JComboBox<String> statusComboBox;
+    private static JTextField timeInField;
+    private static JTextField timeOutField;
+
     // Initialize attendance data from CSV file
     static {
         loadAttendanceRecordsFromCSV();
     }
 
     /**
-     * Displays the attendance management screen
-     * Creates a comprehensive interface for managing employee attendance
-     * @param parentFrame The parent frame for positioning
-     * @param userId The current user's ID
-     * @param role The current user's role
+     * Displays the attendance management screen.
+     * Sets up the main UI for recording, viewing, and managing attendance records.
+     *
+     * @param parentFrame The parent JFrame for positioning
+     * @param userId The ID of the logged-in user
+     * @param role The role of the logged-in user
      */
     public static void showAttendanceScreen(JFrame parentFrame, String userId, String role) {
         JFrame attendanceFrame = createAttendanceFrame(parentFrame);
@@ -73,7 +81,10 @@ public class Attendance {
     }
 
     /**
-     * Creates and configures the attendance management frame
+     * Creates and configures the attendance management frame.
+     *
+     * @param parentFrame The parent JFrame for positioning
+     * @return The created JFrame for the attendance screen
      */
     private static JFrame createAttendanceFrame(JFrame parentFrame) {
         JFrame attendanceFrame = new JFrame("Attendance Management System");
@@ -93,7 +104,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the main panel with background styling
+     * Creates the main panel for the attendance screen.
+     *
+     * @return JPanel containing the main content
      */
     private static JPanel createMainPanel() {
         JPanel mainPanel = new JPanel();
@@ -103,7 +116,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the header panel with title and subtitle
+     * Creates the header panel for the attendance screen.
+     *
+     * @return JPanel containing the header content
      */
     private static JPanel createHeaderPanel() {
         JPanel headerPanel = new JPanel();
@@ -124,7 +139,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the header title label
+     * Creates the header title label.
+     *
+     * @return JLabel for the header title
      */
     private static JLabel createHeaderTitleLabel() {
         JLabel titleLabel = new JLabel("Attendance Management");
@@ -135,7 +152,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the header subtitle label
+     * Creates the header subtitle label.
+     *
+     * @return JLabel for the header subtitle
      */
     private static JLabel createHeaderSubtitleLabel() {
         JLabel subtitleLabel = new JLabel("Track employee attendance and manage time records");
@@ -146,7 +165,12 @@ public class Attendance {
     }
 
     /**
-     * Creates the main content panel with input form and attendance table
+     * Creates the main content panel for the attendance screen.
+     *
+     * @param attendanceFrame The parent JFrame for positioning
+     * @param userId The ID of the logged-in user
+     * @param role The role of the logged-in user
+     * @return JPanel containing the main content
      */
     private static JPanel createContentPanel(JFrame attendanceFrame, String userId, String role) {
         JPanel contentPanel = new JPanel(new BorderLayout());
@@ -169,7 +193,10 @@ public class Attendance {
     }
 
     /**
-     * Creates the input panel for recording new attendance entries
+     * Creates the input panel for recording new attendance entries.
+     *
+     * @param attendanceFrame The parent JFrame for positioning
+     * @return JPanel containing the input form
      */
     private static JPanel createInputPanel(JFrame attendanceFrame) {
         JPanel inputPanel = new JPanel();
@@ -197,7 +224,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the title label for the input panel
+     * Creates the title label for the input panel.
+     *
+     * @return JLabel for the input panel title
      */
     private static JLabel createInputPanelTitleLabel() {
         JLabel titleLabel = new JLabel("Record Attendance");
@@ -208,7 +237,10 @@ public class Attendance {
     }
 
     /**
-     * Creates the form panel with all input fields
+     * Creates the form panel for attendance entry.
+     *
+     * @param attendanceFrame The parent JFrame for positioning
+     * @return JPanel containing the form fields
      */
     private static JPanel createFormPanel(JFrame attendanceFrame) {
         JPanel formPanel = new JPanel(new GridBagLayout());
@@ -217,12 +249,12 @@ public class Attendance {
         constraints.insets = new Insets(8, 10, 8, 10);
         constraints.anchor = GridBagConstraints.WEST;
 
-        // Create form components
-        JComboBox<String> employeeComboBox = createEmployeeComboBox();
-        JTextField dateField = createDateField();
-        JComboBox<String> statusComboBox = createStatusComboBox();
-        JTextField timeInField = createTimeField("08:00");
-        JTextField timeOutField = createTimeField("17:00");
+        // Create form components and assign to static fields
+        employeeComboBox = createEmployeeComboBox();
+        dateField = createDateField();
+        statusComboBox = createStatusComboBox();
+        timeInField = createTimeField("08:00");
+        timeOutField = createTimeField("17:00");
 
         // Add form fields to panel
         addFormField(formPanel, "Employee:", employeeComboBox, constraints, 0, 0);
@@ -235,7 +267,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the employee selection combo box
+     * Creates the employee selection combo box.
+     *
+     * @return JComboBox for selecting an employee
      */
     private static JComboBox<String> createEmployeeComboBox() {
         List<String> employeeOptions = getEmployeeOptions();
@@ -246,7 +280,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the date input field with current date
+     * Creates the date input field with current date.
+     *
+     * @return JTextField for date input
      */
     private static JTextField createDateField() {
         JTextField dateField = new JTextField(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), 15);
@@ -259,7 +295,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the status selection combo box
+     * Creates the status selection combo box.
+     *
+     * @return JComboBox for selecting attendance status
      */
     private static JComboBox<String> createStatusComboBox() {
         String[] statusOptions = {"Present", "Absent", "Late", "On Leave", "Half Day"};
@@ -270,7 +308,10 @@ public class Attendance {
     }
 
     /**
-     * Creates a time input field with default value
+     * Creates a time input field with default value.
+     *
+     * @param defaultValue The default time value (e.g., "08:00")
+     * @return JTextField for time input
      */
     private static JTextField createTimeField(String defaultValue) {
         JTextField timeField = new JTextField(defaultValue, 10);
@@ -283,7 +324,14 @@ public class Attendance {
     }
 
     /**
-     * Adds a form field to the form panel
+     * Adds a form field (label and input) to the form panel.
+     *
+     * @param formPanel The panel to add the field to
+     * @param labelText The label text
+     * @param component The input component
+     * @param constraints The GridBagConstraints to use
+     * @param row The row number
+     * @param col The column number
      */
     private static void addFormField(JPanel formPanel, String labelText, JComponent component, 
                                    GridBagConstraints constraints, int row, int col) {
@@ -300,7 +348,10 @@ public class Attendance {
     }
 
     /**
-     * Creates the button panel with action buttons
+     * Creates the button panel with action buttons for attendance actions.
+     *
+     * @param attendanceFrame The parent JFrame for positioning
+     * @return JPanel containing the action buttons
      */
     private static JPanel createButtonPanel(JFrame attendanceFrame) {
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
@@ -324,7 +375,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the attendance table panel
+     * Creates the attendance table panel for displaying records.
+     *
+     * @return JPanel containing the attendance table
      */
     private static JPanel createTablePanel() {
         JPanel tablePanel = new JPanel(new BorderLayout());
@@ -350,7 +403,9 @@ public class Attendance {
     }
 
     /**
-     * Creates the table title label
+     * Creates the table title label for the attendance table.
+     *
+     * @return JLabel for the table title
      */
     private static JLabel createTableTitleLabel() {
         JLabel tableTitle = new JLabel("Attendance Records");
@@ -361,7 +416,7 @@ public class Attendance {
     }
 
     /**
-     * Creates the attendance table with model and styling
+     * Creates the attendance table and sets up the table model.
      */
     private static void createAttendanceTable() {
         String[] columnNames = {"Employee ID", "Date", "Status", "Time In", "Time Out", "Hours Worked"};
@@ -377,7 +432,7 @@ public class Attendance {
     }
 
     /**
-     * Styles the attendance table with modern appearance
+     * Styles the attendance table for a modern appearance.
      */
     private static void styleAttendanceTable() {
         attendanceTable.setFont(new Font("Garet", Font.PLAIN, 12));
@@ -396,7 +451,11 @@ public class Attendance {
     }
 
     /**
-     * Creates a modern styled button with rounded corners
+     * Creates a modern styled button with rounded corners.
+     *
+     * @param text The button text
+     * @param backgroundColor The background color
+     * @return JButton with custom styling
      */
     private static JButton createStyledButton(String text, Color backgroundColor) {
         JButton button = new JButton(text) {
@@ -423,14 +482,21 @@ public class Attendance {
     }
 
     /**
-     * Shows a modern styled message dialog
+     * Shows a modern styled message dialog.
+     *
+     * @param parent The parent JFrame for positioning
+     * @param message The message to display
+     * @param title The dialog title
+     * @param messageType The type of message (JOptionPane constant)
      */
     private static void showModernMessage(JFrame parent, String message, String title, int messageType) {
         JOptionPane.showMessageDialog(parent, message, title, messageType);
     }
 
     /**
-     * Creates the footer panel with gradient background
+     * Creates the footer panel for the attendance screen.
+     *
+     * @return JPanel containing the footer content
      */
     private static JPanel createFooterPanel() {
         JPanel footerPanel = new JPanel(new BorderLayout());
@@ -453,7 +519,9 @@ public class Attendance {
     }
 
     /**
-     * Gets employee options for the dropdown from EmployeeProfile
+     * Gets employee options for the dropdown from EmployeeProfile.
+     *
+     * @return List of employee options for the combo box
      */
     private static List<String> getEmployeeOptions() {
         List<String> options = new ArrayList<>();
@@ -477,7 +545,7 @@ public class Attendance {
     }
 
     /**
-     * Updates the attendance table with current data
+     * Updates the attendance table with current data.
      */
     private static void updateAttendanceTable() {
         tableModel.setRowCount(0);
@@ -494,7 +562,9 @@ public class Attendance {
     }
 
     /**
-     * Loads attendance records from CSV file
+     * Loads attendance records from the attendance_records.csv file into memory.
+     * Ensures that all attendance data is loaded into the attendanceRecords map.
+     * Handles missing or malformed files gracefully.
      */
     private static void loadAttendanceRecordsFromCSV() {
         if (!Files.exists(Paths.get(ATTENDANCE_CSV_FILE))) {
@@ -520,7 +590,9 @@ public class Attendance {
     }
 
     /**
-     * Saves attendance records to CSV file
+     * Saves all attendance records to the attendance_records.csv file.
+     * Writes the current state of attendanceRecords map to disk.
+     * Handles file I/O errors gracefully.
      */
     private static void saveAttendanceRecordsToCSV() {
         try (PrintWriter writer = new PrintWriter(new FileWriter(ATTENDANCE_CSV_FILE))) {
@@ -542,8 +614,9 @@ public class Attendance {
     }
 
     /**
-     * Removes all attendance records for a specific employee
-     * Called when an employee is deleted from the system
+     * Removes all attendance records for a specific employee.
+     * Called when an employee is deleted from the system.
+     *
      * @param employeeId The employee ID whose attendance records should be removed
      */
     public static void removeAttendanceRecords(String employeeId) {
@@ -553,8 +626,8 @@ public class Attendance {
     }
 
     /**
-     * Inner class representing an attendance record
-     * Contains all information about a single attendance entry
+     * Inner class representing an attendance record.
+     * Contains all information about a single attendance entry.
      */
     static class AttendanceRecord {
         private final String employeeId;
@@ -564,7 +637,8 @@ public class Attendance {
         private final String timeOut;
 
         /**
-         * Creates a new attendance record
+         * Creates a new attendance record.
+         *
          * @param employeeId The employee's ID
          * @param date The attendance date
          * @param status The attendance status (Present, Absent, Late, etc.)
@@ -587,7 +661,8 @@ public class Attendance {
         public String getTimeOut() { return timeOut; }
 
         /**
-         * Calculates and returns the hours worked based on time in and time out
+         * Calculates and returns the hours worked based on time in and time out.
+         *
          * @return Formatted string showing hours:minutes worked, or "N/A" if invalid
          */
         public String getHoursWorked() {
@@ -619,16 +694,56 @@ public class Attendance {
     }
 
     /**
-     * Handles recording new attendance entry
+     * Handles recording new attendance entry.
+     * Reads form values, validates input, creates and saves a new attendance record.
+     * Updates the table and clears the form.
+     *
+     * @param attendanceFrame The parent JFrame for positioning
      */
     private static void handleRecordAttendance(JFrame attendanceFrame) {
-        // This method would need access to the form components
-        // For now, show a placeholder message
-        showModernMessage(attendanceFrame, "Attendance recording functionality would be implemented here", "Info", JOptionPane.INFORMATION_MESSAGE);
+        // Read values from form fields
+        String employeeSelection = (String) employeeComboBox.getSelectedItem();
+        String date = dateField.getText().trim();
+        String status = (String) statusComboBox.getSelectedItem();
+        String timeIn = timeInField.getText().trim();
+        String timeOut = timeOutField.getText().trim();
+
+        // Validate input
+        if (employeeSelection == null || employeeSelection.equals("Select Employee")) {
+            showModernMessage(attendanceFrame, "Please select an employee.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (date.isEmpty() || status.isEmpty() || timeIn.isEmpty() || timeOut.isEmpty()) {
+            showModernMessage(attendanceFrame, "Please fill in all fields.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Extract employee ID from selection
+        String employeeId = employeeSelection.split(" - ")[0];
+        String key = employeeId + "|" + date;
+        // Prevent duplicate attendance for the same day
+        if (attendanceRecords.containsKey(key)) {
+            showModernMessage(attendanceFrame, "Attendance for this employee on this date already exists.", "Duplicate Entry", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        // Add new attendance record
+        AttendanceRecord record = new AttendanceRecord(employeeId, date, status, timeIn, timeOut);
+        attendanceRecords.put(key, record);
+        saveAttendanceRecordsToCSV();
+        updateAttendanceTable();
+        showModernMessage(attendanceFrame, "Attendance recorded successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        // Optionally clear fields for next entry
+        employeeComboBox.setSelectedIndex(0);
+        dateField.setText(java.time.LocalDate.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        statusComboBox.setSelectedIndex(0);
+        timeInField.setText("08:00");
+        timeOutField.setText("17:00");
     }
 
     /**
-     * Handles clearing all attendance records
+     * Handles clearing all attendance records.
+     * Prompts for confirmation, clears all records, updates the table, and saves to CSV.
+     *
+     * @param attendanceFrame The parent JFrame for positioning
      */
     private static void handleClearAllRecords(JFrame attendanceFrame) {
         int confirm = JOptionPane.showConfirmDialog(attendanceFrame, 
@@ -645,7 +760,10 @@ public class Attendance {
     }
 
     /**
-     * Handles refreshing attendance data
+     * Handles refreshing attendance data from CSV.
+     * Updates the table and shows a confirmation message.
+     *
+     * @param attendanceFrame The parent JFrame for positioning
      */
     private static void handleRefreshData(JFrame attendanceFrame) {
         loadAttendanceRecordsFromCSV();

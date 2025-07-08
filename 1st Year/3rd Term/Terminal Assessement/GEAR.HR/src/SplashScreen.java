@@ -4,6 +4,7 @@ import java.awt.*;
 /**
  * SplashScreen class provides an animated loading screen
  * Displays company logo with gradient background before the main application loads
+ * No CSV or data logic is present here
  * Note: All information in this program are sample data for demonstration purposes
  */
 public class SplashScreen {
@@ -15,7 +16,7 @@ public class SplashScreen {
 
     // Application color scheme
     private static final Color GRADIENT_START = new Color(93, 224, 230);
-    private static final Color GRADIENT_END = new Color(0, 74, 173);Guest
+    private static final Color GRADIENT_END = new Color(0, 74, 173);
     private static final Color TEXT_WHITE = Color.WHITE;
     private static final Color TEXT_GREY = new Color(180, 180, 180);
 
@@ -39,6 +40,7 @@ public class SplashScreen {
 
     /**
      * Creates and configures the splash window
+     * @return JWindow for the splash screen
      */
     private static JWindow createSplashWindow() {
         JWindow splashWindow = new JWindow();
@@ -50,6 +52,7 @@ public class SplashScreen {
 
     /**
      * Creates the main panel with gradient background and content
+     * @return JPanel with gradient background and logo/loading text
      */
     private static JPanel createMainPanel() {
         JPanel mainPanel = new JPanel(new BorderLayout()) {
@@ -80,6 +83,7 @@ public class SplashScreen {
 
     /**
      * Creates the content panel with logo and loading text
+     * @return JPanel with logo and loading label
      */
     private static JPanel createContentPanel() {
         JPanel contentPanel = new JPanel(new BorderLayout());
@@ -99,12 +103,13 @@ public class SplashScreen {
 
     /**
      * Creates the logo label with company logo or fallback text
+     * @return JLabel with logo or fallback text
      */
     private static JLabel createLogoLabel() {
         JLabel logoLabel = new JLabel();
         try {
             // Load and resize company logo
-            ImageIcon logoIcon = new ImageIcon("Logo/Icon.png");
+            ImageIcon logoIcon = new ImageIcon("GEAR.HR/Logo/Icon.png");
             Image logoImage = logoIcon.getImage();
             Image resizedLogo = logoImage.getScaledInstance(LOGO_SIZE, LOGO_SIZE, Image.SCALE_SMOOTH);
             ImageIcon resizedIcon = new ImageIcon(resizedLogo);
@@ -123,6 +128,7 @@ public class SplashScreen {
 
     /**
      * Creates the loading text label
+     * @return JLabel with loading text
      */
     private static JLabel createLoadingLabel() {
         JLabel loadingLabel = new JLabel("Loading...");
@@ -134,6 +140,9 @@ public class SplashScreen {
 
     /**
      * Creates a timer to close the splash screen after specified duration
+     * @param splashWindow The splash window to close
+     * @param onFinish Callback to execute after closing
+     * @return Timer that closes the splash screen
      */
     private static Timer createCloseTimer(JWindow splashWindow, Runnable onFinish) {
         Timer timer = new Timer(DISPLAY_DURATION, e -> {
