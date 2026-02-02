@@ -1,4 +1,4 @@
-package Tree;
+package Tree.Samples;
 import java.util.ArrayList;
 import java.util.List;
 

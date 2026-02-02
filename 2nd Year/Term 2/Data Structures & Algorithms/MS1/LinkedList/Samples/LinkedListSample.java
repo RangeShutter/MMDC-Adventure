@@ -1,4 +1,4 @@
-package LinkedList;
+package LinkedList.Samples;
 /**
  * Add, Delete, Search Inventory using Linked List.
  */

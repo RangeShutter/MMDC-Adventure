@@ -1,4 +1,4 @@
-package Stack;
+package Stack.Samples;
 import java.util.ArrayList;
 import java.util.List;
 
