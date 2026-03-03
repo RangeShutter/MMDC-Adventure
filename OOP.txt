@@ -1,0 +1,548 @@
+**MO-IT110 – Object-Oriented Programming**
+
+**Milestone 1: OOP Design Redesign of GEAR.HR System**
+
+Prepared by:
+
+Colin Bactong
+
+Charlize Bactong
+
+Angelica Mae Calipayan
+
+Yzabelle Grace Cane
+
+# **Executive Summary**
+
+The GEAR.HR system, developed for MotorPH, is an employee management and
+payroll application responsible for handling attendance tracking, salary
+computation, authentication, and employee-related administrative
+processes. The original implementation followed a procedural programming
+approach, where core operations such as payroll calculation,
+authentication, and data handling were tightly coupled within
+centralized logic structures. While functional, the structure limited
+modularity, scalability, and maintainability.
+
+This document presents a comprehensive object-oriented redesign of the
+GEAR.HR system. The redesigned architecture introduces clearly defined
+classes—Employee, AuthenticationService, Attendance, PayrollProcessor,
+LeaveRequest, and PayrollReport—each responsible for a distinct
+operational domain. Sensitive employee data is encapsulated within
+protected attributes, business logic is abstracted into dedicated
+modules, and dynamic workflow processing is achieved through controlled
+object interaction.
+
+Inheritance was carefully evaluated but intentionally not implemented,
+as employee behavior does not vary structurally within the current
+system scope. Instead, role-based access control is managed through
+controlled attributes within the Employee class. Payroll computation
+follows a structured process that includes gross salary calculation,
+allowance application, and deduction processing, ensuring financial
+accuracy and data validation.
+
+The resulting architecture improves security, modularity, and
+scalability. It enables future enhancements—such as expanded payroll
+rules, enhanced leave policies, or additional reporting features—without
+requiring structural redesign. This document serves both as academic
+documentation of OOP application and as a technical blueprint for
+further system implementation and expansion within MotorPH.
+
+# 
+
+# 
+
+# **1. Introduction**
+
+The GEAR.HR system is an employee management and payroll application
+developed for MotorPH to handle attendance tracking, salary computation,
+and employee-related processes. The initial implementation of the system
+followed a primarily procedural programming approach, where
+authentication, payroll logic, attendance tracking, and reporting were
+managed within centralized control structures. Although functional, this
+structure limited modularity, scalability, and long-term
+maintainability.
+
+To improve system organization and align the application with modern
+software engineering practices, the system was redesigned using
+object-oriented programming (OOP) principles. The redesigned
+architecture introduces structured classes such as Employee,
+AuthenticationService, Attendance, PayrollProcessor, LeaveRequest, and
+PayrollReport. Additionally, the system incorporates role-based login
+functionality and a leave request module to enhance operational control
+and expand system capabilities.
+
+This document presents the object-oriented redesign of the GEAR.HR
+system for MotorPH, demonstrating the application of encapsulation,
+abstraction, inheritance analysis, and polymorphism through progressive
+architectural refinement. The redesign aims to improve data security,
+modularity, maintainability, and overall system scalability.
+
+# **2. Problem Identification**
+
+## **2.1 Existing System Structure**
+
+The initial version of the GEAR.HR system for MotorPH was implemented
+using a procedural programming approach. Core operations such as
+authentication, attendance tracking, salary computation, and reporting
+were executed within centralized logic blocks rather than being
+distributed across structured classes. This resulted in mixed
+responsibilities, where control flow, data handling, and business rules
+were tightly coupled within the same execution layer.
+
+The absence of modular separation meant that login validation, payroll
+computation, and attendance calculations were handled within shared
+processing segments. As a result, the system lacked clearly defined
+ownership of responsibilities, making it difficult to isolate
+functionality or modify specific behaviors without affecting other
+components.
+
+## **2.2 Functional Limitations Identified**
+
+Several structural and functional limitations were identified in the
+original system:
+
+**Lack of Role-Based Access Control**
+
+The login mechanism authenticated users but did not structurally
+separate permissions based on employee roles. System capabilities were
+not dynamically controlled according to user roles, limiting security
+and operational clarity.
+
+**Mixed Business Logic**
+
+Payroll calculations, attendance processing, and user authentication
+were not encapsulated into dedicated modules. This created tightly
+coupled logic and reduced system maintainability.
+
+**Absence of Leave Management Module**
+
+The original system did not include a structured leave request feature.
+There was no dedicated component for storing leave details, validating
+leave dates, or tracking approval status.
+
+**Limited Data Validation Enforcement**
+
+Salary values, attendance hours, and leave dates were not consistently
+validated through controlled access methods. This increased the risk of
+incorrect payroll computation and inconsistent system states.
+
+**Low Scalability**
+
+Because logic was centralized, introducing new features—such as
+additional payroll rules or expanded role permissions—would require
+modifying core processing logic, increasing the likelihood of unintended
+side effects.
+
+## **3. Proposed Object-Oriented Design**
+
+## **3.1 System Class Structure Overview**
+
+The redesigned GEAR.HR system for MotorPH is structured into six primary
+classes. Each class represents a clearly defined responsibility within
+the HR and payroll workflow. The system architecture separates
+authentication, employee data management, attendance tracking, payroll
+processing, leave management, and reporting into independent modules to
+ensure modularity and maintainability.
+
+The core classes are:
+
+- Employee
+
+- AuthenticationService
+
+- Attendance
+
+- PayrollProcessor
+
+- LeaveRequest
+
+- PayrollReport
+
+Each class is described below in terms of its structural role and
+interaction within the system.
+
+## **3.2 Employee Class**
+
+The Employee class represents the core entity of the system. It
+encapsulates all personal, authentication, and payroll-related
+attributes associated with an individual employee of MotorPH.
+
+The class stores:
+
+- Employee ID
+
+- Full name
+
+- Department
+
+- Role
+
+- Hourly rate
+
+- Login credentials (username and password)
+
+The Employee class does not compute payroll or validate login
+credentials directly. Instead, it provides controlled access to its data
+through getter and setter methods. It also serves as the primary object
+passed between modules such as PayrollProcessor, Attendance, and
+LeaveRequest.
+
+By centralizing employee data while delegating processing logic to
+specialized classes, the design ensures strong encapsulation and clear
+separation of concerns.
+
+## **3.3 AuthenticationService Class**
+
+The AuthenticationService class is responsible for validating user login
+credentials and returning an authenticated Employee object upon
+successful verification.
+
+Its responsibilities include:
+
+- Comparing input username and password against stored employee
+  records\\
+
+- Preventing unauthorized access
+
+- Enforcing role-based access control
+
+This class isolates authentication logic from business operations such
+as payroll computation and leave management. By doing so, the system
+prevents mixing security mechanisms with domain logic, improving both
+maintainability and system integrity.
+
+## **3.4 Attendance Class**
+
+The Attendance class manages employee time tracking. It records time-in
+and time-out events and calculates total working hours.
+
+Its responsibilities include:
+
+- Recording time-in and time-out
+
+- Preventing duplicate or invalid entries
+
+- Calculating total hours worked
+
+- Providing validated attendance data to PayrollProcessor
+
+Attendance does not compute salary. Instead, it supplies verified
+working-hour data used during payroll processing. This ensures that time
+tracking and financial computation remain structurally independent.
+
+## **3.5 PayrollProcessor Class**
+
+The PayrollProcessor class is responsible for computing employee
+compensation. It receives an Employee object and attendance data to
+calculate final salary.
+
+Its processing workflow includes:
+
+1.  Calculating gross salary using hourly rate × total hours worked
+
+2.  Applying allowances
+
+3.  Applying deductions
+
+4.  Returning net salary
+
+PayrollProcessor does not store employee data. Instead, it retrieves
+necessary information through controlled access methods. This design
+prevents direct modification of employee records during payroll
+computation and maintains separation between data storage and financial
+processing.
+
+## **3.6 LeaveRequest Class**
+
+The LeaveRequest class handles employee leave management. It stores
+leave details and enforces validation rules before submission.
+
+The class manages:
+
+- Leave start date
+
+- Leave end date
+
+- Reason for leave
+
+- Leave status (Pending, Approved, Rejected)
+
+Validation ensures that leave start dates precede end dates and that
+status values remain within permitted categories. Leave processing is
+isolated from payroll and attendance operations, ensuring modular
+expansion in the future.
+
+## **3.7 PayrollReport Class**
+
+The PayrollReport class generates formatted summaries of payroll
+results. It receives computed net salary data from PayrollProcessor and
+presents structured output.
+
+Responsibilities include:
+
+- Generating payroll summaries
+
+- Formatting salary breakdown
+
+- Displaying or exporting payroll results
+
+By separating reporting from computation, the system ensures that
+payroll calculation logic remains independent from presentation logic.
+
+# **4. Application of Object-Oriented Principles**
+
+The redesign of the GEAR.HR system for MotorPH is grounded in four core
+object-oriented programming principles: encapsulation, abstraction,
+inheritance analysis, and polymorphism. Each principle contributes to
+improving system structure, maintainability, and scalability.
+
+## **4.1 Encapsulation**
+
+Encapsulation is implemented by restricting direct access to sensitive
+data and enforcing controlled modification through public methods. In
+the redesigned system, critical attributes such as employee salary,
+login credentials, attendance records, and leave status are declared as
+private within their respective classes.
+
+For example, the Employee class protects attributes such as hourlyRate,
+password, and role. These attributes can only be accessed or modified
+through validated setter and getter methods. Validation rules ensure
+that hourly rates are greater than zero, passwords are not empty, and
+roles match predefined categories. Similarly, the Attendance class
+prevents invalid time entries, and LeaveRequest validates that leave
+start dates occur before end dates.
+
+This encapsulation ensures that system state remains consistent and
+protected from unintended external modification. By controlling access
+to internal data, the system reduces the risk of incorrect payroll
+calculations and security vulnerabilities.
+
+## **4.2 Abstraction**
+
+Abstraction is achieved by separating system responsibilities into
+clearly defined classes, each representing a specific functional domain.
+Rather than centralizing business logic within a single procedural flow,
+the redesigned architecture distributes responsibilities across
+independent modules.
+
+Authentication logic is handled exclusively by AuthenticationService.
+Payroll calculations are confined to PayrollProcessor. Attendance
+tracking is managed by Attendance. Leave handling is performed by
+LeaveRequest. Reporting functions are handled by PayrollReport. The
+Employee class serves as the core data entity but does not execute
+business logic directly.
+
+By abstracting these responsibilities, the system hides internal
+implementation details from other modules. Each class exposes only the
+behaviors necessary for collaboration, enabling modular development and
+simplified debugging. Changes to payroll rules, authentication logic, or
+leave validation can be made independently without affecting unrelated
+components.
+
+## **4.3 Inheritance Analysis and Design Justification**
+
+During the redesign process, inheritance was evaluated as a potential
+structural enhancement. Possible subclass hierarchies were considered
+for employee roles or user types. However, analysis determined that
+employee behavior within the current system does not vary structurally
+in terms of payroll computation, attendance tracking, or leave
+management.
+
+Role-based differences primarily influence access permissions rather
+than altering core data structures or computational algorithms.
+Introducing subclasses such as AdminEmployee or HREmployee would not
+significantly reduce redundancy or improve modularity. Instead, it would
+introduce unnecessary complexity and hierarchy.
+
+Therefore, the decision was made to maintain a single Employee class and
+manage role distinctions through controlled attributes and conditional
+access validation. This approach reflects disciplined object-oriented
+modeling, where inheritance is applied only when structural
+specialization is justified.
+
+## **4.4 Polymorphism and Dynamic Workflow Integration**
+
+Polymorphism is demonstrated through the dynamic interaction of system
+modules during runtime operations. The PayrollProcessor operates on
+Employee objects using a uniform method such as processPayroll(Employee
+employee). Regardless of department or role, the processor retrieves
+validated data from the Employee and Attendance classes and applies
+allowances and deductions consistently.
+
+This design allows the system to treat all Employee instances uniformly
+while maintaining flexibility in workflow execution. Attendance
+dynamically provides working-hour data during payroll computation, and
+LeaveRequest operates independently within the employee workflow. The
+system achieves behavioral flexibility through object interaction rather
+than class hierarchy.
+
+By enabling modules to interact dynamically through shared object
+references, the architecture supports scalable expansion. Additional
+payroll rules or validation mechanisms can be integrated into
+PayrollProcessor without restructuring the Employee class.
+
+# **5. Method Design and Validation Rules**
+
+This section documents the primary behaviors of each class and the
+validation mechanisms that ensure data integrity and system reliability.
+
+## **5.1 Employee Methods**
+
+The Employee class provides controlled access to personal and
+payroll-related data. Methods are designed to enforce validation rules
+before updating internal attributes.
+
+Key behaviors include:
+
+- Updating hourly rate with validation that the value must be greater
+  than zero.
+
+- Updating password with validation ensuring it is not null or empty.
+
+- Retrieving role information to support role-based access control.
+
+- Submitting leave requests through association with the LeaveRequest
+  class.
+
+Validation at the Employee level ensures that payroll computations rely
+only on verified data. By preventing negative salary values and invalid
+credentials, the class protects both financial accuracy and system
+security.
+
+## **5.2 AuthenticationService Methods**
+
+AuthenticationService is responsible for credential validation and
+access control.
+
+Its primary method verifies username and password combinations and
+returns an authenticated Employee object if validation succeeds.
+Internally, credential comparison logic is isolated from other modules
+to prevent exposure of sensitive authentication details.
+
+The validation process ensures:
+
+- Credentials match stored records.
+
+- Unauthorized users are denied system access.
+
+- Access permissions are determined based on employee role.
+
+This structured authentication mechanism improves security and prevents
+unauthorized payroll or leave operations.
+
+## **5.3 Attendance Methods**
+
+The Attendance class includes methods to record and validate working
+hours.
+
+Core behaviors include:
+
+- Recording time-in and time-out events.
+
+- Calculating total hours worked.
+
+- Preventing duplicate or logically invalid entries.
+
+Validation ensures that:
+
+- Time-out occurs after time-in.
+
+- Working hours are never negative.
+
+- Multiple time-in entries without time-out are restricted.
+
+These validation mechanisms guarantee accurate working-hour data before
+payroll computation.
+
+## **5.4 PayrollProcessor Methods**
+
+PayrollProcessor manages salary computation and financial adjustments.
+
+The primary payroll workflow includes:
+
+1.  Calculating gross salary based on hourly rate and validated
+    attendance hours.
+
+2.  Applying allowances to increase compensation.
+
+3.  Applying deductions to compute net salary.
+
+Allowance processing ensures that additional compensation values are
+non-negative. Deduction processing ensures that total deductions do not
+exceed gross salary. The final computed net salary is returned for
+reporting.
+
+This structured method flow ensures that payroll computation remains
+consistent, validated, and independent from data storage logic.
+
+## **5.5 LeaveRequest Methods**
+
+LeaveRequest manages leave-related data and validation.
+
+Core behaviors include:
+
+- Validating leave dates to ensure the start date precedes the end date.
+
+- Assigning and updating leave status.
+
+- Restricting status values to predefined categories (Pending, Approved,
+  Rejected).
+
+These validations prevent inconsistent leave records and maintain clear
+tracking of leave processing status.
+
+## **5.6 PayrollReport Methods**
+
+PayrollReport is responsible for formatting and presenting payroll
+results.
+
+Its methods:
+
+- Generate structured payroll summaries.
+
+- Display salary breakdown.
+
+- Ensure generated reports are based on validated payroll data.
+
+This separation ensures that reporting logic does not interfere with
+payroll computation and maintains clean architectural layering.
+
+## **6. System Architecture Summary and Scalability**
+
+The redesigned GEAR.HR system for MotorPH demonstrates a structured and
+disciplined application of object-oriented programming principles.
+Through encapsulation, sensitive employee data such as hourly rate,
+login credentials, and leave status are protected and validated before
+modification. Abstraction separates authentication, payroll processing,
+attendance tracking, leave management, and reporting into clearly
+defined classes, ensuring that each component performs a single,
+well-defined responsibility.
+
+Inheritance was evaluated during the design process but intentionally
+not implemented due to the absence of structural variation among
+employees. This decision reflects proper object-oriented modeling
+practices, where hierarchy is introduced only when justified by true
+specialization. Instead, role-based access control is managed through
+controlled attributes within the Employee class, maintaining simplicity
+without sacrificing flexibility.
+
+Polymorphism is demonstrated at the workflow level, particularly in
+payroll processing. The system uniformly processes Employee objects
+while dynamically integrating attendance data, allowances, and
+deductions. Modules collaborate through controlled interfaces, enabling
+runtime interaction without tight coupling. This design supports modular
+expansion while preserving structural clarity.
+
+From a practical standpoint, the architecture supports future
+scalability within MotorPH. Additional payroll rules, expanded role
+permissions, enhanced leave policies, or new reporting formats can be
+integrated into their respective classes without restructuring the
+entire system. Because responsibilities are clearly distributed and data
+validation is centralized, system maintenance and feature extension can
+be performed with minimal impact on unrelated components.
+
+Overall, the object-oriented redesign transforms the original procedural
+implementation into a modular, secure, and extensible architecture. The
+resulting system not only satisfies academic OOP requirements but also
+provides a scalable foundation for long-term development and operational
+growth within MotorPH.
