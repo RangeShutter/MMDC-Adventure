@@ -1,0 +1,17 @@
+FUNCTION search(brand)
+
+    index ← hash(brand)
+
+    current ← hashTable[index]
+
+    WHILE current IS NOT null DO
+        IF current.brand = brand THEN
+            RETURN current
+        END IF
+        current ← current.next
+    END WHILE
+
+    RETURN null
+
+END FUNCTION
+

@@ -1,0 +1,27 @@
+FUNCTION delete(brand)
+
+    // Remove from Linked List
+    IF head IS null THEN
+        RETURN
+    END IF
+
+    IF head.brand = brand THEN
+        head ← head.next
+    ELSE
+        current ← head
+        WHILE current.next IS NOT null AND 
+              current.next.brand ≠ brand DO
+            current ← current.next
+        END WHILE
+
+        IF current.next IS NOT null THEN
+            current.next ← current.next.next
+        END IF
+    END IF
+
+    // Remove from Hash Table
+    index ← hash(brand)
+    REMOVE node WITH brand FROM hashTable[index]
+
+END FUNCTION
+

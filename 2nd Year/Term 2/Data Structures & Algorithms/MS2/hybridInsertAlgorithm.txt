@@ -1,0 +1,21 @@
+    FUNCTION insert(brand, model, quantity)
+
+    CREATE newNode
+
+    // Insert into Linked List
+    IF head IS null THEN
+        head ← newNode
+    ELSE
+        current ← head
+        WHILE current.next IS NOT null DO
+            current ← current.next
+        END WHILE
+        current.next ← newNode
+    END IF
+
+    // Insert into Hash Table
+    index ← hash(brand)
+    INSERT newNode INTO hashTable[index] USING chaining
+
+END FUNCTION
+

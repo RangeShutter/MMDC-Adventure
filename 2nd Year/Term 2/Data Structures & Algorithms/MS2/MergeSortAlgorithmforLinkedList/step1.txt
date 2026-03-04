@@ -1,0 +1,19 @@
+FUNCTION mergeSort(head)
+
+    IF head IS null OR head.next IS null THEN
+        RETURN head
+    END IF
+
+    middle ← getMiddle(head)
+    nextToMiddle ← middle.next
+    middle.next ← null
+
+    left ← mergeSort(head)
+    right ← mergeSort(nextToMiddle)
+
+    sortedList ← merge(left, right)
+
+    RETURN sortedList
+
+END FUNCTION
+

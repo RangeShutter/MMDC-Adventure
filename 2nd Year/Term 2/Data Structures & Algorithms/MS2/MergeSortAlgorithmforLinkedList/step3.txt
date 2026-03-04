@@ -1,0 +1,22 @@
+FUNCTION merge(left, right)
+
+    IF left IS null THEN
+        RETURN right
+    END IF
+
+    IF right IS null THEN
+        RETURN left
+    END IF
+
+    IF left.brand ≤ right.brand THEN
+        result ← left
+        result.next ← merge(left.next, right)
+    ELSE
+        result ← right
+        result.next ← merge(left, right.next)
+    END IF
+
+    RETURN result
+
+END FUNCTION
+

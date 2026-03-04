@@ -1,0 +1,14 @@
+FUNCTION getMiddle(head)
+
+    slow ← head
+    fast ← head.next
+
+    WHILE fast IS NOT null AND fast.next IS NOT null DO
+        slow ← slow.next
+        fast ← fast.next.next
+    END WHILE
+
+    RETURN slow
+
+END FUNCTION
+

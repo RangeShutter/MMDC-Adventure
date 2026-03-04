@@ -1,0 +1,63 @@
+
+COMPLETE PSEUDOCODE – MotorPH Inventory System (Singly Linked List)
+
+STRUCT Node
+    brand : String
+    model : String
+    quantity : Integer
+    next : Node
+END STRUCT
+
+VARIABLE head : Node ← null
+
+FUNCTION insert(brand, model, quantity)
+    CREATE newNode
+    IF head IS null THEN
+        head ← newNode
+    ELSE
+        current ← head
+        WHILE current.next IS NOT null DO
+            current ← current.next
+        END WHILE
+        current.next ← newNode
+    END IF
+END FUNCTION
+
+FUNCTION delete(brand)
+    IF head IS null THEN
+        RETURN
+    END IF
+
+    IF head.brand = brand THEN
+        head ← head.next
+        RETURN
+    END IF
+
+    current ← head
+    WHILE current.next IS NOT null AND current.next.brand ≠ brand DO
+        current ← current.next
+    END WHILE
+
+    IF current.next IS NOT null THEN
+        current.next ← current.next.next
+    END IF
+END FUNCTION
+
+FUNCTION search(brand)
+    current ← head
+    WHILE current IS NOT null DO
+        IF current.brand = brand THEN
+            RETURN current
+        END IF
+        current ← current.next
+    END WHILE
+    RETURN null
+END FUNCTION
+
+FUNCTION display()
+    current ← head
+    WHILE current IS NOT null DO
+        PRINT current.brand, current.model, current.quantity
+        current ← current.next
+    END WHILE
+END FUNCTION
