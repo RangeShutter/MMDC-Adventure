@@ -1,0 +1,639 @@
+**MO-IT110 – Object-Oriented Programming**
+
+**Milestone 1: OOP Design Redesign of GEAR.HR System**
+
+Prepared by:
+
+Colin Bactong
+
+Charlize Bactong
+
+Angelica Mae Calipayan
+
+Yzabelle Grace Cane
+
+# **Executive Summary**
+
+The GEAR.HR system, developed for MotorPH, is an employee management and
+payroll application responsible for handling attendance tracking, salary
+computation, authentication, and employee-related administrative
+processes. The **first version** of the system followed a procedural
+programming approach, where core operations such as payroll calculation,
+authentication, attendance tracking, and reporting were tightly coupled
+inside large GUI classes. While functional, that structure limited
+modularity, scalability, and maintainability.
+
+Since then, the application has been fully refactored into an
+object‑oriented architecture and is now running in production form.
+Business logic, persistence, and presentation have been separated into
+clear layers:
+
+- Domain models in the `model` package (for example, `Employee`,
+  `AttendanceRecord`, `LeaveRequest`, `PayrollData`, `PayrollResult`)
+- Backend services in the `service` package (for example,
+  `AuthenticationService`, `EmployeeService`, `AttendanceService`,
+  `PayrollProcessor`, `LeaveService`, `ApplicationContext`)
+- CSV persistence in the `repository` package
+  (`EmployeeRepository`, `AttendanceRepository`, `PayrollRepository`,
+  `LeaveRequestRepository`) that read and write files under the central
+  `csv/` directory
+- Swing user interfaces in the `ui` package (`User`, `Main`,
+  `EmployeeProfile`, `AttendanceScreen`, `LeaveManagementScreen`,
+  `SplashScreen`) that delegate all logic to services
+
+The refactored design applies encapsulation by keeping sensitive data
+such as salary details, login credentials, and leave status inside
+domain classes with controlled accessors. Abstraction is achieved by
+isolating authentication, employee management, attendance tracking,
+payroll processing, leave management, and reporting into dedicated
+modules. A composition root (`ApplicationContext`) centralizes creation
+of services and repositories and injects them into the UI, making
+dependencies explicit and testable.
+
+Inheritance was carefully evaluated but remains intentionally unused for
+employee roles, which are still modeled as attributes on the
+`Employee` class. Instead of a class hierarchy, polymorphism is achieved
+through a uniform workflow in which services such as `PayrollProcessor`
+and `AttendanceService` operate on `Employee` and `AttendanceRecord`
+objects through common interfaces.
+
+The resulting architecture improves security, modularity, and
+scalability. New payroll rules, additional leave policies, and extended
+reporting can now be implemented by modifying service and model classes,
+without touching the GUI screens. This updated document describes the
+current, implemented object‑oriented architecture of GEAR.HR and serves
+both as academic documentation of OOP principles in practice and as a
+technical blueprint for future enhancements within MotorPH.
+
+# 
+
+# 
+
+# **1. Introduction**
+
+The GEAR.HR system is an employee management and payroll application
+developed for MotorPH to handle attendance tracking, salary computation,
+and employee-related processes. The initial implementation of the system
+was built during earlier milestones as a largely procedural Swing
+application. GUI classes such as `User`, `Main`, `EmployeeProfile`, and
+`Attendance` mixed user-interface code with CSV file access, in‑memory
+state, and business rules. Although functional, this structure limited
+modularity, scalability, and long-term maintainability.
+
+To improve system organization and align the application with modern
+software engineering practices, the project has been refactored to
+follow object-oriented programming (OOP) principles not only in design
+but in the **actual codebase**. The current implementation introduces a
+clear layering:
+
+- Domain model classes in `model` capture core business entities.
+- Service classes in `service` encapsulate business rules and workflows.
+- Repository classes in `repository` handle CSV persistence.
+- UI classes in `ui` focus exclusively on rendering and user
+  interaction.
+
+Additionally, the system now includes a composition root
+(`ApplicationContext`) that wires dependencies together and injects
+shared services into UI screens. CSV files are centralized in a single
+`csv/` folder, ensuring a clear and consistent data access pattern. A
+new Leave Management module has been implemented both in the backend
+(`LeaveRequest`, `LeaveService`) and in the GUI
+(`LeaveManagementScreen`), completing the functional scope described in
+the original design.
+
+This updated document presents the implemented object-oriented
+architecture of the GEAR.HR system for MotorPH, demonstrating the
+application of encapsulation, abstraction, inheritance analysis, and
+polymorphism through progressive architectural refinement. It serves as
+an updated academic artifact and technical reference for the current
+system.
+
+# **2. Problem Identification**
+
+## **2.1 Existing System Structure**
+
+The initial version of the GEAR.HR system for MotorPH was implemented
+using a procedural programming approach. Core operations such as
+authentication, attendance tracking, salary computation, and reporting
+were executed within centralized logic blocks rather than being
+distributed across structured classes. This resulted in mixed
+responsibilities, where control flow, data handling, and business rules
+were tightly coupled within the same execution layer.
+
+The absence of modular separation meant that login validation, payroll
+computation, and attendance calculations were handled within shared
+processing segments. As a result, the system lacked clearly defined
+ownership of responsibilities, making it difficult to isolate
+functionality or modify specific behaviors without affecting other
+components.
+
+## **2.2 Functional Limitations Identified**
+
+Several structural and functional limitations were identified in the
+original system:
+
+**Lack of Role-Based Access Control**
+
+The login mechanism authenticated users but did not structurally
+separate permissions based on employee roles. System capabilities were
+not dynamically controlled according to user roles, limiting security
+and operational clarity.
+
+**Mixed Business Logic**
+
+Payroll calculations, attendance processing, and user authentication
+were not encapsulated into dedicated modules. This created tightly
+coupled logic and reduced system maintainability.
+
+**Absence of Leave Management Module**
+
+The original system did not include a structured leave request feature.
+There was no dedicated component for storing leave details, validating
+leave dates, or tracking approval status.
+
+**Limited Data Validation Enforcement**
+
+Salary values, attendance hours, and leave dates were not consistently
+validated through controlled access methods. This increased the risk of
+incorrect payroll computation and inconsistent system states.
+
+**Low Scalability**
+
+Because logic was centralized, introducing new features—such as
+additional payroll rules or expanded role permissions—would require
+modifying core processing logic, increasing the likelihood of unintended
+side effects.
+
+## **3. Current Object-Oriented Design of GEAR.HR**
+
+## **3.1 Layered Architecture Overview**
+
+The implemented GEAR.HR system for MotorPH now follows a layered
+architecture with four main layers: **UI**, **service**, **domain
+model**, and **repository**. Each layer has a clearly defined
+responsibility within the HR and payroll workflow.
+
+- The **UI layer** (`ui` package) contains Swing screens such as
+  `User`, `Main`, `EmployeeProfile`, `AttendanceScreen`,
+  `LeaveManagementScreen`, and `SplashScreen`. These classes build the
+  visual interface and delegate all business logic to backend services.
+- The **service layer** (`service` package) implements business rules
+  and workflows: `AuthenticationService`, `EmployeeService`,
+  `AttendanceService`, `PayrollProcessor`, `LeaveService`, and
+  `ApplicationContext`.
+- The **domain model layer** (`model` package) contains pure data
+  objects that represent the problem domain: `Employee`,
+  `AttendanceRecord`, `LeaveRequest`, `PayrollData`, and
+  `PayrollResult`.
+- The **repository layer** (`repository` package) encapsulates CSV
+  persistence for each domain: `EmployeeRepository`,
+  `AttendanceRepository`, `PayrollRepository`, and
+  `LeaveRequestRepository`.
+
+`ApplicationContext` acts as the composition root. It creates one
+instance of each repository and service, wires their dependencies, and
+is passed into the first UI screen (`User`). The UI then uses this
+context to obtain services rather than constructing them directly.
+
+The following sections describe the most important model and service
+classes as they exist in the current codebase.
+
+## **3.2 Domain Model Classes**
+
+### **Employee (model.Employee)**
+
+The `Employee` class represents the core entity of the system. It
+encapsulates personal and payroll-related attributes associated with an
+individual employee of MotorPH.
+
+The class stores:
+
+- Employee number (identity)
+- Last name and first name
+- SSS number
+- PhilHealth number
+- TIN
+- Pag‑IBIG number
+- Email
+- Position
+- Address
+- Phone number
+- Hourly rate (derived from base salary when needed)
+
+Employee identity (`employeeNumber`) is set in the constructor and no
+setter is exposed, ensuring that an employee’s identity remains stable
+throughout its lifecycle. The class exposes getters and validation-aware
+setters for mutable properties such as contact information and hourly
+rate. It does **not** compute payroll or handle authentication directly;
+these responsibilities are handled by services that consume
+`Employee` objects.
+
+### **AttendanceRecord (model.AttendanceRecord)**
+
+`AttendanceRecord` represents a single attendance entry for one
+employee on one date. It stores:
+
+- `employeeId`
+- `date` (as a string in `yyyy-MM-dd` format)
+- `status` (for example, Present, Absent, Late, On Leave)
+- `timeIn` and `timeOut`
+
+The class provides derived information such as total minutes or hours
+worked and exposes an `isValid()` method that ensures time‑out does not
+precede time‑in. This object is used exclusively by `AttendanceService`
+and `AttendanceScreen` for managing and displaying attendance data.
+
+### **LeaveRequest (model.LeaveRequest)**
+
+`LeaveRequest` models a single leave request submitted by an employee.
+It holds:
+
+- `employeeId`
+- `startDate` and `endDate` (as `LocalDate`)
+- `reason`
+- `status` (`Pending`, `Approved`, `Rejected`)
+
+Static helper `parseDate(String)` converts text into `LocalDate` while
+handling invalid input gracefully. The `isValidDateRange()` method
+ensures that the start date is not after the end date. The `setStatus`
+method enforces that status values are within the allowed set, defaulting
+to `Pending` when invalid values are supplied.
+
+### **PayrollData and PayrollResult (model.PayrollData, model.PayrollResult)**
+
+`PayrollData` stores base salary, deductions, and allowances for a
+single employee, including:
+
+- Base salary
+- SSS, PhilHealth, and Pag‑IBIG contributions
+- Withholding tax
+- Rice subsidy, phone allowance, clothing allowance
+
+It provides helper methods to compute total deductions, total
+allowances, and net salary.
+
+`PayrollResult` is a read‑only data transfer object that represents a
+computed payroll breakdown for a specific employee and month. It holds
+identity information (employee ID, name, position, month) plus the final
+breakdown used for reporting and display in the UI.
+
+## **3.3 Service Classes**
+
+### **AuthenticationService (service.AuthenticationService)**
+
+`AuthenticationService` is responsible for validating login credentials
+using the `csv/user_credentials.csv` file. It loads credentials into an
+internal map and exposes methods to:
+
+- Authenticate a user ID and password, returning a lightweight
+  `Employee` object on success.
+- Retrieve role and email information for a given user ID.
+
+This class isolates authentication from UI code and other services,
+enforcing role-based access without mixing security logic with payroll
+or attendance rules.
+
+### **EmployeeService (service.EmployeeService)**
+
+`EmployeeService` manages the in‑memory list of employees. It takes an
+`EmployeeRepository` in its constructor and uses it to load employees
+from `csv/100employees.csv` at startup. Its responsibilities include:
+
+- Returning all employees for display in `EmployeeProfile`.
+- Finding an employee by employee number.
+- Adding, updating, and deleting employees.
+- Persisting changes back to the CSV file via the repository.
+
+The GUI interacts only with `EmployeeService`; it never manipulates the
+CSV directly.
+
+### **AttendanceService (service.AttendanceService)**
+
+`AttendanceService` manages `AttendanceRecord` instances. It depends on
+`AttendanceRepository`, which provides persistence to
+`csv/attendance_records.csv`. Responsibilities include:
+
+- Loading all attendance records into an ordered map keyed by
+  `employeeId|date`.
+- Returning all records for display in `AttendanceScreen`.
+- Checking whether a record already exists for a given employee and date
+  (`hasRecord`).
+- Adding a new record after validation.
+- Clearing or removing records and saving the result via the repository.
+
+### **PayrollProcessor and PayrollReport (service.PayrollProcessor, service.PayrollReport)**
+
+`PayrollProcessor` computes payroll using `Employee`, `PayrollData`, and
+attendance context. It is constructed with a `PayrollRepository`, which
+loads and saves `PayrollData` in `csv/payroll_records.csv`. For each
+employee, it:
+
+- Retrieves or initializes `PayrollData`.
+- Uses `PayrollUtils` to compute SSS, PhilHealth, Pag‑IBIG, and
+  withholding tax based on the base salary and allowances.
+- Produces a `PayrollResult` object summarizing the computed salary.
+
+`PayrollReport` formats a `PayrollResult` into a human‑readable string
+that `EmployeeProfile` displays in the salary computation area. It keeps
+report layout concerns separate from computation.
+
+### **LeaveService (service.LeaveService)**
+
+`LeaveService` manages `LeaveRequest` objects and persists them through
+`LeaveRequestRepository` to `csv/leave_requests.csv`. It can:
+
+- Load and return all leave requests.
+- Filter requests by employee ID.
+- Add new leave requests after verifying that the date range is valid.
+- Update the status of an existing request based on employee ID and
+  start date.
+
+## **3.4 Repository Classes**
+
+Repository classes encapsulate all CSV file operations:
+
+- `EmployeeRepository` → `csv/100employees.csv`
+- `AttendanceRepository` → `csv/attendance_records.csv`
+- `PayrollRepository` → `csv/payroll_records.csv`
+- `LeaveRequestRepository` → `csv/leave_requests.csv`
+
+Each repository exposes simple `load()` and `save(...)` methods and has
+no business logic. Services transform domain objects while repositories
+only handle input/output. This separation ensures that changes in file
+format or storage strategy affect only the repository layer.
+
+## **3.5 UI Classes**
+
+The UI layer consists of Swing screens that delegate all business logic
+to services obtained from `ApplicationContext`:
+
+- `User` renders the login form and uses `AuthenticationService` from
+  the context to validate credentials.
+- `Main` is the dashboard, showing the logged‑in user and three main
+  feature cards: Attendance Management, Employee Profiles, and Leave
+  Management. It calls `AttendanceScreen`, `EmployeeProfile`, and
+  `LeaveManagementScreen`, passing the appropriate services from
+  `ApplicationContext`.
+- `EmployeeProfile` manages employee listing and payroll view/edit
+  features, using `EmployeeService`, `AttendanceService`, and
+  `PayrollProcessor`.
+- `AttendanceScreen` manages attendance entry and display using
+  `AttendanceService` and `EmployeeService`.
+- `LeaveManagementScreen` presents leave requests and allows submission
+  and status updates using `LeaveService` and `EmployeeService`.
+- `SplashScreen` provides a visual loading screen before showing the
+  login UI.
+
+These classes no longer access CSV files or hold core business logic;
+they are responsible for layout, user interaction, and invoking
+services.
+
+# **4. Application of Object-Oriented Principles**
+
+The implemented GEAR.HR system for MotorPH is grounded in four core
+object-oriented programming principles: encapsulation, abstraction,
+inheritance analysis, and polymorphism. Each principle contributes to
+improving system structure, maintainability, and scalability.
+
+## **4.1 Encapsulation**
+
+Encapsulation is implemented by restricting direct access to sensitive
+data and enforcing controlled modification through public methods. In
+the current system, critical attributes such as employee identity,
+contact information, salary components, attendance details, and leave
+status are declared as private within their respective domain model
+classes.
+
+For example, `model.Employee` protects its `employeeNumber`, contact
+fields, and `hourlyRate`. The identity field has no setter, ensuring
+that the primary key for each employee cannot be changed accidentally.
+`model.AttendanceRecord` hides the raw time‑in and time‑out strings and
+exposes derived methods such as `getMinutesWorked()` and `isValid()`.
+Similarly, `model.LeaveRequest` encapsulates start and end dates and
+enforces allowed status values through `setStatus`.
+
+Services and UI classes interact with these models through their public
+interfaces, never by mutating fields directly. This encapsulation keeps
+system state consistent and reduces the risk of incorrect payroll
+calculations or invalid leave records.
+
+## **4.2 Abstraction**
+
+Abstraction is achieved by separating system responsibilities into
+clearly defined classes, each representing a specific functional domain.
+Rather than centralizing business logic within a single procedural flow,
+the architecture distributes responsibilities across independent
+modules:
+
+- `AuthenticationService` focuses solely on credential validation and
+  role/email lookup.
+- `EmployeeService` manages employees and delegates all file I/O to
+  `EmployeeRepository`.
+- `AttendanceService` manages attendance records and delegates
+  persistence to `AttendanceRepository`.
+- `PayrollProcessor` computes salaries using `PayrollData`,
+  `PayrollUtils`, and `PayrollRepository`.
+- `LeaveService` manages leave requests and delegates I/O to
+  `LeaveRequestRepository`.
+- UI classes (for example, `User`, `Main`, `EmployeeProfile`) focus on
+  rendering and user interaction.
+
+By abstracting these responsibilities, the system hides internal
+implementation details behind concise interfaces. Each class exposes
+only the behaviors necessary for collaboration, enabling modular
+development and simplified debugging. Changes to payroll rules,
+authentication logic, or leave validation can be made in their
+respective services without affecting unrelated components.
+
+## **4.3 Inheritance Analysis and Design Justification**
+
+During the redesign process, inheritance was evaluated as a potential
+structural enhancement. Possible subclass hierarchies were considered
+for employee roles or specialized user types. However, analysis
+determined that employee behavior within the current system does not
+vary structurally in terms of payroll computation, attendance tracking,
+or leave management.
+
+Role-based differences primarily influence access permissions (for
+example, which screens a user can open) rather than altering core data
+structures or algorithms. Introducing subclasses such as `AdminEmployee`
+or `HREmployee` would not significantly reduce redundancy or improve
+modularity; instead, it would introduce unnecessary hierarchy.
+
+Therefore, the decision was made to maintain a single `Employee` class
+and manage role distinctions through attributes and conditional access
+validation in `AuthenticationService` and the UI. This approach reflects
+disciplined object-oriented modeling, where inheritance is applied only
+when structural specialization is justified.
+
+## **4.4 Polymorphism and Dynamic Workflow Integration**
+
+Polymorphism in the current implementation appears primarily at the
+workflow and interface level. Services operate on domain objects through
+common method signatures:
+
+- `PayrollProcessor` exposes a uniform method such as
+  `processPayroll(Employee employee, String month)` and can be called for
+  any `Employee` instance.
+- `EmployeeService`, `AttendanceService`, and `LeaveService` all provide
+  collection-based APIs (`getAllEmployees`, `getAllRecords`,
+  `getAllLeaveRequests`) that allow the UI to iterate generically over
+  domain objects.
+
+The system treats all `Employee` instances uniformly while allowing
+different workflows (attendance, payroll, leave) to plug in their own
+validation and processing logic. Modules interact through shared domain
+objects rather than direct knowledge of each other’s internals, which
+keeps coupling low and enables new behaviors to be added without
+changing existing class hierarchies.
+
+# **5. Method Design and Validation Rules**
+
+This section documents the primary behaviors of each class and the
+validation mechanisms that ensure data integrity and system reliability.
+
+## **5.1 Employee Methods (model.Employee)**
+
+`Employee` provides controlled access to personal and payroll-related
+data. Methods are designed to enforce validation rules before updating
+internal attributes.
+
+Key behaviors include:
+
+- Ensuring `employeeNumber` is assigned once in the constructor and
+  never changed.
+- Updating `hourlyRate` only when the new value is non‑negative.
+- Updating contact information (email, address, phone) via setters that
+  ignore `null` inputs and preserve existing values when necessary.
+
+By centralizing these validations, `Employee` ensures that payroll
+computations rely on consistent and meaningful employee data.
+
+## **5.2 AuthenticationService Methods (service.AuthenticationService)**
+
+`AuthenticationService` is responsible for credential validation and
+access control using `csv/user_credentials.csv`.
+
+Its primary methods:
+
+- `loadUserCredentials()` – reads the CSV file into an in‑memory map,
+  handling both the new `csv/` location and a legacy fallback path.
+- `authenticate(String userId, String password)` – verifies credentials
+  and returns a minimal `Employee` object with ID, role, and email when
+  successful.
+- `getRoleAndEmail(String userId)` – returns a `[role, email]` pair for
+  the given user.
+
+All credential comparison logic is isolated from the UI and other
+modules, improving security and avoiding duplication.
+
+## **5.3 AttendanceService and AttendanceScreen Methods**
+
+`AttendanceService` encapsulates attendance operations, while
+`AttendanceScreen` handles presentation.
+
+Core behaviors in `AttendanceService` include:
+
+- Loading all attendance records via `AttendanceRepository`.
+- Returning all records to the UI for display (`getAllRecords()`).
+- Checking for existing records with `hasRecord(employeeId, date)`.
+- Adding new `AttendanceRecord` instances and saving them through the
+  repository.
+- Clearing or removing records while keeping the CSV file in sync.
+
+In `AttendanceScreen`, form handlers:
+
+- Build `AttendanceRecord` objects from UI fields.
+- Call `AttendanceService` methods to validate uniqueness and persist
+  new entries.
+- Refresh the table by re-reading from `AttendanceService`.
+
+Validation rules (such as non‑negative hours) reside in
+`AttendanceRecord` and `AttendanceService`, not in the UI.
+
+## **5.4 PayrollProcessor and PayrollReport Methods**
+
+`PayrollProcessor` coordinates payroll computation:
+
+1. Loads or initializes `PayrollData` for an employee via
+   `PayrollRepository`.
+2. Uses `PayrollUtils` to compute statutory contributions and
+   withholding tax.
+3. Builds a `PayrollResult` object capturing the complete breakdown.
+4. Saves updated `PayrollData` back to the CSV as needed.
+
+`PayrollReport.format(PayrollResult)` receives a computed result and
+returns a formatted multi-line string showing gross salary, deductions,
+allowances, and net salary. `EmployeeProfile` displays this string in
+its salary computation panel.
+
+This separation keeps computational logic in `PayrollProcessor` and
+formatting logic in `PayrollReport`, maintaining clean layering.
+
+## **5.5 LeaveService and LeaveRequest Methods**
+
+`LeaveService` and `LeaveRequest` jointly manage leave data and
+validation.
+
+Key behaviors:
+
+- `LeaveRequest.parseDate(String)` safely converts strings to
+  `LocalDate`.
+- `LeaveRequest.isValidDateRange()` ensures that the start date is not
+  after the end date.
+- `LeaveRequest.setStatus(String)` restricts status to `Pending`,
+  `Approved`, or `Rejected`, defaulting to `Pending` when invalid input
+  is provided.
+- `LeaveService.addLeaveRequest(LeaveRequest)` adds only requests with
+  valid date ranges and persists them via `LeaveRequestRepository`.
+- `LeaveService.updateLeaveRequestStatus(employeeId, startDate, newStatus)`
+  finds the matching request and updates its status.
+
+`LeaveManagementScreen` provides the UI for viewing, creating, and
+updating leave requests, calling `LeaveService` for all backend
+operations.
+
+## **5.6 EmployeeService Methods**
+
+`EmployeeService` exposes a high-level API for managing employees:
+
+- `getAllEmployees()` returns a defensive copy of the employee list for
+  display.
+- `findEmployeeById(empNumber)` locates a specific employee.
+- `addEmployee(Employee)` and `updateEmployee(Employee)` ensure that
+  changes are preserved and persisted via `EmployeeRepository`.
+- `deleteEmployee(empNumber)` removes an employee and saves the updated
+  list.
+
+`EmployeeProfile` uses these methods to implement add, edit, and delete
+flows without touching the underlying CSV.
+
+## **6. System Architecture Summary and Scalability**
+
+The refactored GEAR.HR system for MotorPH demonstrates a structured and
+disciplined application of object-oriented programming principles in a
+running codebase. Encapsulation keeps sensitive employee and payroll
+data inside domain objects; abstraction separates authentication, payroll
+processing, attendance tracking, leave management, persistence, and UI
+into clearly defined packages.
+
+Inheritance remains deliberately minimal, with a single `Employee` class
+and role-based access expressed through attributes rather than class
+hierarchies. Polymorphism is realized through shared workflows and
+interfaces in the service layer, enabling modules to collaborate without
+tight coupling.
+
+From a practical standpoint, the architecture now supports future
+scalability within MotorPH. Additional payroll rules, expanded role
+permissions, enhanced leave policies, or new reporting formats can be
+integrated within their respective model, service, and repository
+classes without restructuring the entire system or touching the UI.
+Because responsibilities are clearly distributed and data validation is
+centralized in the domain layer, system maintenance and feature
+extension can be performed with minimal impact on unrelated components.
+
+Overall, the updated object-oriented implementation transforms the
+original procedural application into a modular, secure, and extensible
+architecture. The system not only satisfies academic OOP requirements
+but also provides a robust foundation for long-term development and
+operational growth within MotorPH.

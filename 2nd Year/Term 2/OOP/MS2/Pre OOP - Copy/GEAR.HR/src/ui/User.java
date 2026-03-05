@@ -105,7 +105,7 @@ public class User {
     }
 
     private static JLabel createFooterLabel() {
-        JLabel footerLabel = new JLabel("© 2025 GEAR.HR    |    Secure Login");
+        JLabel footerLabel = new JLabel("© 2026 GEAR.HR    |    Secure Login");
         footerLabel.setFont(new Font("Garet", Font.PLAIN, 12));
         footerLabel.setForeground(TEXT_WHITE);
         footerLabel.setHorizontalAlignment(SwingConstants.CENTER);
