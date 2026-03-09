@@ -8,6 +8,7 @@ import service.EmployeeService;
 import service.PayrollProcessor;
 import service.PayrollReport;
 import service.RoleGroup;
+import util.EmployeeValidationUtil;
 import util.PayrollUtils;
 
 import javax.swing.*;
@@ -1031,17 +1032,70 @@ public class EmployeeProfile {
 
         JButton submitButton = new JButton("Update Employee");
         submitButton.addActionListener(e -> {
-            // Update employee with new data
-            employee.setLastName(lastNameField.getText());
-            employee.setFirstName(firstNameField.getText());
-            employee.setSssNumber(sssField.getText());
-            employee.setPhilHealthNumber(philHealthField.getText());
-            employee.setTin(tinField.getText());
-            employee.setPagIbigNumber(pagIbigField.getText());
-            employee.setEmail(emailField.getText());
-            employee.setPosition(positionField.getText());
-            employee.setAddress(addressField.getText());
-            employee.setPhone(phoneField.getText());
+            String sss = sssField.getText().trim();
+            String philHealth = philHealthField.getText().trim();
+            String tin = tinField.getText().trim();
+            String pagIbig = pagIbigField.getText().trim();
+            String email = emailField.getText().trim();
+            String phone = phoneField.getText().trim();
+
+            // Format validation
+            String err = EmployeeValidationUtil.validateSss(sss);
+            if (err != null) { JOptionPane.showMessageDialog(updateEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+            err = EmployeeValidationUtil.validatePhilHealth(philHealth);
+            if (err != null) { JOptionPane.showMessageDialog(updateEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+            err = EmployeeValidationUtil.validateTin(tin);
+            if (err != null) { JOptionPane.showMessageDialog(updateEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+            err = EmployeeValidationUtil.validatePagIbig(pagIbig);
+            if (err != null) { JOptionPane.showMessageDialog(updateEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+            err = EmployeeValidationUtil.validateEmail(email);
+            if (err != null) { JOptionPane.showMessageDialog(updateEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+            err = EmployeeValidationUtil.validatePhone(phone);
+            if (err != null) { JOptionPane.showMessageDialog(updateEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+
+            // Uniqueness: value must not be used by another employee (same employee may keep own value)
+            String currentId = employee.getEmployeeNumber();
+            Employee other = employeeService.findEmployeeBySss(sss);
+            if (other != null && !currentId.equals(other.getEmployeeNumber())) {
+                JOptionPane.showMessageDialog(updateEmpFrame, "Existing SSS already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            other = employeeService.findEmployeeByPhilHealth(philHealth);
+            if (other != null && !currentId.equals(other.getEmployeeNumber())) {
+                JOptionPane.showMessageDialog(updateEmpFrame, "Existing PhilHealth already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            other = employeeService.findEmployeeByTin(tin);
+            if (other != null && !currentId.equals(other.getEmployeeNumber())) {
+                JOptionPane.showMessageDialog(updateEmpFrame, "Existing TIN already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            other = employeeService.findEmployeeByPagIbig(pagIbig);
+            if (other != null && !currentId.equals(other.getEmployeeNumber())) {
+                JOptionPane.showMessageDialog(updateEmpFrame, "Existing Pag-ibig already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            other = employeeService.findEmployeeByEmail(email);
+            if (other != null && !currentId.equals(other.getEmployeeNumber())) {
+                JOptionPane.showMessageDialog(updateEmpFrame, "Existing Email already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            other = employeeService.findEmployeeByPhone(phone);
+            if (other != null && !currentId.equals(other.getEmployeeNumber())) {
+                JOptionPane.showMessageDialog(updateEmpFrame, "Existing Phone already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            employee.setLastName(lastNameField.getText().trim());
+            employee.setFirstName(firstNameField.getText().trim());
+            employee.setSssNumber(sss);
+            employee.setPhilHealthNumber(philHealth);
+            employee.setTin(tin);
+            employee.setPagIbigNumber(pagIbig);
+            employee.setEmail(email);
+            employee.setPosition(positionField.getText().trim());
+            employee.setAddress(addressField.getText().trim());
+            employee.setPhone(phone);
 
             employeeService.updateEmployee(employee);
             updateEmployeeTable();
@@ -1110,23 +1164,72 @@ public class EmployeeProfile {
         JButton submitButton = new JButton("Add Employee");
         submitButton.addActionListener(e -> {
             try {
-                String empNumber = empNumberField.getText();
+                String empNumber = empNumberField.getText().trim();
+                String sss = sssField.getText().trim();
+                String philHealth = philHealthField.getText().trim();
+                String tin = tinField.getText().trim();
+                String pagIbig = pagIbigField.getText().trim();
+                String email = emailField.getText().trim();
+                String phone = phoneField.getText().trim();
+
+                // Format validation first
+                String err = EmployeeValidationUtil.validateEmployeeNumber(empNumber);
+                if (err != null) { JOptionPane.showMessageDialog(newEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+                err = EmployeeValidationUtil.validateSss(sss);
+                if (err != null) { JOptionPane.showMessageDialog(newEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+                err = EmployeeValidationUtil.validatePhilHealth(philHealth);
+                if (err != null) { JOptionPane.showMessageDialog(newEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+                err = EmployeeValidationUtil.validateTin(tin);
+                if (err != null) { JOptionPane.showMessageDialog(newEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+                err = EmployeeValidationUtil.validatePagIbig(pagIbig);
+                if (err != null) { JOptionPane.showMessageDialog(newEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+                err = EmployeeValidationUtil.validateEmail(email);
+                if (err != null) { JOptionPane.showMessageDialog(newEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+                err = EmployeeValidationUtil.validatePhone(phone);
+                if (err != null) { JOptionPane.showMessageDialog(newEmpFrame, err, "Validation Error", JOptionPane.ERROR_MESSAGE); return; }
+
+                // Uniqueness: employee number
                 if (employeeService.findEmployeeById(empNumber) != null) {
-                    JOptionPane.showMessageDialog(newEmpFrame, "Employee number already exists!", "Duplicate Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(newEmpFrame, "Existing Employee Number already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
+                if (employeeService.findEmployeeBySss(sss) != null) {
+                    JOptionPane.showMessageDialog(newEmpFrame, "Existing SSS already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (employeeService.findEmployeeByPhilHealth(philHealth) != null) {
+                    JOptionPane.showMessageDialog(newEmpFrame, "Existing PhilHealth already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (employeeService.findEmployeeByTin(tin) != null) {
+                    JOptionPane.showMessageDialog(newEmpFrame, "Existing TIN already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (employeeService.findEmployeeByPagIbig(pagIbig) != null) {
+                    JOptionPane.showMessageDialog(newEmpFrame, "Existing Pag-ibig already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (employeeService.findEmployeeByEmail(email) != null) {
+                    JOptionPane.showMessageDialog(newEmpFrame, "Existing Email already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                if (employeeService.findEmployeeByPhone(phone) != null) {
+                    JOptionPane.showMessageDialog(newEmpFrame, "Existing Phone already exists.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 Employee newEmployee = new Employee(
                     empNumber,
-                    lastNameField.getText(),
-                    firstNameField.getText(),
-                    sssField.getText(),
-                    philHealthField.getText(),
-                    tinField.getText(),
-                    pagIbigField.getText(),
-                    emailField.getText(),
-                    positionField.getText(),
-                    addressField.getText(),
-                    phoneField.getText()
+                    lastNameField.getText().trim(),
+                    firstNameField.getText().trim(),
+                    sss,
+                    philHealth,
+                    tin,
+                    pagIbig,
+                    email,
+                    positionField.getText().trim(),
+                    addressField.getText().trim(),
+                    phone
                 );
                 employeeService.addEmployee(newEmployee);
 

@@ -49,8 +49,69 @@ public class EmployeeService {
 
     public Employee findEmployeeById(String empNumber) {
         if (empNumber == null) return null;
+        String key = empNumber.trim();
         for (Employee emp : employees) {
-            if (empNumber.equals(emp.getEmployeeNumber())) return emp;
+            if (key.equals(emp.getEmployeeNumber() != null ? emp.getEmployeeNumber().trim() : "")) return emp;
+        }
+        return null;
+    }
+
+    public Employee findEmployeeBySss(String sss) {
+        if (sss == null) return null;
+        String key = sss.trim();
+        for (Employee emp : employees) {
+            String v = emp.getSssNumber();
+            if (v != null && v.trim().equals(key)) return emp;
+        }
+        return null;
+    }
+
+    public Employee findEmployeeByPhilHealth(String philHealth) {
+        if (philHealth == null) return null;
+        String key = philHealth.trim();
+        for (Employee emp : employees) {
+            String v = emp.getPhilHealthNumber();
+            if (v != null && v.trim().equals(key)) return emp;
+        }
+        return null;
+    }
+
+    public Employee findEmployeeByTin(String tin) {
+        if (tin == null) return null;
+        String key = tin.trim();
+        for (Employee emp : employees) {
+            String v = emp.getTin();
+            if (v != null && v.trim().equals(key)) return emp;
+        }
+        return null;
+    }
+
+    public Employee findEmployeeByPagIbig(String pagIbig) {
+        if (pagIbig == null) return null;
+        String key = pagIbig.trim();
+        for (Employee emp : employees) {
+            String v = emp.getPagIbigNumber();
+            if (v != null && v.trim().equals(key)) return emp;
+        }
+        return null;
+    }
+
+    public Employee findEmployeeByEmail(String email) {
+        if (email == null) return null;
+        String key = email.trim();
+        for (Employee emp : employees) {
+            String v = emp.getEmail();
+            if (v != null && v.trim().equals(key)) return emp;
+        }
+        return null;
+    }
+
+    public Employee findEmployeeByPhone(String phone) {
+        if (phone == null) return null;
+        String key = phone.trim();
+        for (Employee emp : employees) {
+            String v = emp.getPhone();
+            if (v != null && v.trim().equals(key)) return emp;
         }
         return null;
     }

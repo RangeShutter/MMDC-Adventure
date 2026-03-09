@@ -17,6 +17,9 @@ import java.time.format.DateTimeParseException;
 import java.awt.event.ItemEvent;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+// #region agent log
+import java.io.FileWriter;
+// #endregion
 
 /**
  * Attendance UI screen; services injected (DI). Named AttendanceScreen to avoid confusion with domain/service.
@@ -41,7 +44,8 @@ public class AttendanceScreen {
     private static final Color BUTTON_ORANGE = new Color(255, 153, 28);
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    private static final Pattern TIME_PATTERN = Pattern.compile("^([0-9]|1[0-9]|2[0-3]):([0-5][0-9])$");
+    /* Allow optional leading zero in hour so "08:00" and "17:00" both match (was: [0-9] = single digit only). */
+    private static final Pattern TIME_PATTERN = Pattern.compile("^(0?[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$");
 
     private static JComboBox<String> employeeComboBox;
     private static JTextField dateField;
@@ -400,9 +404,21 @@ public class AttendanceScreen {
     private static int parseTimeToMinutes(String timeStr) {
         if (timeStr == null || timeStr.isEmpty()) return -1;
         timeStr = timeStr.trim();
-        if (!TIME_PATTERN.matcher(timeStr).matches()) return -1;
+        boolean matches = TIME_PATTERN.matcher(timeStr).matches();
+        // #region agent log
+        try (FileWriter fw = new FileWriter("debug-5a2820.log", true)) {
+            fw.write("{\"sessionId\":\"5a2820\",\"location\":\"AttendanceScreen.parseTimeToMinutes\",\"message\":\"parseTime\",\"data\":{\"timeStr\":\"" + (timeStr != null ? timeStr.replace("\\","\\\\").replace("\"","'") : "null") + "\",\"patternMatches\":" + matches + "},\"timestamp\":" + System.currentTimeMillis() + ",\"hypothesisId\":\"H1\"}\n");
+        } catch (Exception e) {}
+        // #endregion
+        if (!matches) return -1;
         String[] parts = timeStr.split(":");
-        return Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+        int result = Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]);
+        // #region agent log
+        try (FileWriter fw = new FileWriter("debug-5a2820.log", true)) {
+            fw.write("{\"sessionId\":\"5a2820\",\"location\":\"AttendanceScreen.parseTimeToMinutes\",\"message\":\"parseResult\",\"data\":{\"result\":" + result + "},\"timestamp\":" + System.currentTimeMillis() + ",\"hypothesisId\":\"H5\"}\n");
+        } catch (Exception e) {}
+        // #endregion
+        return result;
     }
 
     private static void handleRecordAttendance(JFrame attendanceFrame) {
@@ -411,6 +427,13 @@ public class AttendanceScreen {
         String status = (String) statusComboBox.getSelectedItem();
         String timeIn = timeInField.getText().trim();
         String timeOut = timeOutField.getText().trim();
+        // #region agent log
+        try (FileWriter fw = new FileWriter("debug-5a2820.log", true)) {
+            String rawIn = timeInField.getText();
+            String rawOut = timeOutField.getText();
+            fw.write("{\"sessionId\":\"5a2820\",\"location\":\"AttendanceScreen.handleRecordAttendance\",\"message\":\"timeFields\",\"data\":{\"timeIn\":\"" + (timeIn != null ? timeIn.replace("\\","\\\\").replace("\"","'") : "null") + "\",\"timeOut\":\"" + (timeOut != null ? timeOut.replace("\\","\\\\").replace("\"","'") : "null") + "\",\"timeInLen\":" + (timeIn != null ? timeIn.length() : 0) + ",\"timeOutLen\":" + (timeOut != null ? timeOut.length() : 0) + ",\"rawInLen\":" + (rawIn != null ? rawIn.length() : 0) + ",\"rawOutLen\":" + (rawOut != null ? rawOut.length() : 0) + "},\"timestamp\":" + System.currentTimeMillis() + ",\"hypothesisId\":\"H2\"}\n");
+        } catch (Exception e) {}
+        // #endregion
 
         if (employeeSelection == null || employeeSelection.equals("Select Employee")) {
             JOptionPane.showMessageDialog(attendanceFrame,
@@ -446,6 +469,11 @@ public class AttendanceScreen {
             }
             int inMinutes = parseTimeToMinutes(timeIn);
             int outMinutes = parseTimeToMinutes(timeOut);
+            // #region agent log
+            try (FileWriter fw = new FileWriter("debug-5a2820.log", true)) {
+                fw.write("{\"sessionId\":\"5a2820\",\"location\":\"AttendanceScreen.handleRecordAttendance\",\"message\":\"minutes\",\"data\":{\"inMinutes\":" + inMinutes + ",\"outMinutes\":" + outMinutes + "},\"timestamp\":" + System.currentTimeMillis() + ",\"hypothesisId\":\"H3\"}\n");
+            } catch (Exception e) {}
+            // #endregion
             if (inMinutes < 0 || outMinutes < 0) {
                 JOptionPane.showMessageDialog(attendanceFrame,
                     "Invalid time format. Use Hour:Minute in 24-hour format (e.g. 08:00, 17:30).",

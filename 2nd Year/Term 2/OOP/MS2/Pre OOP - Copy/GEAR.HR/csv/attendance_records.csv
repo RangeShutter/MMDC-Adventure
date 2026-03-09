@@ -1,2 +1,6 @@
 EmployeeID,Date,Status,TimeIn,TimeOut
-1002,2026-03-05,On Leave,,
+1038,2026-03-09,Present,08:00,17:00
+1009,2026-03-09,Absent,,
+1009,2026-04-09,Present,15:00,17:00
+1001,2026-03-09,Present,08:00,17:00
+1001,2026-04-09,Present,08:00,17:00
