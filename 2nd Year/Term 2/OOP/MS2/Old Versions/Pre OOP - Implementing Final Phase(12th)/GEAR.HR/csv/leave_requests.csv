@@ -1,0 +1,5 @@
+EmployeeID,StartDate,EndDate,Reason,Status
+1001,2026-03-04,2026-03-04,Sick,Rejected
+1001,2026-03-04,2026-03-04,Sick,Pending
+1033,2026-03-05,2026-03-05,,Approved
+1038,2026-03-09,2026-03-09,scsc,Pending

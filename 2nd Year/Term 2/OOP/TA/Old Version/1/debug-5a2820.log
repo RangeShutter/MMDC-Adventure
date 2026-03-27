@@ -1,0 +1,6 @@
+{"sessionId":"5a2820","location":"AttendanceScreen.handleRecordAttendance","message":"timeFields","data":{"timeIn":"08:00","timeOut":"17:00","timeInLen":5,"timeOutLen":5,"rawInLen":5,"rawOutLen":5},"timestamp":1774077033424,"hypothesisId":"H2"}
+{"sessionId":"5a2820","location":"AttendanceScreen.parseTimeToMinutes","message":"parseTime","data":{"timeStr":"08:00","patternMatches":true},"timestamp":1774077033427,"hypothesisId":"H1"}
+{"sessionId":"5a2820","location":"AttendanceScreen.parseTimeToMinutes","message":"parseResult","data":{"result":480},"timestamp":1774077033429,"hypothesisId":"H5"}
+{"sessionId":"5a2820","location":"AttendanceScreen.parseTimeToMinutes","message":"parseTime","data":{"timeStr":"17:00","patternMatches":true},"timestamp":1774077033432,"hypothesisId":"H1"}
+{"sessionId":"5a2820","location":"AttendanceScreen.parseTimeToMinutes","message":"parseResult","data":{"result":1020},"timestamp":1774077033433,"hypothesisId":"H5"}
+{"sessionId":"5a2820","location":"AttendanceScreen.handleRecordAttendance","message":"minutes","data":{"inMinutes":480,"outMinutes":1020},"timestamp":1774077033433,"hypothesisId":"H3"}
