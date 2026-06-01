@@ -1,0 +1,6 @@
+STRUCT Node
+    brand : String
+    model : String
+    quantity : Integer
+    next : Node
+END STRUCT

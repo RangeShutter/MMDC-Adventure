@@ -1,0 +1,12 @@
+FUNCTION insert(brand, model, quantity)
+    CREATE newNode
+    IF head IS null THEN
+        head ← newNode
+    ELSE
+        current ← head
+        WHILE current.next IS NOT null
+            current ← current.next
+        END WHILE
+        current.next ← newNode
+    END IF
+END FUNCTION

@@ -1,0 +1,19 @@
+FUNCTION delete(brand)
+    IF head IS null THEN
+        RETURN
+    END IF
+
+    IF head.brand = brand THEN
+        head ← head.next
+        RETURN
+    END IF
+
+    current ← head
+    WHILE current.next IS NOT null AND current.next.brand ≠ brand
+        current ← current.next
+    END WHILE
+
+    IF current.next IS NOT null THEN
+        current.next ← current.next.next
+    END IF
+END FUNCTION

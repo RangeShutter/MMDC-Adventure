@@ -1,0 +1,10 @@
+FUNCTION search(brand)
+    current ← head
+    WHILE current IS NOT null
+        IF current.brand = brand THEN
+            RETURN current
+        END IF
+        current ← current.next
+    END WHILE
+    RETURN null
+END FUNCTION
