@@ -57,6 +57,10 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
 
     private static JComboBox<String> employeePayrollMonthCombo;
 
+    private static JComboBox<String> payrollSummaryMonthCombo;
+    private static JTextArea payrollSummaryArea;
+    private static JButton payrollSummarySaveButton;
+
     /** [INTERFACE] Implements ModuleScreen.show; obtains services from ctx and builds UI. */
     @Override
     public void show(JFrame parentFrame, String userId, String role, RoleGroup group, ApplicationContext ctx) {
@@ -239,6 +243,7 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
 
         tabbedPane.addTab("Employee Directory", employeeDirectoryTab);
         tabbedPane.addTab("Employee Payroll Data", createEmployeePayrollDataTabPanel(profileFrame));
+        tabbedPane.addTab("Payroll Summary", createPayrollSummaryTabPanel(profileFrame));
         return tabbedPane;
     }
 
@@ -368,6 +373,142 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
         tabPanel.add(tablePanel, BorderLayout.CENTER);
         tabPanel.add(buttonPanel, BorderLayout.SOUTH);
         return tabPanel;
+    }
+
+    /**
+     * Builds the Payroll Summary tab: month picker, generate, and save-to-.txt controls.
+     * Shown only to management roles (HR, Payroll, IT/Admin) via {@link #createManagementTabsPanel}.
+     *
+     * @param parentFrame The parent JFrame for dialog positioning
+     * @return JPanel containing the payroll summary UI
+     */
+    private static JPanel createPayrollSummaryTabPanel(JFrame parentFrame) {
+        JPanel tabPanel = new JPanel(new BorderLayout());
+        tabPanel.setBackground(BACKGROUND_WHITE);
+
+        JPanel cardPanel = new JPanel(new BorderLayout()) {
+            /** [INHERITANCE] Overrides JComponent.paintComponent to draw rounded card around the summary preview. */
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g.create();
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int arc = 40;
+                g2d.setColor(CARD_WHITE);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), arc, arc);
+                g2d.setColor(BORDER_GREY);
+                g2d.setStroke(new BasicStroke(2));
+                g2d.drawRoundRect(0, 0, getWidth() - 1, getHeight() - 1, arc, arc);
+                g2d.dispose();
+            }
+        };
+        cardPanel.setBackground(CARD_WHITE);
+        cardPanel.setOpaque(false);
+        cardPanel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+
+        JLabel titleLabel = new JLabel("Payroll Summary");
+        titleLabel.setFont(new Font("Garet", Font.BOLD, 18));
+        titleLabel.setForeground(TEXT_BLACK);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
+
+        payrollSummaryMonthCombo = new JComboBox<>(CALENDAR_MONTH_NAMES);
+        payrollSummaryMonthCombo.setFont(new Font("Garet", Font.PLAIN, 12));
+        payrollSummaryMonthCombo.setPreferredSize(new Dimension(150, 30));
+        payrollSummaryMonthCombo.setSelectedItem(
+            LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+
+        JLabel monthLabel = new JLabel("Month:");
+        monthLabel.setFont(new Font("Garet", Font.BOLD, 14));
+        monthLabel.setForeground(TEXT_BLACK);
+
+        JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 8));
+        toolbar.setOpaque(false);
+        toolbar.add(monthLabel);
+        toolbar.add(payrollSummaryMonthCombo);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setOpaque(false);
+        headerPanel.add(titleLabel, BorderLayout.NORTH);
+        headerPanel.add(toolbar, BorderLayout.CENTER);
+
+        payrollSummaryArea = new JTextArea(18, 60);
+        payrollSummaryArea.setFont(new Font("Consolas", Font.PLAIN, 12));
+        payrollSummaryArea.setEditable(false);
+        payrollSummaryArea.setBackground(BACKGROUND_WHITE);
+        payrollSummaryArea.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(BORDER_GREY, 1),
+            BorderFactory.createEmptyBorder(10, 10, 10, 10)
+        ));
+
+        cardPanel.add(headerPanel, BorderLayout.NORTH);
+        cardPanel.add(new JScrollPane(payrollSummaryArea), BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));
+        buttonPanel.setBackground(BACKGROUND_WHITE);
+        buttonPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0));
+
+        JButton generateButton = createModernButton("Generate Summary", BUTTON_ORANGE);
+        generateButton.addActionListener(e -> handleGeneratePayrollSummary(parentFrame));
+        buttonPanel.add(generateButton);
+
+        payrollSummarySaveButton = createModernButton("Save to .txt", ACCENT_GREY);
+        payrollSummarySaveButton.setEnabled(false);
+        payrollSummarySaveButton.addActionListener(e -> handleSavePayrollSummary(parentFrame));
+        buttonPanel.add(payrollSummarySaveButton);
+
+        tabPanel.add(cardPanel, BorderLayout.CENTER);
+        tabPanel.add(buttonPanel, BorderLayout.SOUTH);
+        return tabPanel;
+    }
+
+    private static void handleGeneratePayrollSummary(JFrame parentFrame) {
+        String month = payrollSummaryMonthCombo != null && payrollSummaryMonthCombo.getSelectedItem() != null
+            ? payrollSummaryMonthCombo.getSelectedItem().toString()
+            : LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+
+        // Reload from storage (SQL under JDBC mode) so the summary reflects the latest data.
+        payrollProcessor.loadPayrollDataFromCSV();
+
+        List<PayrollResult> results = new java.util.ArrayList<>();
+        for (Employee emp : employeeService.getAllEmployees()) {
+            PayrollResult result = payrollProcessor.processPayroll(emp, month);
+            if (result != null) results.add(result);
+        }
+
+        String summaryText = PayrollReport.formatSummary(results, month);
+        payrollSummaryArea.setText(summaryText);
+        payrollSummaryArea.setCaretPosition(0);
+        payrollSummarySaveButton.setEnabled(true);
+    }
+
+    private static void handleSavePayrollSummary(JFrame parentFrame) {
+        String summaryText = payrollSummaryArea != null ? payrollSummaryArea.getText() : "";
+        if (summaryText == null || summaryText.trim().isEmpty()) {
+            showModernMessage(parentFrame, "Please generate a payroll summary first", "Nothing to Save", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String month = payrollSummaryMonthCombo != null && payrollSummaryMonthCombo.getSelectedItem() != null
+            ? payrollSummaryMonthCombo.getSelectedItem().toString()
+            : LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String safeName = "PayrollSummary_" + month.replace(" ", "") + ".txt";
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Save Payroll Summary");
+        chooser.setSelectedFile(new File(safeName));
+        chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Text files (*.txt)", "txt"));
+        int action = chooser.showSaveDialog(parentFrame);
+        if (action == JFileChooser.APPROVE_OPTION) {
+            File file = chooser.getSelectedFile();
+            String path = file.getAbsolutePath();
+            if (!path.toLowerCase().endsWith(".txt")) path += ".txt";
+            try {
+                Files.write(Paths.get(path), summaryText.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                showModernMessage(parentFrame, "Payroll summary saved to:\n" + path, "Save Complete", JOptionPane.INFORMATION_MESSAGE);
+            } catch (IOException ex) {
+                showModernMessage(parentFrame, "Could not save file: " + ex.getMessage(), "Save Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     private static JPanel createPersonalPayrollPanel(Employee self) {

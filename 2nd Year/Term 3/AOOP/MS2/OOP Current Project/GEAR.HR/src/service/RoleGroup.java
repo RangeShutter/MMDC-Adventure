@@ -26,6 +26,8 @@ public enum RoleGroup {
         "Payroll Manager",
         "Payroll Team Leader",
         "Payroll Rank and File",
+        "Accounting Head",
+        "Account Manager",
         "Account Team Leader",
         "Account Rank and File"
     )));

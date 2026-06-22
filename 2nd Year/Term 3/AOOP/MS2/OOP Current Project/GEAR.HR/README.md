@@ -53,7 +53,7 @@ Roles come from `csv/user_credentials.csv` and are mapped in [`src/service/RoleG
 ### Role strings per group
 
 - **HR:** `HR Manager`, `HR Team Leader`, `HR Rank and File`
-- **Payroll:** `Payroll Manager`, `Payroll Team Leader`, `Payroll Rank and File`, `Account Team Leader`, `Account Rank and File`
+- **Payroll:** `Payroll Manager`, `Payroll Team Leader`, `Payroll Rank and File`, `Accounting Head`, `Account Manager`, `Account Team Leader`, `Account Rank and File`
 - **IT/Admin:** `IT`, `IT Operations and Systems`
 - **Normal employee:** any other role string
 
@@ -84,11 +84,12 @@ Roles come from `csv/user_credentials.csv` and are mapped in [`src/service/RoleG
 
 ### Employee Profile / Payroll Management (`EmployeeProfile`)
 
-- **HR, Payroll, IT/Admin:** two tabs — **Employee Directory** and **Employee Payroll Data** (table from employees + payroll CSV).
+- **HR, Payroll, IT/Admin:** three tabs — **Employee Directory**, **Employee Payroll Data** (table from employees + payroll CSV), and **Payroll Summary**.
 - **Column sorting:** click a header to sort; one column at a time; numbers vs text handled by [`src/util/TableColumnSortUtil.java`](src/util/TableColumnSortUtil.java).
 - **Edit payroll (Employee Payroll Data tab + employee detail):**
   - **IT/Admin** and **Payroll:** view and edit  
   - **HR:** view only (no Edit Payroll on payroll tab; read-only employee detail for payroll footer)
+- **Payroll Summary tab (HR, Payroll, IT/Admin):** pick a month, **Generate Summary** to build an all-employee payroll report (computed live from the current SQL/CSV data via [`src/service/PayrollReport.java`](src/service/PayrollReport.java) `formatSummary`), then **Save to .txt** to export it as `PayrollSummary_<Month>.txt`.
 - **Normal employee:** outer tabs **My Profile** (personal info + salary computation) and **Personal Payroll** (read-only payroll row).
 
 ### Attendance
