@@ -1,6 +1,7 @@
 package util;
 
 import model.Employee;
+import model.EmploymentStatus;
 
 import java.util.regex.Pattern;
 
@@ -82,9 +83,9 @@ public final class EmployeeValidationUtil {
 
     /** Returns null if valid; otherwise error message for status value. */
     public static String validateStatus(String value) {
-        String s = value != null ? value.trim().toLowerCase() : "";
+        String s = value != null ? value.trim() : "";
         if (s.isEmpty()) return "Status is required. Allowed values: regular or probationary.";
-        if (!"regular".equals(s) && !"probationary".equals(s)) {
+        if (EmploymentStatus.fromString(s) == null) {
             return "Status must be either regular or probationary.";
         }
         return null;

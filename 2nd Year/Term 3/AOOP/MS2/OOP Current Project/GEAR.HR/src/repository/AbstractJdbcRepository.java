@@ -13,8 +13,6 @@ import java.util.List;
  * in a single MySQL table. Subclasses provide table name, insert SQL, row mapping,
  * and parameter binding; this class implements the common load/save logic.
  * [INHERITANCE] Concrete JDBC repos extend and implement the abstract hooks.
- * Mirrors {@link AbstractCsvListRepository} so the storage mechanism changes
- * without changing the architectural pattern.
  */
 public abstract class AbstractJdbcRepository<T> {
 
@@ -40,9 +38,9 @@ public abstract class AbstractJdbcRepository<T> {
     protected abstract void bindInsert(PreparedStatement ps, T item) throws SQLException;
 
     /**
-     * [ABSTRACTION] [INHERITANCE] Template method: SELECT * from the table and map
-     * each row via {@code mapRow}. Returns an empty list on database errors so the
-     * application degrades the same way the CSV repositories do.
+     * [ABSTRACTION] [INHERITANCE] Template method: JDBC SELECT * from the table and map
+     * each row via {@code mapRow}. Returns an empty list on {@link SQLException} so the
+     * application can continue without crashing when the database is unavailable.
      */
     public List<T> loadAll() {
         List<T> list = new ArrayList<>();
@@ -58,7 +56,7 @@ public abstract class AbstractJdbcRepository<T> {
                 }
             }
         } catch (SQLException e) {
-            // return empty, matching CSV repository behavior
+            // return empty list on JDBC failure
         } finally {
             DatabaseConnectionManager.closeConnection(conn);
         }
@@ -66,9 +64,9 @@ public abstract class AbstractJdbcRepository<T> {
     }
 
     /**
-     * [ABSTRACTION] [INHERITANCE] Template method: replaces the table contents with
-     * the given list (DELETE all + batched INSERTs) inside one transaction, matching
-     * the whole-file overwrite semantics of the CSV repositories. Rolls back on failure.
+     * [ABSTRACTION] [INHERITANCE] Template method: JDBC full-table replace — DELETE all rows
+     * then batched INSERTs inside one transaction via {@link DatabaseConnectionManager}.
+     * Rolls back the transaction on {@link SQLException}.
      */
     public void replaceAll(List<T> items) {
         if (items == null) return;

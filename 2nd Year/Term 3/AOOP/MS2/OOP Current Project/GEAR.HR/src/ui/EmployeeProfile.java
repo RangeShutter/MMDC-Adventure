@@ -1,11 +1,14 @@
 package ui;
 
 import model.Employee;
+import model.EmploymentStatus;
 import model.PayrollData;
 import model.PayrollResult;
 import service.ApplicationContext;
 import service.IAttendanceService;
+import service.IAuthenticationService;
 import service.IEmployeeService;
+import service.JasperPayrollReportService;
 import service.PayrollProcessor;
 import service.PayrollReport;
 import service.RoleGroup;
@@ -38,6 +41,7 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
     private static IEmployeeService employeeService;
     private static IAttendanceService attendanceService;
     private static PayrollProcessor payrollProcessor;
+    private static IAuthenticationService authenticationService;
     private static RoleGroup roleGroup;
     private static String currentUserId;
 
@@ -58,8 +62,40 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
     private static JComboBox<String> employeePayrollMonthCombo;
 
     private static JComboBox<String> payrollSummaryMonthCombo;
+    private static JComboBox<String> payrollSummaryDepartmentCombo;
     private static JTextArea payrollSummaryArea;
     private static JButton payrollSummarySaveButton;
+
+    /** Department options for the payroll summary, mapped to {@link RoleGroup}. */
+    private static final String[] DEPARTMENT_LABELS = {
+        "HR", "Payroll", "IT / Admin", "Normal Employee"
+    };
+
+    /** Maps a department combo label to its {@link RoleGroup}. */
+    private static RoleGroup departmentToRoleGroup(String label) {
+        if (label == null) return RoleGroup.NORMAL;
+        switch (label) {
+            case "HR": return RoleGroup.HR;
+            case "Payroll": return RoleGroup.PAYROLL;
+            case "IT / Admin": return RoleGroup.IT_ADMIN;
+            default: return RoleGroup.NORMAL;
+        }
+    }
+
+    /**
+     * Resolves the {@link RoleGroup} ("department") for an employee from their login role,
+     * falling back to the position string when no credential service is available.
+     */
+    private static RoleGroup groupForEmployee(Employee emp) {
+        if (emp == null) return RoleGroup.NORMAL;
+        if (authenticationService != null) {
+            String role = authenticationService.getAuthContext(emp.getEmployeeNumber()).getRole();
+            if (role != null && !role.trim().isEmpty()) {
+                return RoleGroup.fromRole(role);
+            }
+        }
+        return RoleGroup.fromRole(emp.getPosition());
+    }
 
     /** [INTERFACE] Implements ModuleScreen.show; obtains services from ctx and builds UI. */
     @Override
@@ -67,6 +103,7 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
         employeeService = ctx.getEmployeeService();
         attendanceService = ctx.getAttendanceService();
         payrollProcessor = ctx.getPayrollProcessor();
+        authenticationService = ctx.getAuthenticationService();
         roleGroup = group != null ? group : RoleGroup.NORMAL;
         currentUserId = userId;
         JFrame profileFrame = createProfileFrame(parentFrame);
@@ -364,7 +401,7 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
 
         JButton refreshButton = createModernButton("Refresh", ACCENT_GREY);
         refreshButton.addActionListener(e -> {
-            payrollProcessor.loadPayrollDataFromCSV();
+            payrollProcessor.reloadPayrollData();
             updatePayrollDataTable();
             showModernMessage(parentFrame, "Payroll data refreshed successfully", "Refresh Complete", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -411,11 +448,19 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
         titleLabel.setForeground(TEXT_BLACK);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
+        payrollSummaryDepartmentCombo = new JComboBox<>(DEPARTMENT_LABELS);
+        payrollSummaryDepartmentCombo.setFont(new Font("Garet", Font.PLAIN, 12));
+        payrollSummaryDepartmentCombo.setPreferredSize(new Dimension(150, 30));
+
         payrollSummaryMonthCombo = new JComboBox<>(CALENDAR_MONTH_NAMES);
         payrollSummaryMonthCombo.setFont(new Font("Garet", Font.PLAIN, 12));
         payrollSummaryMonthCombo.setPreferredSize(new Dimension(150, 30));
         payrollSummaryMonthCombo.setSelectedItem(
             LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+
+        JLabel departmentLabel = new JLabel("Department:");
+        departmentLabel.setFont(new Font("Garet", Font.BOLD, 14));
+        departmentLabel.setForeground(TEXT_BLACK);
 
         JLabel monthLabel = new JLabel("Month:");
         monthLabel.setFont(new Font("Garet", Font.BOLD, 14));
@@ -423,6 +468,8 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
 
         JPanel toolbar = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 8));
         toolbar.setOpaque(false);
+        toolbar.add(departmentLabel);
+        toolbar.add(payrollSummaryDepartmentCombo);
         toolbar.add(monthLabel);
         toolbar.add(payrollSummaryMonthCombo);
 
@@ -456,6 +503,10 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
         payrollSummarySaveButton.addActionListener(e -> handleSavePayrollSummary(parentFrame));
         buttonPanel.add(payrollSummarySaveButton);
 
+        JButton exportPdfButton = createModernButton("Export PDF (JasperReports)", BUTTON_ORANGE);
+        exportPdfButton.addActionListener(e -> handleExportPayrollSummaryPdf(parentFrame));
+        buttonPanel.add(exportPdfButton);
+
         tabPanel.add(cardPanel, BorderLayout.CENTER);
         tabPanel.add(buttonPanel, BorderLayout.SOUTH);
         return tabPanel;
@@ -466,19 +517,32 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
             ? payrollSummaryMonthCombo.getSelectedItem().toString()
             : LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
 
-        // Reload from storage (SQL under JDBC mode) so the summary reflects the latest data.
-        payrollProcessor.loadPayrollDataFromCSV();
+        String departmentLabel = payrollSummaryDepartmentCombo != null && payrollSummaryDepartmentCombo.getSelectedItem() != null
+            ? payrollSummaryDepartmentCombo.getSelectedItem().toString()
+            : DEPARTMENT_LABELS[0];
+        RoleGroup selectedGroup = departmentToRoleGroup(departmentLabel);
 
-        List<PayrollResult> results = new java.util.ArrayList<>();
-        for (Employee emp : employeeService.getAllEmployees()) {
-            PayrollResult result = payrollProcessor.processPayroll(emp, month);
-            if (result != null) results.add(result);
-        }
+        List<PayrollResult> results = collectDepartmentResults(month, selectedGroup);
 
-        String summaryText = PayrollReport.formatSummary(results, month);
+        String summaryText = PayrollReport.formatSummary(results, month, departmentLabel);
         payrollSummaryArea.setText(summaryText);
         payrollSummaryArea.setCaretPosition(0);
         payrollSummarySaveButton.setEnabled(true);
+    }
+
+    /**
+     * Reloads payroll data and computes results for only the employees in the given department
+     * (role group). Shared by the on-screen summary and the JasperReports PDF export.
+     */
+    private static List<PayrollResult> collectDepartmentResults(String month, RoleGroup group) {
+        payrollProcessor.reloadPayrollData();
+        List<PayrollResult> results = new java.util.ArrayList<>();
+        for (Employee emp : employeeService.getAllEmployees()) {
+            if (groupForEmployee(emp) != group) continue;
+            PayrollResult result = payrollProcessor.processPayroll(emp, month);
+            if (result != null) results.add(result);
+        }
+        return results;
     }
 
     private static void handleSavePayrollSummary(JFrame parentFrame) {
@@ -491,7 +555,11 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
         String month = payrollSummaryMonthCombo != null && payrollSummaryMonthCombo.getSelectedItem() != null
             ? payrollSummaryMonthCombo.getSelectedItem().toString()
             : LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-        String safeName = "PayrollSummary_" + month.replace(" ", "") + ".txt";
+        String department = payrollSummaryDepartmentCombo != null && payrollSummaryDepartmentCombo.getSelectedItem() != null
+            ? payrollSummaryDepartmentCombo.getSelectedItem().toString()
+            : DEPARTMENT_LABELS[0];
+        String safeDept = department.replaceAll("[^A-Za-z0-9]", "");
+        String safeName = "PayrollSummary_" + safeDept + "_" + month.replace(" ", "") + ".txt";
 
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("Save Payroll Summary");
@@ -508,6 +576,40 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
             } catch (IOException ex) {
                 showModernMessage(parentFrame, "Could not save file: " + ex.getMessage(), "Save Error", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+
+    /** Exports the selected department/month payroll summary to a PDF using JasperReports. */
+    private static void handleExportPayrollSummaryPdf(JFrame parentFrame) {
+        String month = payrollSummaryMonthCombo != null && payrollSummaryMonthCombo.getSelectedItem() != null
+            ? payrollSummaryMonthCombo.getSelectedItem().toString()
+            : LocalDate.now().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String department = payrollSummaryDepartmentCombo != null && payrollSummaryDepartmentCombo.getSelectedItem() != null
+            ? payrollSummaryDepartmentCombo.getSelectedItem().toString()
+            : DEPARTMENT_LABELS[0];
+        RoleGroup selectedGroup = departmentToRoleGroup(department);
+
+        List<PayrollResult> results = collectDepartmentResults(month, selectedGroup);
+
+        String safeDept = department.replaceAll("[^A-Za-z0-9]", "");
+        String safeName = "PayrollSummary_" + safeDept + "_" + month.replace(" ", "") + ".pdf";
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle("Export Payroll Summary (PDF)");
+        chooser.setSelectedFile(new File(safeName));
+        chooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("PDF files (*.pdf)", "pdf"));
+        if (chooser.showSaveDialog(parentFrame) != JFileChooser.APPROVE_OPTION) {
+            return;
+        }
+        File file = chooser.getSelectedFile();
+        String path = file.getAbsolutePath();
+        if (!path.toLowerCase().endsWith(".pdf")) path += ".pdf";
+
+        try {
+            new JasperPayrollReportService().exportToPdf(results, month, department, new File(path));
+            showModernMessage(parentFrame, "Payroll summary PDF saved to:\n" + path, "Export Complete", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception ex) {
+            showModernMessage(parentFrame, "Could not export PDF: " + ex.getMessage(), "Export Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -813,8 +915,8 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
 
         JButton refreshButton = createModernButton("Refresh", ACCENT_GREY);
         refreshButton.addActionListener(e -> {
-            employeeService.loadEmployeesFromCSV();
-            payrollProcessor.loadPayrollDataFromCSV();
+            employeeService.reloadEmployees();
+            payrollProcessor.reloadPayrollData();
             updateEmployeeTable();
             showModernMessage(frame, "Data refreshed successfully", "Refresh Complete", JOptionPane.INFORMATION_MESSAGE);
         });
@@ -908,7 +1010,7 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
 
     /**
      * Deletes an employee and their payroll record.
-     * Updates the table and saves changes to CSV.
+     * Updates the table and persists changes to the database via JDBC.
      *
      * @param empNumber The employee number to delete
      */
@@ -1429,7 +1531,7 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
         JTextField pagIbigField = new JTextField(employee.getPagIbigNumber(), 20);
         JTextField emailField = new JTextField(employee.getEmail(), 20);
         JTextField positionField = new JTextField(employee.getPosition(), 20);
-        JComboBox<String> statusComboBox = new JComboBox<>(new String[]{"regular", "probationary"});
+        JComboBox<String> statusComboBox = new JComboBox<>(EmploymentStatus.labels());
         statusComboBox.setSelectedItem(
             employee.getStatus() != null && employee.getStatus().equalsIgnoreCase("probationary")
                 ? "probationary" : "regular"
@@ -1583,7 +1685,7 @@ public class EmployeeProfile extends BaseModuleScreen implements ModuleScreen {
         JTextField pagIbigField = new JTextField(20);
         JTextField emailField = new JTextField(20);
         JTextField positionField = new JTextField(20);
-        JComboBox<String> statusComboBox = new JComboBox<>(new String[]{"regular", "probationary"});
+        JComboBox<String> statusComboBox = new JComboBox<>(EmploymentStatus.labels());
         JTextField addressField = new JTextField(20);
         JTextField phoneField = new JTextField(20);
         JTextField baseSalaryField = new JTextField(20);

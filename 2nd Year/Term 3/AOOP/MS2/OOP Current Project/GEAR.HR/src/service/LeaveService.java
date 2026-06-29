@@ -1,6 +1,7 @@
 package service;
 
 import model.LeaveRequest;
+import model.LeaveStatus;
 import repository.ILeaveRequestRepository;
 
 import java.time.LocalDate;
@@ -23,9 +24,9 @@ public class LeaveService implements ILeaveService {
         leaveRequests.addAll(repository.load());
     }
 
-    /** [INTERFACE] Implements ILeaveService.loadLeaveRequestsFromCSV. */
+    /** [INTERFACE] Implements ILeaveService.reloadLeaveRequests. */
     @Override
-    public void loadLeaveRequestsFromCSV() {
+    public void reloadLeaveRequests() {
         leaveRequests.clear();
         leaveRequests.addAll(repository.load());
     }
@@ -73,7 +74,7 @@ public class LeaveService implements ILeaveService {
     @Override
     public boolean hasOverlappingLeaveRequest(String employeeId, LocalDate start, LocalDate end) {
         if (employeeId == null || start == null || end == null) return false;
-        LeaveRequest probe = new LeaveRequest(employeeId, start, end, "", LeaveRequest.STATUS_PENDING);
+        LeaveRequest probe = new LeaveRequest(employeeId, start, end, "", LeaveStatus.PENDING.getLabel());
         for (LeaveRequest lr : leaveRequests) {
             if (employeeId.equals(lr.getEmployeeId()) && probe.overlapsWith(lr)) return true;
         }

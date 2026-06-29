@@ -1,6 +1,7 @@
 package ui;
 
 import model.ItTicket;
+import model.TicketStatus;
 import model.UserCredential;
 import service.ApplicationContext;
 import service.IItTicketService;
@@ -213,7 +214,7 @@ public class UserCredentialManagementScreen extends BaseModuleScreen implements 
         }
 
         String ticketId = String.valueOf(ticketModel.getValueAt(selectedRow, 0));
-        JComboBox<String> statusCombo = new JComboBox<>(new String[]{ItTicket.STATUS_PENDING, ItTicket.STATUS_RESOLVED});
+        JComboBox<String> statusCombo = new JComboBox<>(TicketStatus.labels());
         statusCombo.setSelectedItem(String.valueOf(ticketModel.getValueAt(selectedRow, 3)));
 
         int result = JOptionPane.showConfirmDialog(frame, statusCombo, "Update Status", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);

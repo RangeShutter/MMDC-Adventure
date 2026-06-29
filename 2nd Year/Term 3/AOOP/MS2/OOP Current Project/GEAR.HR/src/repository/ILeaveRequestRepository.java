@@ -5,18 +5,19 @@ import model.LeaveRequest;
 import java.util.List;
 
 /**
- * [INTERFACE] Contract for loading and saving leave requests.
- * Implementations (e.g. CSV) can be swapped for testing or different storage.
+ * [INTERFACE] JDBC persistence contract for leave requests.
+ * Production implementation: {@link LeaveRequestJdbcRepository} (MySQL table {@code leave_requests}).
+ * Alternative implementations may be supplied for unit tests.
  */
 public interface ILeaveRequestRepository {
     /**
-     * [INTERFACE] Loads all leave requests from storage.
-     * @return list of requests (empty if none or error)
+     * [INTERFACE] Loads all leave requests from the database via JDBC.
+     * @return list of requests (empty if none or on JDBC error)
      */
     List<LeaveRequest> load();
 
     /**
-     * [INTERFACE] Saves the given list of leave requests to storage.
+     * [INTERFACE] Persists leave requests to the database via JDBC (full table replace).
      * @param requests list to save (null is ignored)
      */
     void save(List<LeaveRequest> requests);

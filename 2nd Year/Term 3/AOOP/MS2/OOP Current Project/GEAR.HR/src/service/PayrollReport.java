@@ -42,19 +42,23 @@ public class PayrollReport {
     }
 
     /**
-     * [ABSTRACTION] Builds an all-employee payroll summary report for a given month.
-     * Lists one block per employee plus grand totals across everyone.
+     * [ABSTRACTION] Builds a department-specific payroll summary report for a given month.
+     * Lists one block per employee in the department plus grand totals for that department only.
      *
-     * @param results computed payroll results (null/empty entries are skipped)
-     * @param month   the payroll month the summary covers
-     * @return formatted multi-employee summary text
+     * @param results    computed payroll results for the selected department (null/empty entries are skipped)
+     * @param month      the payroll month the summary covers
+     * @param department the department/role group label the report is scoped to
+     * @return formatted department payroll summary text
      */
-    public static String formatSummary(List<PayrollResult> results, String month) {
+    public static String formatSummary(List<PayrollResult> results, String month, String department) {
         StringBuilder sb = new StringBuilder();
         String generatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         String monthLabel = month != null ? month.toUpperCase() : "";
+        String departmentLabel = department != null && !department.trim().isEmpty()
+            ? department.trim().toUpperCase() : "ALL DEPARTMENTS";
 
         sb.append("PAYROLL SUMMARY FOR ").append(monthLabel).append("\n");
+        sb.append("Department: ").append(departmentLabel).append("\n");
         sb.append("=====================================\n");
         sb.append("Generated: ").append(generatedAt).append("\n\n");
 
@@ -86,11 +90,11 @@ public class PayrollReport {
         }
 
         if (employeeCount == 0) {
-            sb.append("No employee payroll records available for this month.\n");
+            sb.append("No employee payroll records available for this department and month.\n");
             sb.append("-------------------------------------\n");
         }
 
-        sb.append("\nGRAND TOTALS\n");
+        sb.append("\nDEPARTMENT TOTALS\n");
         sb.append("=====================================\n");
         sb.append("Employees: ").append(employeeCount).append("\n");
         sb.append("Total Gross Pay: ₱").append(String.format("%,.2f", totalGross)).append("\n");

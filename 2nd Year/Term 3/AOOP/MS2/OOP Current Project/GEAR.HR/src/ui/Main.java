@@ -321,9 +321,6 @@ public class Main {
      */
     public static void main(String[] args) {
         ApplicationContext ctx = new ApplicationContext();
-        // #region agent log
-        try (java.io.FileWriter w = new java.io.FileWriter("c:/Users/User/Documents/GitHub/MMDC-Adventure/2nd Year/Term 3/AOOP/MS2/OOP Current Project/debug-4cf4a3.log", true)) { w.write("{\"sessionId\":\"4cf4a3\",\"runId\":\"run1\",\"hypothesisId\":\"D\",\"location\":\"Main.java:main\",\"message\":\"app started, context wired\",\"data\":{\"storageMode\":\"" + repository.DatabaseConnectionManager.getStorageMode() + "\",\"employeesLoaded\":" + ctx.getEmployeeService().getAllEmployees().size() + "},\"timestamp\":" + System.currentTimeMillis() + "}\n"); } catch (java.io.IOException ignored) {}
-        // #endregion
         SplashScreen.showSplash(() -> User.showLoginScreen(null, ctx));
     }
 }

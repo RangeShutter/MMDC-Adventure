@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface IAttendanceService {
     /** [INTERFACE] Reloads attendance records from storage. */
-    void loadAttendanceRecordsFromCSV();
+    void reloadAttendanceRecords();
     /** [INTERFACE] Returns a copy of all attendance records. */
     List<AttendanceRecord> getAllRecords();
     /** [INTERFACE] Returns true if a record exists for the given employee and date. */

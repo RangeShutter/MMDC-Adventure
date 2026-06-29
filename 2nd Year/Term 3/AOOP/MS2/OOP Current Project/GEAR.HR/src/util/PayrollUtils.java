@@ -12,7 +12,7 @@ public final class PayrollUtils {
 
     /**
      * Standard month hours used only for estimating gross when persisting deduction snapshots
-     * (CSV / edit form). Actual payroll still uses {@code hourlyRate × workedHours} per period.
+     * (payroll edit form / JDBC). Actual payroll still uses {@code hourlyRate × workedHours} per period.
      */
     public static final double REFERENCE_PAYROLL_HOURS = 160.0;
 

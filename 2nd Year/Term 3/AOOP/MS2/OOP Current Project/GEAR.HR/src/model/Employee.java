@@ -19,7 +19,8 @@ public class Employee extends AbstractEntity {
     private String pagIbigNumber;
     private String email;
     private String position;
-    private String status;
+    /** [ENCAPSULATION] Employment status held as a type-safe {@link EmploymentStatus} enum. */
+    private EmploymentStatus status;
     private String address;
     private String phone;
     private double hourlyRate; // optional; used when computed from base salary
@@ -38,7 +39,7 @@ public class Employee extends AbstractEntity {
         this.pagIbigNumber = pagIbigNumber != null ? pagIbigNumber : "";
         this.email = email != null ? email : "";
         this.position = position != null ? position : "";
-        this.status = status != null ? status : "";
+        this.status = EmploymentStatus.fromStringOrDefault(status, EmploymentStatus.REGULAR);
         this.address = address != null ? address : "";
         this.phone = phone != null ? phone : "";
         this.hourlyRate = 0;
@@ -71,8 +72,24 @@ public class Employee extends AbstractEntity {
     public String getPosition() { return position; }
     public void setPosition(String position) { this.position = position != null ? position : this.position; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status != null ? status : this.status; }
+    /** [ENCAPSULATION] Returns the canonical status label for storage/UI. */
+    public String getStatus() { return status != null ? status.getLabel() : EmploymentStatus.REGULAR.getLabel(); }
+
+    /** Returns the employment status as a type-safe {@link EmploymentStatus} enum. */
+    public EmploymentStatus getStatusEnum() { return status; }
+
+    public void setStatus(String status) {
+        if (status != null) {
+            this.status = EmploymentStatus.fromStringOrDefault(status, this.status);
+        }
+    }
+
+    /** [POLYMORPHISM - Overloading] Sets the employment status directly from the enum. */
+    public void setStatus(EmploymentStatus status) {
+        if (status != null) {
+            this.status = status;
+        }
+    }
 
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address != null ? address : this.address; }

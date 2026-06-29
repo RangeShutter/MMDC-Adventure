@@ -29,12 +29,12 @@ public class PayrollProcessor {
         payrollData.putAll(repository.load());
     }
 
-    public void loadPayrollDataFromCSV() {
+    public void reloadPayrollData() {
         payrollData.clear();
         payrollData.putAll(repository.load());
     }
 
-    public void savePayrollDataToCSV() {
+    public void savePayrollData() {
         Map<String, PayrollData> toSave = new HashMap<>();
         for (Map.Entry<String, PayrollData> e : payrollData.entrySet()) {
             PayrollData d = e.getValue();
@@ -77,12 +77,12 @@ public class PayrollProcessor {
     public void updatePayrollData(String employeeId, PayrollData data) {
         if (employeeId == null || data == null || !data.isValid()) return;
         payrollData.put(employeeId, data);
-        savePayrollDataToCSV();
+        savePayrollData();
     }
 
     public void removePayrollData(String employeeId) {
         payrollData.remove(employeeId);
-        savePayrollDataToCSV();
+        savePayrollData();
     }
 
     public PayrollResult processPayroll(Employee employee, String month) {

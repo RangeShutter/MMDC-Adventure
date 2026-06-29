@@ -24,16 +24,16 @@ public class EmployeeService implements IEmployeeService {
         employees.addAll(loaded);
     }
 
-    /** [INTERFACE] Implements IEmployeeService.loadEmployeesFromCSV. */
+    /** [INTERFACE] Implements IEmployeeService.reloadEmployees. */
     @Override
-    public void loadEmployeesFromCSV() {
+    public void reloadEmployees() {
         employees.clear();
         employees.addAll(repository.load());
     }
 
-    /** [INTERFACE] Implements IEmployeeService.saveEmployeesToCSV. */
+    /** [INTERFACE] Implements IEmployeeService.saveEmployees. */
     @Override
-    public void saveEmployeesToCSV() {
+    public void saveEmployees() {
         repository.save(new ArrayList<>(employees));
     }
 
@@ -133,12 +133,12 @@ public class EmployeeService implements IEmployeeService {
         if (emp == null || !emp.isValid()) return null;
         if (findEmployeeById(emp.getEmployeeNumber()) != null) return null;
         employees.add(emp);
-        saveEmployeesToCSV();
+        saveEmployees();
         String credentialError = userCredentialService.upsertCredentialForNewEmployee(
                 emp.getEmployeeNumber(), emp.getEmail(), emp.getPosition());
         if (credentialError != null) {
             employees.removeIf(e -> emp.getEmployeeNumber().equals(e.getEmployeeNumber()));
-            saveEmployeesToCSV();
+            saveEmployees();
             return credentialError;
         }
         return null;
@@ -162,7 +162,7 @@ public class EmployeeService implements IEmployeeService {
         existing.setAddress(emp.getAddress());
         existing.setPhone(emp.getPhone());
         if (!existing.isValid()) return null;
-        saveEmployeesToCSV();
+        saveEmployees();
         return userCredentialService.patchCredentialFromEmployee(
                 existing.getEmployeeNumber(), existing.getEmail(), existing.getPosition());
     }
@@ -171,7 +171,7 @@ public class EmployeeService implements IEmployeeService {
     @Override
     public void deleteEmployee(String empNumber) {
         employees.removeIf(e -> empNumber != null && empNumber.equals(e.getEmployeeNumber()));
-        saveEmployeesToCSV();
+        saveEmployees();
         userCredentialService.deleteCredentialByUserId(empNumber);
     }
 }

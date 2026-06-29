@@ -10,9 +10,9 @@ import java.util.List;
  */
 public interface IEmployeeService {
     /** [INTERFACE] Reloads employees from storage. */
-    void loadEmployeesFromCSV();
+    void reloadEmployees();
     /** [INTERFACE] Persists current in-memory employees to storage. */
-    void saveEmployeesToCSV();
+    void saveEmployees();
     /** [INTERFACE] Returns a copy of all employees. */
     List<Employee> getAllEmployees();
     /** [INTERFACE] Finds employee by employee number. */

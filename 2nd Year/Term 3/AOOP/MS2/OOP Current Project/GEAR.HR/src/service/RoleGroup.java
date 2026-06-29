@@ -38,7 +38,7 @@ public enum RoleGroup {
     )));
 
     /**
-     * Maps the role string (from user_credentials.csv) to the corresponding group.
+     * Maps the role string (from the user_credentials table) to the corresponding group.
      * All roles not in HR, Payroll, or IT/Admin sets are NORMAL.
      * [ABSTRACTION] Hides role-set details behind a single entry point.
      */

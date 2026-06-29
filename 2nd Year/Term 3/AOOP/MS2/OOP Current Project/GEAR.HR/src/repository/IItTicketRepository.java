@@ -5,13 +5,14 @@ import model.ItTicket;
 import java.util.List;
 
 /**
- * [INTERFACE] Contract for loading and saving IT support tickets.
- * Implementations (e.g. CSV) can be swapped for testing or different storage.
+ * [INTERFACE] JDBC persistence contract for IT support tickets.
+ * Production implementation: {@link ItTicketJdbcRepository} (MySQL table {@code it_tickets}).
+ * Alternative implementations may be supplied for unit tests.
  */
 public interface IItTicketRepository {
-    /** [INTERFACE] Loads all IT tickets from storage. */
+    /** [INTERFACE] Loads all IT tickets from the database via JDBC. */
     List<ItTicket> load();
 
-    /** [INTERFACE] Persists the given ticket list to storage. */
+    /** [INTERFACE] Persists IT tickets to the database via JDBC (full table replace). */
     void save(List<ItTicket> tickets);
 }

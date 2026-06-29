@@ -25,7 +25,6 @@ public final class DatabaseConnectionManager {
         "jdbc:mysql://localhost:3306/gear.hr?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String DEFAULT_USER = "root";
     private static final String DEFAULT_PASSWORD = "";
-    private static final String DEFAULT_STORAGE_MODE = "jdbc";
 
     /** [ENCAPSULATION] Loaded once; callers never see raw properties. */
     private static final Properties CONFIG = loadConfig();
@@ -59,14 +58,6 @@ public final class DatabaseConnectionManager {
                 // closing failures are not actionable for callers
             }
         }
-    }
-
-    /**
-     * Storage backend selected in database.properties ("jdbc" or "csv").
-     * Used by the composition root to wire JDBC or legacy CSV repositories.
-     */
-    public static String getStorageMode() {
-        return CONFIG.getProperty("storage.mode", DEFAULT_STORAGE_MODE).trim().toLowerCase();
     }
 
     private static Properties loadConfig() {

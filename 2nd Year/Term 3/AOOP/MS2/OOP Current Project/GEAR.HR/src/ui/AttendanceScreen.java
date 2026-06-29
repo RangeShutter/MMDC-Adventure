@@ -1,6 +1,7 @@
 package ui;
 
 import model.AttendanceRecord;
+import model.AttendanceStatus;
 import model.Employee;
 import service.ApplicationContext;
 import service.IAttendanceService;
@@ -207,14 +208,14 @@ public class AttendanceScreen extends BaseModuleScreen implements ModuleScreen {
     }
 
     private static JComboBox<String> createStatusComboBox() {
-        String[] statusOptions = {"Present", "Absent", "Late", "On Leave", "Half Day"};
-        JComboBox<String> statusComboBox = new JComboBox<>(statusOptions);
+        JComboBox<String> statusComboBox = new JComboBox<>(AttendanceStatus.labels());
         statusComboBox.setFont(new Font("Garet", Font.PLAIN, 12));
         statusComboBox.setPreferredSize(new Dimension(150, 30));
         statusComboBox.addItemListener(e -> {
             if (e.getStateChange() == ItemEvent.SELECTED && timeInField != null && timeOutField != null) {
                 String status = (String) statusComboBox.getSelectedItem();
-                boolean noTimeRequired = "On Leave".equals(status) || "Absent".equals(status);
+                AttendanceStatus statusEnum = AttendanceStatus.fromString(status);
+                boolean noTimeRequired = statusEnum != null && statusEnum.requiresNoTime();
                 timeInField.setEnabled(!noTimeRequired);
                 timeOutField.setEnabled(!noTimeRequired);
                 if (noTimeRequired) {
@@ -447,7 +448,8 @@ public class AttendanceScreen extends BaseModuleScreen implements ModuleScreen {
             return;
         }
 
-        boolean noTimeRequired = "On Leave".equals(status) || "Absent".equals(status);
+        AttendanceStatus statusEnum = AttendanceStatus.fromString(status);
+        boolean noTimeRequired = statusEnum != null && statusEnum.requiresNoTime();
         if (noTimeRequired) {
             timeIn = "";
             timeOut = "";
@@ -545,7 +547,7 @@ public class AttendanceScreen extends BaseModuleScreen implements ModuleScreen {
     }
 
     private static void handleRefreshData(JFrame attendanceFrame) {
-        INSTANCE.attendanceService.loadAttendanceRecordsFromCSV();
+        INSTANCE.attendanceService.reloadAttendanceRecords();
         updateAttendanceTable();
         JOptionPane.showMessageDialog(attendanceFrame, "Data refreshed successfully", "Refresh Complete", JOptionPane.INFORMATION_MESSAGE);
     }

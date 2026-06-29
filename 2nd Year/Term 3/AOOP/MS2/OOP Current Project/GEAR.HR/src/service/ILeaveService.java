@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ILeaveService {
     /** [INTERFACE] Reloads leave requests from storage. */
-    void loadLeaveRequestsFromCSV();
+    void reloadLeaveRequests();
     /** [INTERFACE] Returns a copy of all leave requests. */
     List<LeaveRequest> getAllLeaveRequests();
     /** [INTERFACE] Returns leave requests for the given employee. */

@@ -8,7 +8,8 @@ package model;
 public class AttendanceRecord extends AbstractEntity {
 
     private final String date;
-    private final String status;
+    /** [ENCAPSULATION] Status held as a type-safe {@link AttendanceStatus} enum. */
+    private final AttendanceStatus status;
     private final String timeIn;
     private final String timeOut;
 
@@ -16,7 +17,7 @@ public class AttendanceRecord extends AbstractEntity {
     public AttendanceRecord(String employeeId, String date, String status, String timeIn, String timeOut) {
         super(employeeId != null ? employeeId : "");
         this.date = date != null ? date : "";
-        this.status = status != null ? status : "";
+        this.status = AttendanceStatus.fromStringOrDefault(status, AttendanceStatus.PRESENT);
         this.timeIn = timeIn != null ? timeIn : "";
         this.timeOut = timeOut != null ? timeOut : "";
     }
@@ -24,7 +25,10 @@ public class AttendanceRecord extends AbstractEntity {
     /** [INTERFACE] Identifiable: entity id is employeeId. */
     public String getEmployeeId() { return getId(); }
     public String getDate() { return date; }
-    public String getStatus() { return status; }
+    /** [ENCAPSULATION] Returns the canonical status label for storage/UI. */
+    public String getStatus() { return status != null ? status.getLabel() : AttendanceStatus.PRESENT.getLabel(); }
+    /** Returns the status as a type-safe {@link AttendanceStatus} enum. */
+    public AttendanceStatus getStatusEnum() { return status; }
     public String getTimeIn() { return timeIn; }
     public String getTimeOut() { return timeOut; }
 

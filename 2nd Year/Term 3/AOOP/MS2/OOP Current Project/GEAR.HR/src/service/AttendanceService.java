@@ -29,9 +29,9 @@ public class AttendanceService implements IAttendanceService {
         }
     }
 
-    /** [INTERFACE] Implements IAttendanceService.loadAttendanceRecordsFromCSV. */
+    /** [INTERFACE] Implements IAttendanceService.reloadAttendanceRecords. */
     @Override
-    public void loadAttendanceRecordsFromCSV() {
+    public void reloadAttendanceRecords() {
         attendanceRecords.clear();
         for (AttendanceRecord r : repository.load()) {
             String key = r.getEmployeeId() + "|" + r.getDate();

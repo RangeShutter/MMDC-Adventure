@@ -11,9 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * JDBC persistence for payroll data (MySQL table: payroll_settings; employeeId -> PayrollData).
- * Load/save only; no business logic. Implements the map-based contract directly (like the CSV
- * version) since the list-oriented {@link AbstractJdbcRepository} does not fit a keyed map.
+ * JDBC persistence for payroll data (MySQL table: {@code payroll_settings}; employeeId -> PayrollData).
+ * Load/save only; no business logic. Implements the map-based {@link IPayrollRepository} contract
+ * directly since the list-oriented {@link AbstractJdbcRepository} does not fit a keyed map.
+ * Connections are obtained from {@link DatabaseConnectionManager}.
  * [INTERFACE] Implements IPayrollRepository.
  * [POLYMORPHISM] Can be used as IPayrollRepository by callers.
  * [ENCAPSULATION] All payroll SQL and row mapping is hidden inside this class.
@@ -50,7 +51,7 @@ public class PayrollJdbcRepository implements IPayrollRepository {
                 }
             }
         } catch (SQLException e) {
-            // return empty, matching CSV repository behavior
+            // return empty map on JDBC failure
         } finally {
             DatabaseConnectionManager.closeConnection(conn);
         }

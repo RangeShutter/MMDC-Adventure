@@ -1,6 +1,7 @@
 package service;
 
 import model.ItTicket;
+import model.TicketStatus;
 import repository.IItTicketRepository;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class ItTicketService implements IItTicketService {
         }
 
         String nextId = generateNextTicketId();
-        ItTicket ticket = new ItTicket(nextId, userId, requestType, ItTicket.STATUS_PENDING);
+        ItTicket ticket = new ItTicket(nextId, userId, requestType, TicketStatus.PENDING.getLabel());
         if (!ticket.isValid()) return "Ticket data is invalid.";
 
         tickets.add(ticket);
@@ -63,8 +64,8 @@ public class ItTicketService implements IItTicketService {
     @Override
     public boolean updateTicketStatus(String ticketId, String newStatus) {
         if (ticketId == null || newStatus == null) return false;
-        String status = newStatus.trim();
-        if (!ItTicket.STATUS_PENDING.equals(status) && !ItTicket.STATUS_RESOLVED.equals(status)) return false;
+        TicketStatus status = TicketStatus.fromString(newStatus);
+        if (status == null) return false;
         for (ItTicket ticket : tickets) {
             if (ticketId.trim().equals(ticket.getTicketId())) {
                 ticket.setStatus(status);

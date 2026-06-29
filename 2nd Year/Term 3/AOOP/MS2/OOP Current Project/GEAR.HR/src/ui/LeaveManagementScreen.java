@@ -2,6 +2,7 @@ package ui;
 
 import model.Employee;
 import model.LeaveRequest;
+import model.LeaveStatus;
 import service.ApplicationContext;
 import service.IEmployeeService;
 import service.ILeaveService;
@@ -187,9 +188,7 @@ public class LeaveManagementScreen extends BaseModuleScreen implements ModuleScr
         leaveTable.setSelectionBackground(BUTTON_ORANGE);
         leaveTable.setSelectionForeground(TEXT_WHITE);
 
-        statusComboBox = new JComboBox<>(new String[]{
-            LeaveRequest.STATUS_PENDING, LeaveRequest.STATUS_APPROVED, LeaveRequest.STATUS_REJECTED
-        });
+        statusComboBox = new JComboBox<>(LeaveStatus.labels());
         statusComboBox.setFont(new Font("Garet", Font.PLAIN, 12));
         JButton updateStatusBtn = createStyledButton("Update Status", BUTTON_ORANGE);
         updateStatusBtn.addActionListener(e -> handleUpdateStatus(frame));
@@ -252,7 +251,7 @@ public class LeaveManagementScreen extends BaseModuleScreen implements ModuleScr
             JOptionPane.showMessageDialog(frame, "Reason is required. Please enter a reason for the leave request.", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        LeaveRequest req = new LeaveRequest(employeeId, start, end, reason, LeaveRequest.STATUS_PENDING);
+        LeaveRequest req = new LeaveRequest(employeeId, start, end, reason, LeaveStatus.PENDING.getLabel());
         if (!req.isValid()) {
             JOptionPane.showMessageDialog(frame, "Start date must be on or before end date.", "Input Error", JOptionPane.ERROR_MESSAGE);
             return;

@@ -9,16 +9,12 @@ import java.time.format.DateTimeParseException;
  * Validates start date precedes end date and status is in allowed set.
  */
 public class LeaveRequest extends AbstractEntity {
-    public static final String STATUS_PENDING = "Pending";
-    public static final String STATUS_APPROVED = "Approved";
-    public static final String STATUS_REJECTED = "Rejected";
-
-    private static final String[] ALLOWED_STATUSES = { STATUS_PENDING, STATUS_APPROVED, STATUS_REJECTED };
 
     private LocalDate startDate;
     private LocalDate endDate;
     private String reason;
-    private String status;
+    /** [ENCAPSULATION] Status held as a type-safe {@link LeaveStatus} enum. */
+    private LeaveStatus status;
 
     /** [INHERITANCE] Calls super(employeeId) to set AbstractEntity.entityId. */
     public LeaveRequest(String employeeId, LocalDate startDate, LocalDate endDate, String reason, String status) {
@@ -49,26 +45,24 @@ public class LeaveRequest extends AbstractEntity {
     public String getReason() { return reason; }
     public void setReason(String reason) { this.reason = reason != null ? reason : this.reason; }
 
-    public String getStatus() { return status; }
+    /** [ENCAPSULATION] Returns the canonical status label for storage/UI. */
+    public String getStatus() { return status != null ? status.getLabel() : LeaveStatus.PENDING.getLabel(); }
+
+    /** Returns the status as a type-safe {@link LeaveStatus} enum. */
+    public LeaveStatus getStatusEnum() { return status; }
+
     public void setStatus(String status) {
         setStatus(status, false);
     }
 
-    /** [POLYMORPHISM - Overloading] Same method name, different parameter: skipValidation bypasses allowed-status check when true. */
+    /** [POLYMORPHISM - Overloading] Same method name, different parameter. Unknown values fall back to PENDING. */
     public void setStatus(String status, boolean skipValidation) {
-        if (skipValidation && status != null && !status.trim().isEmpty()) {
-            this.status = status.trim();
-            return;
-        }
-        if (status != null) {
-            for (String s : ALLOWED_STATUSES) {
-                if (s.equalsIgnoreCase(status)) {
-                    this.status = s;
-                    return;
-                }
-            }
-        }
-        this.status = STATUS_PENDING;
+        this.status = LeaveStatus.fromStringOrDefault(status, LeaveStatus.PENDING);
+    }
+
+    /** [POLYMORPHISM - Overloading] Sets the status directly from the enum. */
+    public void setStatus(LeaveStatus status) {
+        this.status = status != null ? status : LeaveStatus.PENDING;
     }
 
     /** [INTERFACE] Implements Validatable.isValid. [INHERITANCE] Overrides AbstractEntity.isValid. */

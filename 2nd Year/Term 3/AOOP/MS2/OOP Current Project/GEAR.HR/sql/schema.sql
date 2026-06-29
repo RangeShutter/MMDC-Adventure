@@ -1,6 +1,6 @@
 -- GEAR.HR MySQL schema (database: gear.hr)
 -- Matches the JDBC repository layer in src/repository/*JdbcRepository.java.
--- Seed data comes from the legacy csv/ files (import employees before payroll/attendance rows).
+-- After creating the schema, load sample data + default accounts by running sql/seed.sql.
 
 CREATE DATABASE IF NOT EXISTS `gear.hr`;
 USE `gear.hr`;

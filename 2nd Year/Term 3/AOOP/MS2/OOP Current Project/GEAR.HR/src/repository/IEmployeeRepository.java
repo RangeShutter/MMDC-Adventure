@@ -5,18 +5,19 @@ import model.Employee;
 import java.util.List;
 
 /**
- * [INTERFACE] Contract for loading and saving employee data.
- * Implementations (e.g. CSV) can be swapped for testing or different storage.
+ * [INTERFACE] JDBC persistence contract for employee data.
+ * Production implementation: {@link EmployeeJdbcRepository} (MySQL table {@code employees}).
+ * Alternative implementations may be supplied for unit tests.
  */
 public interface IEmployeeRepository {
     /**
-     * [INTERFACE] Loads all employees from storage.
-     * @return list of employees (empty if none or error)
+     * [INTERFACE] Loads all employees from the database via JDBC.
+     * @return list of employees (empty if none or on JDBC error)
      */
     List<Employee> load();
 
     /**
-     * [INTERFACE] Saves the given list of employees to storage.
+     * [INTERFACE] Persists employees to the database via JDBC (full table replace).
      * @param employees list to save (null is ignored)
      */
     void save(List<Employee> employees);

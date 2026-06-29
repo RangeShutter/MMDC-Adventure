@@ -1,0 +1,11 @@
+{
+    "folders": [
+        {
+            "path": "GEAR.HR"
+        }
+    ],
+    "settings": {
+        "java.import.eclipse.enabled": true,
+        "java.configuration.updateBuildConfiguration": "automatic"
+    }
+}

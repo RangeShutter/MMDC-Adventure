@@ -5,18 +5,19 @@ import model.AttendanceRecord;
 import java.util.List;
 
 /**
- * [INTERFACE] Contract for loading and saving attendance records.
- * Implementations (e.g. CSV) can be swapped for testing or different storage.
+ * [INTERFACE] JDBC persistence contract for attendance records.
+ * Production implementation: {@link AttendanceJdbcRepository} (MySQL table {@code attendance_records}).
+ * Alternative implementations may be supplied for unit tests.
  */
 public interface IAttendanceRepository {
     /**
-     * [INTERFACE] Loads all attendance records from storage.
-     * @return list of records (empty if none or error)
+     * [INTERFACE] Loads all attendance records from the database via JDBC.
+     * @return list of records (empty if none or on JDBC error)
      */
     List<AttendanceRecord> load();
 
     /**
-     * [INTERFACE] Saves the given list of attendance records to storage.
+     * [INTERFACE] Persists attendance records to the database via JDBC (full table replace).
      * @param records list to save (null is ignored)
      */
     void save(List<AttendanceRecord> records);
