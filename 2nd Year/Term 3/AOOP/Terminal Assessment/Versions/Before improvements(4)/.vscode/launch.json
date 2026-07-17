@@ -1,0 +1,13 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "GEAR.HR (ui.Main)",
+            "request": "launch",
+            "mainClass": "ui.Main",
+            "projectName": "GEAR.HR",
+            "cwd": "${workspaceFolder}/GEAR.HR"
+        }
+    ]
+}
