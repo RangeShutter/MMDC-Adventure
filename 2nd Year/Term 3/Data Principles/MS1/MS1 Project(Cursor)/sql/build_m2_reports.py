@@ -13,30 +13,32 @@ def read(name: str) -> str:
 def payslip_view_block() -> str:
     text = read("employee_payslip_report.sql")
     start = text.index("USE payrollsystem_db;")
-    end = text.index("-- =============================================================================\n-- VERIFICATION: Single employee payslip")
+    end = text.index("-- =============================================================================\n-- VERIFICATION: Official template check")
     return text[start:end].strip()
 
 
 def summary_view_block() -> str:
     text = read("employees_payroll_summary_report.sql")
-    start = text.index("DROP VIEW IF EXISTS vw_EmployeePayrollSummaryReport;")
-    end = text.index("-- =============================================================================\n-- VERIFICATION: Full summary")
+    start = text.index("DROP VIEW IF EXISTS vw_EmployeePayrollOverallTotals;")
+    end = text.index("-- =============================================================================\n-- VERIFICATION: Official template monthly detail summary")
     return text[start:end].strip()
 
 
 def procedures_block() -> str:
     text = read("14_m2_report_procedures.sql")
     start = text.index("USE payrollsystem_db;")
-    end = text.index("-- =============================================================================\n-- VERIFICATION: Procedure calls")
+    end = text.index("SELECT '=== sp_GetEmployeePayslip(10013)")
     return text[start:end].strip()
 
 
 def verification_tail() -> str:
     return """
 SELECT 'M2 deploy complete. Test with:' AS NextStep;
-SELECT COUNT(*) AS PayslipRows FROM vw_EmployeePayslipReport;
-SELECT COUNT(*) AS SummaryRows FROM vw_EmployeePayrollSummaryReport;
+SELECT COUNT(*) AS PayslipRows FROM vw_EmployeePayslipReport;  -- expect 68 (34 x 2 cutoffs)
+SELECT COUNT(*) AS SummaryRows FROM vw_EmployeePayrollSummaryReport;  -- expect 34 (monthly)
 CALL sp_GetEmployeePayslip(10013);
+CALL sp_GetEmployeePayslipByPeriod(10013, '2024-06-01', '2024-06-15');
+-- Expected Take Home Pay for 10013 per cutoff: 13317.40
 """.strip()
 
 

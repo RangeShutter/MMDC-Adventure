@@ -102,12 +102,25 @@ Regenerate combined M2 scripts after edits: `python build_m2_reports.py`
 
 **Error 1146?** Summary and procedures depend on `vw_EmployeePayslipReport`. Run step 3 first, or use `13` / `15` above.
 
+### Monthly model (two payslips)
+
+June is covered by **two cutoffs**. Payslip VIEW columns match the **official MotorPH Employee Payslip template**. Deductions are Option A (split). Take Home Pay = Gross Income + Benefits − Total Deductions.
+
+| Cutoff | Period | Issue date |
+|--------|--------|------------|
+| 1 | 2024-06-01 to 2024-06-15 | 2024-06-16 |
+| 2 | 2024-06-16 to 2024-06-30 | 2024-07-01 |
+
+- Payslip view: **2 rows per employee** (template layout)
+- Summary view: **1 monthly row per employee** (rollup of both cutoffs)
+- Employee 10013 expected Take Home Pay per cutoff: **₱13,317.40**
+
 ### Views (calculation layer)
 
 | View | Script |
 |------|--------|
-| `vw_EmployeePayslipReport` | `employee_payslip_report.sql` |
-| `vw_EmployeePayrollSummaryReport` | `employees_payroll_summary_report.sql` (official payroll summary template columns) |
+| `vw_EmployeePayslipReport` | `employee_payslip_report.sql` (official payslip template columns) |
+| `vw_EmployeePayrollSummaryReport` | `employees_payroll_summary_report.sql` (monthly rollup, official summary template) |
 | `vw_EmployeePayrollSummaryByDepartment` | `employees_payroll_summary_report.sql` (department management rollup) |
 | `vw_EmployeePayrollOverallTotals` | `employees_payroll_summary_report.sql` (overall payroll totals) |
 
@@ -115,24 +128,17 @@ Regenerate combined M2 scripts after edits: `python build_m2_reports.py`
 
 | Procedure | Purpose |
 |-----------|---------|
-| `sp_GetEmployeePayslip(EmployeeID)` | Single-employee payslip |
-| `sp_GetEmployeePayrollSummary()` | All employees |
+| `sp_GetEmployeePayslip(EmployeeID)` | Both cutoffs for one employee (template columns) |
+| `sp_GetEmployeePayslipByPeriod(EmployeeID, start, end)` | One cutoff |
+| `sp_GetEmployeePayrollSummary()` | Monthly summary (all employees) |
 | `sp_GetPayrollSummaryByDepartment()` | Department management totals |
 | `sp_GetPayrollGrandTotals()` | Overall payroll totals |
 
-Views hold all calculations; procedures read from views so payslip detail and management totals stay consistent.
-
 ```sql
--- Payslip (single employee)
 CALL sp_GetEmployeePayslip(10013);
-
--- Summary (all employees)
+CALL sp_GetEmployeePayslipByPeriod(10013, '2024-06-01', '2024-06-15');
 CALL sp_GetEmployeePayrollSummary();
-
--- Department totals
 CALL sp_GetPayrollSummaryByDepartment();
-
--- Overall totals
 CALL sp_GetPayrollGrandTotals();
 ```
 

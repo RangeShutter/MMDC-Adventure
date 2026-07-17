@@ -26,18 +26,22 @@ Our goal is to demonstrate two report layers: employee-level payslips and manage
 
 ### Slide content
 - **Employee Payslip Report** (`vw_EmployeePayslipReport`)
-  - Detailed payroll output for one employee per cutoff
+  - Columns match the **official MotorPH payslip template**
+  - Two payslips for the month (Jun 1–15 and Jun 16–30)
+  - Gross Income = Daily Rate × Days Worked; Take Home = Gross + Benefits − Deductions
+  - Statutory deductions split (/2) on each cutoff
 - **Payroll Summary Report** (`vw_EmployeePayrollSummaryReport`)
-  - Organization-wide monthly payroll view with template-aligned columns
+  - Monthly rollup of both cutoffs (1 row per employee)
+  - Official summary template column names
 - **Management Aggregates**
   - `vw_EmployeePayrollSummaryByDepartment`
   - `vw_EmployeePayrollOverallTotals`
 
 ### Speaker script
 "We implemented two core report categories.  
-The first is the Employee Payslip Report, which gives complete earnings and deductions for a specific employee.  
-The second is the Payroll Summary Report, which consolidates payroll results across employees using official template column names.  
-For management use, we added aggregate views showing department totals and overall payroll totals."
+The payslip report follows the **official MotorPH payslip template** — including Gross Income, Benefits, Deductions, and Take Home Pay.  
+Each employee receives **two payslips for the month**, with statutory deductions split on each cutoff.  
+The payroll summary then rolls both cutoffs into a monthly view for management review."
 
 ---
 

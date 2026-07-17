@@ -2,7 +2,9 @@
 
 ## Overview
 
-The **Employee Payslip Database Report** is implemented as a MySQL **VIEW** named `vw_EmployeePayslipReport`. It uses joins, subqueries, conditional aggregation, and calculated columns to produce a complete **semi-monthly payslip** for each employee.
+The **Employee Payslip Database Report** is implemented as a MySQL **VIEW** named `vw_EmployeePayslipReport`. Column names and formulas match the **official MotorPH Employee Payslip template** (Header, Earnings, Benefits, Deductions, Summary).
+
+Monthly coverage uses **two payslips** (June 1–15 and June 16–30). Statutory deductions are **split (/2)** on each cutoff (Option A).
 
 ## Run order (after MS1)
 
@@ -13,145 +15,108 @@ The **Employee Payslip Database Report** is implemented as a MySQL **VIEW** name
 5. [`employees_payroll_summary_report.sql`](employees_payroll_summary_report.sql)
 6. [`14_m2_report_procedures.sql`](14_m2_report_procedures.sql)
 
-## Business rules implemented
+## Official template mapping
 
-### Earnings (semi-monthly)
+| Template section | View columns / formula |
+|------------------|------------------------|
+| Payslip No | `{EmployeeID}-{PeriodEndDate}` |
+| Employee ID / Name | `Employee ID`, `Employee Name` (`Last, First`) |
+| Period | `Period Start Date`, `Period End Date` |
+| Position/Department | `Employee Position/Department` (`Position / Department`) |
+| Monthly Salary | `Monthly Salary` |
+| Daily Rate | `Monthly Salary / 20` |
+| Days Worked | `10` per cutoff |
+| Overtime | `0` (unless overtime is later seeded) |
+| **Gross Income** | `Daily Rate × Days Worked + Overtime` (**benefits not included**) |
+| Rice / Phone / Clothing | Full monthly benefit amounts |
+| **Benefits** | Sum of the three allowances |
+| SSS / PhilHealth / Pag-IBIG | Option A: monthly amount ÷ 2 |
+| Withholding Tax | Semi-monthly bracket on taxable income |
+| **Total Deductions** | SSS + PhilHealth + Pag-IBIG + Tax |
+| **Take Home Pay** | `Gross Income + Benefits − Total Deductions` |
 
-| Column | Formula |
-|--------|---------|
-| BasicPaySemi | `Salary.BaseSalary / 2` |
-| RiceSubsidySemi | Rice benefit / 2 |
-| PhoneAllowanceSemi | Phone benefit / 2 |
-| ClothingAllowanceSemi | Clothing benefit / 2 |
-| **GrossPay** | Sum of all semi-monthly earnings |
+## Business rules
+
+### Earnings (per cutoff)
+
+| Field | Formula |
+|-------|---------|
+| Daily Rate | `Monthly Salary / 20` |
+| Days Worked | `10` |
+| Gross Income | `Daily Rate × Days Worked + Overtime` |
+
+### Benefits (as shown on template)
+
+Full monthly amounts from `Benefit` (not divided for display / take-home).
 
 ### Statutory deductions — Option A (Split)
 
-Monthly contribution is computed first, then **divided by 2** for each semi-monthly cutoff:
-
 | Deduction | Logic |
 |-----------|--------|
-| **SSS** | Lookup `SSSContributionBracket` on monthly `BaseSalary`, then `/ 2` |
-| **PhilHealth** | `MIN(BaseSalary × 3%, 1800) × 50% employee share / 2` |
-| **Pag-IBIG** | `MIN(BaseSalary × rate, 100) / 2` (1% if 1,000–1,500, else 2%) |
+| SSS | Bracket on monthly salary, then `/ 2` |
+| PhilHealth | `MIN(salary × 3%, 1800) × 50% / 2` |
+| Pag-IBIG | `MIN(salary × rate, 100) / 2` |
 
-### Withholding tax (semi-monthly)
+### Withholding tax
 
-1. **TaxableIncome** = `GrossPay − SSS − PhilHealth − Pag-IBIG` (all semi-monthly amounts)
-2. Lookup **WithholdingTaxBracketSemiMonthly** (converted from MotorPH monthly table)
-3. **Tax** = `BaseTax + (TaxableIncome − ExcessOver) × ExcessRate` when applicable
+Taxable income = `Gross Income + (Benefits / 2) − SSS − PhilHealth − Pag-IBIG`  
+(then look up `WithholdingTaxBracketSemiMonthly`).
 
-Monthly brackets were converted by halving **Min, Max, BaseTax, ExcessOver**; **rates unchanged**.
+### Take Home Pay
 
-### Net pay
+**Take Home Pay** = `Gross Income + Benefits − Total Deductions`
 
-**NetPay** = `GrossPay − TotalDeductions`
+## Monthly coverage (two payslips)
 
----
+| Cutoff | Pay period | Issue date |
+|--------|------------|------------|
+| 1 | 2024-06-01 to 2024-06-15 | 2024-06-16 |
+| 2 | 2024-06-16 to 2024-06-30 | 2024-07-01 |
 
-## Tables and columns used
+## Verification — Employee 10013 (Martha Farala) vs template
 
-| Payslip field | Table.column |
-|---------------|--------------|
-| Employee ID, name, position | `Employee` |
-| Department | `Department.DepartmentName` |
-| Address | `EmployeeAddress.StreetName` |
-| Government IDs | `GovernmentID` |
-| Pay period / issue date | `Payroll`, `Payslip` |
-| Basic salary | `Salary.BaseSalary` |
-| Allowances | `Benefit` (aggregated by type) |
-| SSS bracket | `SSSContributionBracket` |
-| Tax brackets | `WithholdingTaxBracketSemiMonthly` |
-
----
-
-## Verification — Employee 10013 (Martha Farala)
-
-Monthly basic: **₱24,000**
+Monthly salary: **₱24,000** — expected **per cutoff**:
 
 | Field | Expected |
 |-------|----------|
-| BasicPaySemi | 12,000.00 |
-| RiceSubsidySemi | 750.00 |
-| PhoneAllowanceSemi | 250.00 |
-| ClothingAllowanceSemi | 250.00 |
-| **GrossPay** | **13,250.00** |
-| SSSDeduction | 540.00 (monthly 1,080 ÷ 2) |
-| PhilHealthDeduction | 180.00 |
-| PagibigDeduction | 50.00 |
-| TaxableIncome | 12,480.00 |
-| WithholdingTax | 412.60 (20% over 10,417) |
-| **NetPay** | **12,067.40** |
-
-Query:
-
-```sql
-SELECT * FROM vw_EmployeePayslipReport WHERE EmployeeID = 10013;
-```
-
-Equivalent stored procedure (same row — reads from the view):
+| Daily Rate | 1,200.00 |
+| Days Worked | 10 |
+| **Gross Income** | **12,000.00** |
+| Rice Subsidy | 1,500.00 |
+| Phone Allowance | 500.00 |
+| Clothing Allowance | 500.00 |
+| **Benefits** | **2,500.00** |
+| Social Security System | 540.00 |
+| Philhealth | 180.00 |
+| Pag-Ibig | 50.00 |
+| Withholding Tax | 412.60 |
+| **Total Deductions** | **1,182.60** |
+| **Take Home Pay** | **13,317.40** |
 
 ```sql
+SELECT *
+FROM vw_EmployeePayslipReport
+WHERE `Employee ID` = 10013
+ORDER BY `Period Start Date`;
+
 CALL sp_GetEmployeePayslip(10013);
+CALL sp_GetEmployeePayslipByPeriod(10013, '2024-06-01', '2024-06-15');
 ```
-
----
-
-## Verification — MotorPH tax sample (semi-monthly equivalent)
-
-Monthly sample (₱25,000 salary): statutory 1,600, taxable 23,400, tax **513.40**.
-
-Semi-monthly (Option A split): statutory **800**, taxable **11,700**, tax **~256.60**.
-
-Use employee near ₱25,000 basic or validate manually:
-
-```sql
--- Taxable 11,700 in bracket 10,417-16,666 at 20% over 10,417:
--- (11700 - 10417) * 0.20 = 256.60
-```
-
----
-
-## Verification — Employee 10001 (CEO)
-
-Monthly basic: **₱90,000** — validates high-bracket tax and SSS max (1,125 semi = 562.50).
-
-```sql
-SELECT * FROM vw_EmployeePayslipReport WHERE EmployeeID = 10001;
-```
-
----
 
 ## Submission screenshots checklist
 
-1. `CREATE VIEW vw_EmployeePayslipReport` (from script or `SHOW CREATE VIEW`)
-2. `SELECT * FROM vw_EmployeePayslipReport WHERE EmployeeID = 10013`
-3. `CALL sp_GetEmployeePayslip(10013)` — same NetPay as step 2
-4. Result showing **GrossPay**, each deduction, **NetPay**
-5. Optional: SCHEMAS → Views → `vw_EmployeePayslipReport`
-
----
-
-## Single-employee filter (homework)
-
-```sql
-USE payrollsystem_db;
-SELECT * FROM vw_EmployeePayslipReport WHERE EmployeeID = 10013;
--- or
-CALL sp_GetEmployeePayslip(10013);
-```
-
-Replace `10013` with any valid `EmployeeID` (10001–10034).
-
----
+1. `SHOW CREATE VIEW vw_EmployeePayslipReport`
+2. Result for Employee 10013 (both cutoffs) showing template columns
+3. `CALL sp_GetEmployeePayslipByPeriod(10013, '2024-06-01', '2024-06-15')` matching Take Home **13,317.40**
+4. Optional: SCHEMAS → Views → `vw_EmployeePayslipReport`
 
 ## Files for Milestone 2 submission
 
 | File | Purpose |
 |------|---------|
 | `11_schema_semi_monthly_tax.sql` | Semi-monthly tax table + seed |
-| `12_seed_payslip_pay_period.sql` | Pay period metadata |
+| `12_seed_payslip_pay_period.sql` | Both June cutoffs (Payroll + Payslip seed) |
 | `employee_payslip_report.sql` | **VIEW definition + verification queries** |
-| `14_m2_report_procedures.sql` | **Stored procedures** (`sp_GetEmployeePayslip`, etc.) |
+| `14_m2_report_procedures.sql` | Stored procedures |
 
-Export `employee_payslip_report.sql` as your **Employee Payslip Database Report SQL script**. Include `14_m2_report_procedures.sql` for M2 stored-procedure requirement.
+Export `employee_payslip_report.sql` as your Employee Payslip Database Report SQL script.

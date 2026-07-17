@@ -2,9 +2,10 @@
 
 ## Purpose
 
-Implements an official-template payroll summary layer for management reporting while reusing `vw_EmployeePayslipReport` as the computation source.
+Implements an official-template **monthly** payroll summary layer for management reporting while reusing `vw_EmployeePayslipReport` as the computation source.
 
-- **Detail summary:** official payroll summary template columns for each employee
+- **Payslip layer:** two semi-monthly cutoffs per employee (earnings/deductions split)
+- **Detail summary:** one monthly row per employee (sum of both cutoffs) with official template columns
 - **Management summary:** department totals and overall payroll totals
 
 ## Run order
@@ -17,38 +18,41 @@ Implements an official-template payroll summary layer for management reporting w
 
 | Layer | Object | Role |
 |-------|--------|------|
-| View | `vw_EmployeePayrollSummaryReport` | Employee-level detail using official template column names |
+| View | `vw_EmployeePayrollSummaryReport` | Monthly rollup (1 row/employee) using official template column names |
 | View | `vw_EmployeePayrollSummaryByDepartment` | Department-level totals (`Total Employees`, `Total Gross Pay`, `Total Net Pay`) |
-| View | `vw_EmployeePayrollOverallTotals` | Overall payroll totals |
-| Procedure | `sp_GetEmployeePayrollSummary()` | Returns template-aligned employee detail rows |
+| View | `vw_EmployeePayrollOverallTotals` | Overall monthly payroll totals |
+| Procedure | `sp_GetEmployeePayrollSummary()` | Returns template-aligned monthly employee rows |
 | Procedure | `sp_GetPayrollSummaryByDepartment()` | Returns department management aggregates |
 | Procedure | `sp_GetPayrollGrandTotals()` | Returns overall payroll totals |
 
-Built as layered views on `vw_EmployeePayslipReport` so formulas stay in one place and downstream reports only reshape or aggregate.
+Built as layered views on `vw_EmployeePayslipReport` so formulas stay in one place. The summary **aggregates both cutoffs** with `SUM(...)` / `GROUP BY EmployeeID`.
 
 ## Official template columns (detail view)
 
-`vw_EmployeePayrollSummaryReport` now exposes:
+`vw_EmployeePayrollSummaryReport` exposes:
 
 - `Employee No`
 - `Employee Full Name`
 - `Position`
 - `Department`
-- `Gross Income`
+- `Pay Period (Month)` (e.g. `June 2024`)
+- `Gross Income` (sum of both cutoffs)
 - `Social Security No.`
-- `Social Security Contribution`
+- `Social Security Contribution` (sum of both cutoffs)
 - `Philhealth No.`
 - `Philhealth Contribution`
 - `Pag-ibig No.`
 - `Pag-Ibig Contribution`
 - `TIN`
 - `Withholding Tax`
-- `Net Pay`
+- `Net Pay` (sum of both cutoffs)
+
+Run the **Aliases Column Header Checker** section in `employees_payroll_summary_report.sql` to verify all 15 headers are present.
 
 ## Key queries for submission
 
 ```sql
--- Detail report (official template columns)
+-- Monthly detail report (official template columns)
 SELECT * FROM vw_EmployeePayrollSummaryReport ORDER BY `Employee No`;
 
 -- Department management summary
@@ -65,15 +69,20 @@ CALL sp_GetPayrollGrandTotals();
 
 ## SQL techniques demonstrated
 
-- **VIEW** (detail + department aggregate + overall totals)
+- **VIEW** (monthly detail + department aggregate + overall totals)
 - **STORED PROCEDURE** (`sp_GetEmployeePayrollSummary`, `sp_GetPayrollSummaryByDepartment`, `sp_GetPayrollGrandTotals`)
 - **JOIN** (inherited via payslip view)
-- **Aggregation** (`SUM`, `COUNT`, `GROUP BY` in management views)
+- **Aggregation** (`SUM`, `COUNT`, `GROUP BY` for monthly rollup and management views)
 - **Subquery** (inherited via payslip view CTEs)
 
 ## Consistency
 
-Script `14_m2_report_procedures.sql` includes checks that payslip and summary views return the same row counts and total NetPay. Procedures never recalculate — they `SELECT` from views only.
+Script `14_m2_report_procedures.sql` includes checks that:
+
+- Payslip rows ≈ **2 × employee count** (two cutoffs)
+- Summary rows ≈ **1 × employee count** (monthly rollup)
+- `SUM(payslip.\`Take Home Pay\`)` = `SUM(summary.\`Net Pay\`)`
+- For employee 10013: per-cutoff Take Home Pay **13,317.40**; monthly Net Pay **26,634.80**
 
 ## Screenshots to capture
 
