@@ -1,0 +1,101 @@
+customer_id,company_name,contact_email,gender,region,signup_date,industry,engagement_tier
+CUST1000,allison hill,,female,North Luzon,04/03/2023,Technology,Basic
+CUST1001,Noah Rhodes,brandi26@williams.com,Male,,2023-09-22,Education,Premium
+CUST1002,Angie Henderson,evelynestrada@yahoo.com,Male,South Luzon,2023-07-23,Technology,Premium
+CUST1003,Daniel Wagner,sarayoung@gmail.com,female,,2024-05-24,Healthcare,Premium
+CUST1004,Cristian Santos,vjohnson@patton-jenkins.com,M,South Luzon,2025-01-22,Healthcare,Standard
+CUST1005,Connie Lawrence,kristinrodriguez@gmail.com,Female,South Luzon,2023-12-17,Education,Standard
+CUST1006,Abigail Shaffer,jamessellers@yahoo.com,Female,Mindanao,2024-02-12,Education,Standard
+CUST1007,Gina Moore,jeffreykeller@yahoo.com,Female,Mindanao,2024-09-21,Education,Basic
+CUST1008,Gabrielle Davis,,female,Visayas,2024-11-14,Education,Standard
+CUST1009,Ryan Munoz,michelle45@hotmail.com,Male,,2024-03-29,Retail,Basic
+CUST1010,monica herrera,sheila14@gmail.com,female,South Luzon,2024-10-11,Education,Basic
+CUST1011,Jamie Arnold,rodriguezryan@hotmail.com,female,Visayas,2023-07-27,Manufacturing,Basic
+CUST1012,Lisa Hensley,gobrien@gmail.com,male,North Luzon,2025-03-17,Healthcare,Standard
+CUST1013,Michele Williams,jonathanfletcher@gmail.com,Male,South Luzon,2024-02-05,Manufacturing,Basic
+CUST1014,Dylan Miller,ryan59@alvarado-martinez.com,male,North Luzon,2025-03-18,Manufacturing,Premium
+CUST1015,Brian Ramirez,snguyen@yahoo.com,F,Visayas,04/03/2023,Healthcare,Standard
+CUST1016,Holly Wood,,Male,Mindanao,2024-10-30,Technology,Basic
+CUST1017,Derek Zuniga,robertbentley@adkins.biz,Male,Visayas,2025-03-23,Healthcare,Basic
+CUST1018,Lisa Jackson,justin69@pena.com,Male,North Luzon,2024-07-13,Education,Premium
+CUST1019,Carla Gray,donnacampbell@hotmail.com,Female,South Luzon,2024-03-16,Healthcare,Standard
+CUST1020,margaret hawkins dds,cardenaskaren@hotmail.com,Female,,2024-01-26,Education,Standard
+CUST1021,Patty Perez,lindsayhernandez@gmail.com,male,Visayas,2024-09-23,Education,Premium
+CUST1022,Ethan Adams,xcarr@gibson.org,male,South Luzon,2024-12-04,Manufacturing,Standard
+CUST1023,Tommy Walter,psnyder@douglas.com,Male,Mindanao,2025-04-14,Education,Premium
+CUST1024,Matthew Foster,,male,Mindanao,2025-01-04,Retail,Standard
+CUST1025,Judy Baker,gregoryrubio@hotmail.com,Female,Mindanao,2024-06-08,Manufacturing,Standard
+CUST1026,Justin Baker,grantsamantha@gmail.com,female,South Luzon,2025-04-02,Retail,Basic
+CUST1027,Stephanie Ross,lauriecontreras@hotmail.com,female,Visayas,2024-07-19,Education,Premium
+CUST1028,Zachary Hicks,usalazar@hotmail.com,female,South Luzon,2023-06-22,Retail,Basic
+CUST1029,Anthony Rodriguez,vmerritt@yahoo.com,male,South Luzon,2024-09-16,Retail,Standard
+CUST1030,rebecca henderson,karen48@yahoo.com,F,,04/03/2023,Education,Standard
+CUST1031,James Ferrell,scott43@rogers-orozco.com,Female,,2023-07-18,Manufacturing,Standard
+CUST1032,Tricia Valencia,,F,Visayas,2023-11-24,Education,Premium
+CUST1033,Nathan Maldonado,jessebenson@lewis.info,male,,2024-09-27,Manufacturing,Standard
+CUST1034,Debra Davidson,clarkrobert@hotmail.com,M,Mindanao,2024-11-07,Healthcare,Standard
+CUST1035,Jeffrey Chavez,wwoods@molina-castaneda.biz,,,2025-05-10,Education,Standard
+CUST1036,Sherri Baker,brobinson@johnson-rogers.biz,,Mindanao,2024-01-04,Retail,Premium
+CUST1037,Cassandra Gaines,ncalhoun@johnson.com,Male,Visayas,2023-11-18,Healthcare,Premium
+CUST1038,Elizabeth Fowler,dtaylor@williams.com,,South Luzon,2024-12-26,Education,Basic
+CUST1039,Brittany Farmer,wmurphy@ramirez-bean.biz,,South Luzon,2023-08-04,Education,Premium
+CUST1040,paula moreno,,Female,,2024-04-27,Retail,Standard
+CUST1041,Fred Smith,ruizkaitlyn@gmail.com,female,Mindanao,2023-08-10,Education,Standard
+CUST1042,Sherry Decker,debraharrington@hotmail.com,F,North Luzon,2025-01-05,Healthcare,Basic
+CUST1043,Anthony Humphrey,herringjames@howell.com,M,North Luzon,2024-09-29,Healthcare,Premium
+CUST1044,Angelica Tucker,elliottjeffery@hotmail.com,M,North Luzon,2024-11-22,Education,Standard
+CUST1045,Philip Cannon,gary91@gmail.com,Female,South Luzon,04/03/2023,Manufacturing,Basic
+CUST1046,John Pierce,lanesarah@hotmail.com,Female,South Luzon,2025-04-02,Retail,Premium
+CUST1047,Shane Henderson,mdavid@gmail.com,,Mindanao,2023-08-12,Education,Standard
+CUST1048,Joshua Blair,,M,,2024-05-04,Education,Standard
+CUST1049,Eric Carney,terrykevin@burke.com,Male,North Luzon,2023-10-02,Manufacturing,Premium
+CUST1050,jessica holmes,estanley@hotmail.com,Male,Mindanao,2024-11-15,Manufacturing,Standard
+CUST1051,Danny Morgan,atkinsonlynn@gmail.com,F,Mindanao,2024-01-13,Technology,Standard
+CUST1052,Crystal Robinson,cynthia72@yahoo.com,Male,,2025-04-26,Technology,Standard
+CUST1053,Mark Perez,christina87@graham-simon.com,M,Mindanao,2023-06-17,Technology,Standard
+CUST1054,Shannon Jones,mariahmiller@yahoo.com,,,2023-06-30,Education,Premium
+CUST1055,Michael Lewis,qhudson@rogers-snyder.com,M,Visayas,2024-02-01,Healthcare,Premium
+CUST1056,Timothy Duncan,,male,,2025-02-02,Manufacturing,Premium
+CUST1057,Richard Aguirre,zlewis@peterson-beard.com,M,North Luzon,2023-07-08,Technology,Premium
+CUST1058,Brent Jordan,christophercortez@peters-allen.info,,North Luzon,2024-01-08,Education,Basic
+CUST1059,John Daniel,fmcguire@yahoo.com,Male,,2024-02-28,Retail,Standard
+CUST1060,victoria garcia,tholt@perkins.biz,female,Visayas,04/03/2023,Healthcare,Basic
+CUST1061,Gerald Hensley,jacqueline44@yahoo.com,F,Visayas,2024-03-12,Technology,Basic
+CUST1062,Connor West,griffithleslie@herrera.com,male,North Luzon,2024-04-24,Manufacturing,Premium
+CUST1063,Donald Wright,jenny89@yahoo.com,Male,Visayas,2023-09-16,Manufacturing,Premium
+CUST1064,Jessica Callahan,,F,Mindanao,2023-12-01,Education,Basic
+CUST1065,Amber Kidd,kennethward@smith-ferguson.com,Male,South Luzon,2024-07-11,Healthcare,Basic
+CUST1066,Tracy House,tranheidi@little.com,male,Mindanao,2024-04-10,Manufacturing,Standard
+CUST1067,Carol Tucker,taylor75@sheppard.info,M,North Luzon,2024-08-07,Healthcare,Basic
+CUST1068,James Brown,moralescharles@parks.com,,Visayas,2024-11-05,Technology,Basic
+CUST1069,William Baker,davidduran@carlson.biz,female,,2025-01-30,Healthcare,Premium
+CUST1070,jordan henderson,levans@yahoo.com,male,South Luzon,2023-10-12,Manufacturing,Premium
+CUST1071,Whitney Peters,lynchjody@gmail.com,,,2023-10-05,Education,Basic
+CUST1072,Brittney Phillips,,M,North Luzon,2023-10-08,Healthcare,Premium
+CUST1073,Lauren Daniels,donna23@arnold.com,male,Visayas,2023-07-26,Retail,Premium
+CUST1074,Amy Silva,enorris@yahoo.com,Female,,2024-09-10,Education,Premium
+CUST1075,Sarah Moore,keithcampbell@jones-hall.com,female,,04/03/2023,Technology,Premium
+CUST1076,Angela Lopez,owilson@hernandez.com,Male,South Luzon,2025-04-01,Healthcare,Standard
+CUST1077,Megan Young,brooke94@martinez-barker.biz,Male,South Luzon,2024-03-18,Healthcare,Basic
+CUST1078,Steve Sanchez,mkim@gmail.com,female,Visayas,2024-09-18,Retail,Standard
+CUST1079,Lisa Barnes,cassandra01@gmail.com,Female,South Luzon,2024-11-06,Retail,Basic
+CUST1080,kelly donovan,,,,2023-11-29,Technology,Standard
+CUST1081,Mike Allen,barbara27@pearson.org,M,,2024-06-15,Healthcare,Standard
+CUST1082,Michael Evans,ecosta@yahoo.com,Male,North Luzon,2025-05-04,Retail,Standard
+CUST1083,Paul Jones,manuel12@yahoo.com,,,2024-08-20,Manufacturing,Premium
+CUST1084,Zachary Ferrell,zroberts@hotmail.com,Female,Visayas,2023-09-14,Healthcare,Premium
+CUST1085,Daniel Baker,qmiller@wilson-barton.net,,Mindanao,2023-11-22,Retail,Premium
+CUST1086,Shirley Suarez,mgutierrez@cox.com,Male,North Luzon,2024-05-18,Healthcare,Basic
+CUST1087,Christopher Bass,andrea47@washington.com,F,North Luzon,2024-10-02,Healthcare,Standard
+CUST1088,Lisa Archer,,M,Visayas,2023-12-09,Education,Standard
+CUST1089,Aimee Montoya,andrea86@walker.info,F,Visayas,2024-05-16,Retail,Basic
+CUST1090,matthew mcmillan,tyronemoran@thornton.info,female,South Luzon,04/03/2023,Retail,Premium
+CUST1091,Brian Rodriguez,yarnold@weeks.com,,North Luzon,2023-12-10,Retail,Basic
+CUST1092,Denise Jacobs,kendra65@adams.org,M,South Luzon,2024-10-24,Manufacturing,Standard
+CUST1093,Christina Walters,seanwashington@yahoo.com,Female,,2023-06-02,Manufacturing,Premium
+CUST1094,John Whitehead,mcantu@hotmail.com,M,North Luzon,2025-04-23,Manufacturing,Premium
+CUST1095,Anna Henderson,xhall@williams-garner.biz,M,North Luzon,2025-02-08,Retail,Premium
+CUST1096,Aaron Wise,,Female,Mindanao,2024-05-21,Retail,Premium
+CUST1097,Deborah Figueroa,tylerjohnson@hotmail.com,female,North Luzon,2025-04-24,Retail,Standard
+CUST1098,Jessica Smith,sawyerscott@hotmail.com,M,,2024-01-04,Manufacturing,Basic
+CUST1099,Stephen Mckee,bowenrobert@hotmail.com,female,South Luzon,2024-11-02,Technology,Standard

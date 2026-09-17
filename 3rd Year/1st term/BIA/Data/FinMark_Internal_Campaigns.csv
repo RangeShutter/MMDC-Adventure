@@ -1,0 +1,49 @@
+,campaign_id,campaign_name,channel,start_date,end_date,budget,client
+0,CAM1001,Ad Spend Analysis Awareness,Webinar,2023-03-27,2023-07-25,50658.99,FinMark Internal
+1,CAM1006,Client Engagement Acceleration,LinkedIn,2022-01-09,2022-09-24,133381.98,FinMark Internal
+2,CAM1009,Financial Health Insights Promo,Email,2022-11-23,2024-04-04,187223.06,FinMark Internal
+3,CAM1010,Client Engagement Acceleration,Facebook,2022-01-15,2022-04-26,13826.19,FinMark Internal
+4,CAM1012,Ad Spend Analysis Awareness,Webinar,2022-08-14,2023-11-25,178372.55,FinMark Internal
+5,CAM1013,Financial Health Insights Promo,YouTube,2022-04-23,2023-10-20,97118.53,FinMark Internal
+6,CAM1014,Predictive Modeling Demo Series,YouTube,2022-01-01,2022-04-05,117272.22,FinMark Internal
+7,CAM1015,BI Tools Launch Campaign,Email,2022-09-23,2025-10-29,135975.17,FinMark Internal
+8,CAM1018,Q1 KPI Dashboard Blitz,Webinar,2022-11-02,2025-11-07,199420.39,FinMark Internal
+9,CAM1019,Client Retention Drive,Facebook,2022-01-12,2025-04-27,146829.92,FinMark Internal
+10,CAM1021,Analytics Training Roadshow,Instagram,2023-02-24,2025-07-03,177152.96,FinMark Internal
+11,CAM1023,Quarterly Business Review Push,Email,2022-06-20,2023-10-08,53905.36,FinMark Internal
+12,CAM1024,Revenue Growth Masterclass,Webinar,2022-05-14,2024-08-07,180503.29,FinMark Internal
+13,CAM1028,Revenue Growth Masterclass,Facebook,2025-03-10,2025-09-19,173231.23,FinMark Internal
+14,CAM1029,BI Tools Launch Campaign,Email,2023-10-20,2023-12-12,105011.07,FinMark Internal
+15,CAM1032,End-of-Year Forecast Drive,Email,2022-06-28,2025-04-04,154027.68,FinMark Internal
+16,CAM1033,End-of-Year Forecast Drive,Facebook,2024-12-15,2025-01-09,154401.05,FinMark Internal
+17,CAM1035,Financial Health Insights Promo,Facebook,2022-04-21,2023-01-13,88029.7,FinMark Internal
+18,CAM1036,Revenue Growth Masterclass,Email,2022-05-17,2023-11-08,49841.15,FinMark Internal
+19,CAM1037,Analytics Training Roadshow,Facebook,2022-08-20,2025-11-02,195546.59,FinMark Internal
+20,CAM1041,Marketing Intelligence Series,Email,2023-04-26,2023-07-18,158559.27,FinMark Internal
+21,CAM1042,Predictive Modeling Demo Series,Webinar,2024-12-27,2025-02-18,155513.14,FinMark Internal
+22,CAM1045,Analytics Training Roadshow,Email,2024-09-20,2025-05-16,84775.51,FinMark Internal
+23,CAM1046,Analytics Training Roadshow,YouTube,2022-11-19,2023-01-09,34836.29,FinMark Internal
+24,CAM1049,Client Engagement Acceleration,Email,2023-08-29,2025-12-26,119261.51,FinMark Internal
+25,CAM1055,SME Data Strategy Push,Instagram,2023-01-02,2025-10-17,151590.8,FinMark Internal
+26,CAM1059,Quarterly Business Review Push,Instagram,2022-06-24,2024-07-21,47740.01,FinMark Internal
+27,CAM1060,Marketing Intelligence Series,LinkedIn,2023-08-11,2025-02-03,158843.57,FinMark Internal
+28,CAM1061,Client Engagement Acceleration,LinkedIn,2023-05-10,2024-05-14,182758.01,FinMark Internal
+29,CAM1062,Workforce Productivity Insights,Instagram,2024-08-30,2025-05-07,80344.12,FinMark Internal
+30,CAM1064,Executive KPI Dashboard Launch,Facebook,2025-02-08,2025-11-10,180429.1,FinMark Internal
+31,CAM1065,Predictive Modeling Demo Series,Facebook,2025-03-16,2025-07-03,170763.6,FinMark Internal
+32,CAM1066,BI Tools Launch Campaign,LinkedIn,2022-02-04,2022-06-26,44734.54,FinMark Internal
+33,CAM1067,Predictive Modeling Demo Series,Webinar,2024-09-25,2025-07-19,191695.46,FinMark Internal
+34,CAM1070,Client Engagement Acceleration,Email,2024-01-20,2024-12-25,21861.95,FinMark Internal
+35,CAM1074,Financial Health Insights Promo,Email,2022-08-21,2023-04-05,70219.1,FinMark Internal
+36,CAM1076,Ad Spend Analysis Awareness,Webinar,2023-07-17,2025-03-26,176342.84,FinMark Internal
+37,CAM1081,Ad Spend Analysis Awareness,YouTube,2022-03-17,2024-12-15,37872.07,FinMark Internal
+38,CAM1082,Q1 KPI Dashboard Blitz,Facebook,2023-03-15,2023-07-13,141161.34,FinMark Internal
+39,CAM1083,Financial Health Insights Promo,Instagram,2023-11-30,2025-05-21,189554.57,FinMark Internal
+40,CAM1085,Financial Health Insights Promo,Facebook,2024-07-03,2025-01-01,73007.2,FinMark Internal
+41,CAM1087,Client Engagement Acceleration,Email,2023-11-23,2024-08-18,132687.76,FinMark Internal
+42,CAM1088,Ad Spend Analysis Awareness,Email,2022-09-10,2024-06-21,107008.38,FinMark Internal
+43,CAM1089,Client Engagement Acceleration,LinkedIn,2025-02-23,2025-12-27,32791.06,FinMark Internal
+44,CAM1093,Predictive Modeling Demo Series,Instagram,2022-05-07,2025-01-29,36087.01,FinMark Internal
+45,CAM1096,Q1 KPI Dashboard Blitz,Email,2022-10-21,2023-08-05,135839.61,FinMark Internal
+46,CAM1098,Predictive Modeling Demo Series,YouTube,2022-11-06,2024-10-29,164269.78,FinMark Internal
+47,CAM1099,Revenue Growth Masterclass,YouTube,2023-10-24,2024-11-30,189692.44,FinMark Internal
