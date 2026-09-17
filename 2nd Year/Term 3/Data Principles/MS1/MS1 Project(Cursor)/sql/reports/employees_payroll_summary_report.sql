@@ -2,6 +2,12 @@
 -- MotorPH Payroll System - M2: Employees Payroll Summary Database Report
 -- Creates template-aligned MONTHLY detail and management-level aggregate views.
 --
+-- Prerequisites (run first):
+--   1) sql/payrollsystem_db.sql  (or MS1 01-05)
+--   2) sql/reports/11_schema_semi_monthly_tax.sql
+--   3) sql/reports/12_seed_payslip_pay_period.sql
+--   4) sql/reports/employee_payslip_report.sql  (creates vw_EmployeePayslipReport)
+--
 -- Monthly summary = rollup of BOTH June cutoffs from vw_EmployeePayslipReport
 -- (one row per employee for the full month).
 --

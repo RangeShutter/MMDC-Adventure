@@ -210,7 +210,7 @@ payslip_base AS (
 earnings AS (
     SELECT
         pb.*,
-        -- Template GROSS INCOME = Daily Rate × Days Worked + Overtime (benefits NOT included)
+        -- Template GROSS INCOME = Daily Rate * Days Worked + Overtime (benefits NOT included)
         ROUND(pb.DailyRate * pb.DaysWorked + pb.Overtime, 2) AS GrossIncome,
         ROUND(
             pb.RiceSubsidy + pb.PhoneAllowance + pb.ClothingAllowance,
@@ -251,7 +251,7 @@ statutory AS (
 taxable AS (
     SELECT
         st.*,
-        -- Taxable base: work gross + half of monthly benefits − statutory (keeps Option A tax)
+        -- Taxable base: work gross + half of monthly benefits - statutory (Option A tax)
         ROUND(
             st.GrossIncome
             + (st.BenefitsTotal / 2)
@@ -329,7 +329,7 @@ SELECT
         SSSDeduction + PhilHealthDeduction + PagibigDeduction + WithholdingTax,
         2
     ) AS `Summary Deductions`,
-    -- TAKE HOME PAY = Gross Income + Benefits − Deductions (official template)
+    -- TAKE HOME PAY = Gross Income + Benefits - Deductions (official template)
     ROUND(
         GrossIncome
         + BenefitsTotal

@@ -1,0 +1,152 @@
+classDiagram
+    class User {
+        <<abstract>>
+        +String userId
+        +String fullName
+        +String email
+        -String passwordHash
+        +String accountStatus
+        +login(email, password) Boolean
+        +logout() void
+        +updateBasicInfo(fullName, email) void
+    }
+
+    class Student {
+        +String studentNumber
+        +viewPotentialGroupmates(subjectId) List
+        +sendGroupmateRequest(receiverId, subjectId) GroupmateRequest
+        +createProjectGroup(subjectId, groupName) ProjectGroup
+        +submitReport(reportedUserId, reason) UserReport
+    }
+
+    class Administrator {
+        +manageUser(userId, action) void
+        +manageSubject(subjectId, action) void
+        +reviewReport(reportId, resolution) void
+    }
+
+    class CollaborationProfile {
+        +String profileId
+        +String itMajor
+        +String employmentStatus
+        +String workSchedule
+        +String workingStyle
+        +String profileSummary
+        +updateProfile() void
+    }
+
+    class Availability {
+        +String availabilityId
+        +String dayOfWeek
+        +Time startTime
+        +Time endTime
+        +Boolean isRecurring
+        +overlaps(otherAvailability) Boolean
+    }
+
+    class Subject {
+        +String subjectId
+        +String subjectCode
+        +String subjectName
+        +String status
+        +updateDetails() void
+    }
+
+    class SubjectEnrollment {
+        +String enrollmentId
+        +Boolean lookingForGroup
+        +Date enrolledAt
+        +setLookingForGroup(status) void
+    }
+
+    class MatchingService {
+        +findCandidates(studentId, subjectId) List
+        +calculateCompatibility(studentId, candidateId) Decimal
+        +generateRecommendations(studentId, subjectId) List
+    }
+
+    class MatchRecommendation {
+        +String recommendationId
+        +Decimal compatibilityScore
+        +String status
+        +DateTime createdAt
+        +markViewed() void
+        +dismiss() void
+    }
+
+    class GroupmateRequest {
+        +String requestId
+        +String status
+        +String message
+        +DateTime sentAt
+        +DateTime respondedAt
+        +accept() void
+        +decline() void
+        +cancel() void
+    }
+
+    class ProjectGroup {
+        +String groupId
+        +String groupName
+        +Integer maximumMembers
+        +DateTime createdAt
+        +String status
+        +addMember(studentId) void
+        +removeMember(studentId) void
+        +viewMembers() List
+    }
+
+    class GroupMembership {
+        +String membershipId
+        +String role
+        +String status
+        +DateTime joinedAt
+        +leaveGroup() void
+    }
+
+    class Notification {
+        +String notificationId
+        +String type
+        +String message
+        +Boolean isRead
+        +DateTime createdAt
+        +markAsRead() void
+    }
+
+    class UserReport {
+        +String reportId
+        +String reason
+        +String details
+        +String status
+        +DateTime submittedAt
+        +String resolution
+        +resolve(resolution) void
+    }
+
+    User <|-- Student
+    User <|-- Administrator
+    Student "1" *-- "1" CollaborationProfile : owns
+    CollaborationProfile "1" *-- "0..*" Availability : contains
+    Student "1" -- "0..*" SubjectEnrollment : has
+    Subject "1" -- "0..*" SubjectEnrollment : includes
+    MatchingService ..> CollaborationProfile : compares
+    MatchingService ..> SubjectEnrollment : filters
+    MatchingService ..> MatchRecommendation : creates
+    Student "1" -- "0..*" MatchRecommendation : receives
+    Subject "1" -- "0..*" MatchRecommendation : concerns
+    MatchRecommendation "0..1" ..> GroupmateRequest : initiates
+    Student "1" --> "0..*" GroupmateRequest : sends
+    Student "1" <-- "0..*" GroupmateRequest : receives
+    Subject "1" -- "0..*" GroupmateRequest : concerns
+    Student "1" --> "0..*" ProjectGroup : creates
+    Subject "1" -- "0..*" ProjectGroup : has
+    ProjectGroup "1" *-- "1..*" GroupMembership : contains
+    Student "1" -- "0..*" GroupMembership : holds
+    Student "1" *-- "0..*" Notification : receives
+    GroupmateRequest ..> Notification : triggers
+    ProjectGroup ..> Notification : triggers
+    Student "1" --> "0..*" UserReport : submits
+    User "1" <-- "0..*" UserReport : concerns
+    Administrator "0..1" -- "0..*" UserReport : reviews
+    Administrator ..> User : manages
+    Administrator ..> Subject : maintains

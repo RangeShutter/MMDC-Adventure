@@ -4,7 +4,9 @@
 
 USE payrollsystem_db;
 
--- Employees
+-- Employees (explicit MotorPH IDs require IDENTITY_INSERT-style session flag)
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
+
 INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, Address, ContactNumber, Position, DepartmentID, StatusID) VALUES
 (10001, 'Manuel III', 'Garcia', '1983-10-11', NULL, '966-860-270', 'Chief Executive Officer', 1, 1),
 (10002, 'Antonio', 'Lim', '1988-06-19', NULL, '171-867-411', 'Chief Operating Officer', 1, 1),
@@ -40,6 +42,8 @@ INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, Address, Con
 (10032, 'John Rafael', 'Castro', '1992-02-09', NULL, '332-424-955', 'Sales & Marketing', 6, 1),
 (10033, 'Carlos Ian', 'Martinez', '1990-11-16', NULL, '078-854-208', 'Supply Chain and Logistics', 7, 1),
 (10034, 'Beatriz', 'Santos', '1990-08-07', NULL, '526-639-511', 'Customer Service and Relations', 8, 1);
+
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
 
 -- Assign department managers
 UPDATE Department SET ManagerID = 10001 WHERE DepartmentID = 1;

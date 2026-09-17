@@ -2,12 +2,17 @@
 -- MotorPH Payroll System - M2: Employee Payslip Database Report
 -- Creates VIEW vw_EmployeePayslipReport
 --
+-- Prerequisites (run first):
+--   1) sql/payrollsystem_db.sql  (or MS1 01-05)
+--   2) sql/reports/11_schema_semi_monthly_tax.sql
+--   3) sql/reports/12_seed_payslip_pay_period.sql
+--
 -- Layout and formulas match the official MotorPH Employee Payslip template:
 --   Header, Earnings, Benefits, Deductions, Summary (Take Home Pay)
 --
 -- Monthly coverage = TWO payslips (cutoffs) for June:
 --   2024-06-01..15 and 2024-06-16..30
--- Statutory deductions: Option A (Split) — monthly SSS/PhilHealth/Pag-IBIG / 2
+-- Statutory deductions: Option A (Split) - monthly SSS/PhilHealth/Pag-IBIG / 2
 -- Tax: semi-monthly brackets after statutory deductions (per cutoff)
 -- =============================================================================
 
@@ -68,7 +73,7 @@ payslip_base AS (
 earnings AS (
     SELECT
         pb.*,
-        -- Template GROSS INCOME = Daily Rate × Days Worked + Overtime (benefits NOT included)
+        -- Template GROSS INCOME = Daily Rate * Days Worked + Overtime (benefits NOT included)
         ROUND(pb.DailyRate * pb.DaysWorked + pb.Overtime, 2) AS GrossIncome,
         ROUND(
             pb.RiceSubsidy + pb.PhoneAllowance + pb.ClothingAllowance,
@@ -109,7 +114,7 @@ statutory AS (
 taxable AS (
     SELECT
         st.*,
-        -- Taxable base: work gross + half of monthly benefits − statutory (keeps Option A tax)
+        -- Taxable base: work gross + half of monthly benefits - statutory (Option A tax)
         ROUND(
             st.GrossIncome
             + (st.BenefitsTotal / 2)
@@ -187,7 +192,7 @@ SELECT
         SSSDeduction + PhilHealthDeduction + PagibigDeduction + WithholdingTax,
         2
     ) AS `Summary Deductions`,
-    -- TAKE HOME PAY = Gross Income + Benefits − Deductions (official template)
+    -- TAKE HOME PAY = Gross Income + Benefits - Deductions (official template)
     ROUND(
         GrossIncome
         + BenefitsTotal
@@ -207,7 +212,7 @@ SELECT
 FROM taxed;
 
 -- =============================================================================
--- VERIFICATION: Official template check — Employee 10013, cutoff 1
+-- VERIFICATION: Official template check - Employee 10013, cutoff 1
 -- Expected (template):
 --   Gross Income 12,000.00 | Benefits 2,500.00 | Total Deductions 1,182.60
 --   Take Home Pay 13,317.40

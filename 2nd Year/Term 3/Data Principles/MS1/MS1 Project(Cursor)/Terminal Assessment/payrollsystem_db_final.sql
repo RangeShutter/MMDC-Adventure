@@ -4,9 +4,13 @@
 
 -- Database: payrollsystem_db | MySQL 8.0+
 
--- Includes: MS1 schema/seed + M2 semi-monthly tax, pay periods, report views,
+-- Includes: MS1 schema/seed + identity trigger + M2 semi-monthly tax,
 
---           and stored procedures (definitions only).
+--           pay periods, report views, and stored procedures.
+
+-- IMPORTANT: Open this file in a Workbench SQL Editor tab and Execute.
+
+--            File > Run SQL Script may Error 1064 on DELIMITER (trigger).
 
 -- Test cases: run 16_terminal_assessment_test_cases.sql separately.
 
@@ -67,6 +71,7 @@ DROP TABLE IF EXISTS Benefit;
 DROP TABLE IF EXISTS Salary;
 DROP TABLE IF EXISTS GovernmentID;
 DROP TABLE IF EXISTS EmployeeAddress;
+DROP TRIGGER IF EXISTS trg_employee_block_explicit_id;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS Department;
 DROP TABLE IF EXISTS WithholdingTaxBracket;
@@ -128,7 +133,7 @@ CREATE TABLE Department (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Employee (
-    EmployeeID INT NOT NULL,
+    EmployeeID INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
     DateOfBirth DATE NOT NULL,
@@ -147,6 +152,10 @@ CREATE TABLE Employee (
     -- DateOfBirth <= today (design doc): MySQL CHECK cannot use CURDATE() (Error 3814); validate in app
     CONSTRAINT chk_employee_dob CHECK (DateOfBirth >= '1900-01-01')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Identity-insert guard (Error 544) lives in 02b_employee_identity_trigger.sql
+-- so payrollsystem_db.sql has no DELIMITER (avoids Error 1064 with File > Run SQL Script).
+-- Terminal Assessment final script includes 02b after this schema.
 
 ALTER TABLE Department
     ADD CONSTRAINT fk_department_manager
@@ -477,7 +486,9 @@ INSERT INTO RolePermission (RoleID, PermissionID) VALUES
 
 USE payrollsystem_db;
 
--- Employees
+-- Employees (explicit MotorPH IDs require IDENTITY_INSERT-style session flag)
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
+
 INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, Address, ContactNumber, Position, DepartmentID, StatusID) VALUES
 (10001, 'Manuel III', 'Garcia', '1983-10-11', NULL, '966-860-270', 'Chief Executive Officer', 1, 1),
 (10002, 'Antonio', 'Lim', '1988-06-19', NULL, '171-867-411', 'Chief Operating Officer', 1, 1),
@@ -513,6 +524,8 @@ INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, Address, Con
 (10032, 'John Rafael', 'Castro', '1992-02-09', NULL, '332-424-955', 'Sales & Marketing', 6, 1),
 (10033, 'Carlos Ian', 'Martinez', '1990-11-16', NULL, '078-854-208', 'Supply Chain and Logistics', 7, 1),
 (10034, 'Beatriz', 'Santos', '1990-08-07', NULL, '526-639-511', 'Customer Service and Relations', 8, 1);
+
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
 
 -- Assign department managers
 UPDATE Department SET ManagerID = 10001 WHERE DepartmentID = 1;
@@ -821,6 +834,44 @@ INSERT INTO WithholdingTaxBracket (MonthlyRateMin, MonthlyRateMax, TaxRuleDescri
 
 
 
+-- >>> BEGIN 02b_employee_identity_trigger.sql
+
+-- MotorPH Payroll System - Employee AUTO_INCREMENT identity guard
+-- =============================================================================
+-- PURPOSE: Block explicit EmployeeID inserts unless:
+--            SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
+-- (Matches sample: cannot insert explicit value for identity column ...)
+--
+-- HOW TO RUN (important):
+--   Open this file in a MySQL Workbench SQL Editor tab and click Execute.
+--   Do NOT use File > Run SQL Script for this file if DELIMITER fails (Error 1064).
+--
+-- Prerequisites: payrollsystem_db exists; Employee table exists (run 02_schema.sql first).
+-- =============================================================================
+
+USE payrollsystem_db;
+
+DROP TRIGGER IF EXISTS trg_employee_block_explicit_id;
+
+DELIMITER //
+CREATE TRIGGER trg_employee_block_explicit_id
+BEFORE INSERT ON Employee
+FOR EACH ROW
+BEGIN
+    IF (IFNULL(@ALLOW_EXPLICIT_EMPLOYEE_ID, 0) <> 1)
+       AND (NEW.EmployeeID IS NOT NULL)
+       AND (NEW.EmployeeID <> 0) THEN
+        SIGNAL SQLSTATE '45000'
+            SET MYSQL_ERRNO = 544,
+                MESSAGE_TEXT = 'Cannot insert explicit value for identity column in table Employee when IDENTITY_INSERT is set to OFF.';
+    END IF;
+END//
+DELIMITER ;
+
+-- <<< END 02b_employee_identity_trigger.sql
+
+
+
 -- >>> BEGIN reports/11_schema_semi_monthly_tax.sql
 
 -- MotorPH Payroll System - M2: Semi-monthly withholding tax brackets
@@ -1040,7 +1091,7 @@ payslip_base AS (
 earnings AS (
     SELECT
         pb.*,
-        -- Template GROSS INCOME = Daily Rate × Days Worked + Overtime (benefits NOT included)
+        -- Template GROSS INCOME = Daily Rate * Days Worked + Overtime (benefits NOT included)
         ROUND(pb.DailyRate * pb.DaysWorked + pb.Overtime, 2) AS GrossIncome,
         ROUND(
             pb.RiceSubsidy + pb.PhoneAllowance + pb.ClothingAllowance,
@@ -1081,7 +1132,7 @@ statutory AS (
 taxable AS (
     SELECT
         st.*,
-        -- Taxable base: work gross + half of monthly benefits − statutory (keeps Option A tax)
+        -- Taxable base: work gross + half of monthly benefits - statutory (Option A tax)
         ROUND(
             st.GrossIncome
             + (st.BenefitsTotal / 2)
@@ -1159,7 +1210,7 @@ SELECT
         SSSDeduction + PhilHealthDeduction + PagibigDeduction + WithholdingTax,
         2
     ) AS `Summary Deductions`,
-    -- TAKE HOME PAY = Gross Income + Benefits − Deductions (official template)
+    -- TAKE HOME PAY = Gross Income + Benefits - Deductions (official template)
     ROUND(
         GrossIncome
         + BenefitsTotal

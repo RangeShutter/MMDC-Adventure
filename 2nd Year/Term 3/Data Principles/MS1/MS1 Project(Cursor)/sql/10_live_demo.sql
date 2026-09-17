@@ -232,8 +232,10 @@ BEGIN
             INSERT INTO demo_constraint_results VALUES
                 (1, 'NOT NULL FirstName', 'REJECT', 'PASS', @err);
         END;
+        SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
         INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, ContactNumber, Position, DepartmentID, StatusID)
         VALUES (99991, NULL, 'Invalid', '2000-01-01', '000-000', 'Test', 1, 1);
+        SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
         INSERT INTO demo_constraint_results VALUES
             (1, 'NOT NULL FirstName', 'REJECT', 'FAIL', 'NULL name was allowed');
     END;

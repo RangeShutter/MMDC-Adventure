@@ -18,6 +18,7 @@ DROP TABLE IF EXISTS Benefit;
 DROP TABLE IF EXISTS Salary;
 DROP TABLE IF EXISTS GovernmentID;
 DROP TABLE IF EXISTS EmployeeAddress;
+DROP TRIGGER IF EXISTS trg_employee_block_explicit_id;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS Department;
 DROP TABLE IF EXISTS WithholdingTaxBracket;
@@ -79,7 +80,7 @@ CREATE TABLE Department (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Employee (
-    EmployeeID INT NOT NULL,
+    EmployeeID INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
     DateOfBirth DATE NOT NULL,
@@ -98,6 +99,10 @@ CREATE TABLE Employee (
     -- DateOfBirth <= today (design doc): MySQL CHECK cannot use CURDATE() (Error 3814); validate in app
     CONSTRAINT chk_employee_dob CHECK (DateOfBirth >= '1900-01-01')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Identity-insert guard (Error 544) lives in 02b_employee_identity_trigger.sql
+-- so payrollsystem_db.sql has no DELIMITER (avoids Error 1064 with File > Run SQL Script).
+-- Terminal Assessment final script includes 02b after this schema.
 
 ALTER TABLE Department
     ADD CONSTRAINT fk_department_manager

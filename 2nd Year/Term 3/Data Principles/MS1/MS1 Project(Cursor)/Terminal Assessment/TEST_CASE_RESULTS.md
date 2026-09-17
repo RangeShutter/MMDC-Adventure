@@ -11,7 +11,7 @@
 |--------------------|---------------|
 | Employee numbers 1–34 style | MotorPH IDs **10001–10034** (plus test inserts **10035–10037**) |
 | Delete IDs 29, 30, 31 | **10029, 10030, 10031** (Carol Ramos, Emelia Maceda, Delia Aguilar) |
-| Uniqueness test Employee No. 40 | Attempt insert with **existing** `EmployeeID = 10001` (ID 40 is unused; would not prove uniqueness) |
+| Uniqueness test Employee No. 40 | Insert predefined **`EmployeeID = 40`** with identity insert OFF → **Error 544** (AUTO_INCREMENT) |
 | Immediate Supervisor | Not a column (3NF); supervisor is organizational, not stored on `Employee` |
 | Gross Semi-Monthly / Hourly Rate | Derived in SELECT from `BaseSalary` (`/2`, `/20/8`); not separate Salary columns |
 
@@ -85,14 +85,14 @@
 |-------|--------|
 | **Test Case ID** | MMDC-DBTC02-A |
 | **Title** | Check Employee ID Uniqueness |
-| **Objective** | Enforces uniqueness of Employee IDs; rejects insert with a predefined/existing ID. |
-| **Actions** | Attempt `INSERT` into `Employee` with **`EmployeeID = 10001`** (already exists) using Mac Arnold Almirol details from homework. |
-| **Expected Result** | Database **rejects** the insert; error for duplicate primary key (e.g. Error 1062). |
-| **Actual Result** | **PASS** when Workbench shows **red X** / Error 1062 (rejection is success) |
-| **Notes** | Homework Employee No. 40 does not exist in this seed. Using 10001 proves the uniqueness constraint. Do **not** treat the error as a failed test. |
+| **Objective** | Prevents adding an employee with a predefined ID (`EmployeeID` is AUTO_INCREMENT / identity). |
+| **Actions** | Attempt `INSERT` with **`EmployeeID = 40`** (Mac Arnold Almirol) while identity insert is OFF. |
+| **Expected Result** | Database **rejects** the insert with Error **544**: Cannot insert explicit value for identity column … when IDENTITY_INSERT is set to OFF. |
+| **Actual Result** | **PASS** when Workbench shows **red X** / Error 544 (rejection is success) |
+| **Notes** | Same meaning as the course sample screenshot (SQL Server Msg 544). Do **not** treat the error as a failed test. |
 
 **Screenshot (Actual Result):**  
-<!-- Paste Action Output showing Error 1062 / duplicate primary key here -->
+<!-- Paste Messages / Action Output showing Error 544 / identity insert OFF here -->
 
 ---
 
@@ -103,10 +103,10 @@
 | **Test Case ID** | MMDC-DBTC02-B |
 | **Title** | Check Null Values |
 | **Objective** | Enforces NOT NULL on mandatory employee fields. |
-| **Actions** | Attempt `INSERT` for Ian Correa with **`ContactNumber = NULL`** and **`Position = NULL`**. |
-| **Expected Result** | Database **rejects** the insert; NOT NULL violation error. |
+| **Actions** | Attempt `INSERT` for Ian Correa **without** `EmployeeID` (AUTO_INCREMENT) and with **`ContactNumber = NULL`** and **`Position = NULL`**. |
+| **Expected Result** | Database **rejects** the insert; NOT NULL violation (Error 1048). |
 | **Actual Result** | **PASS** when Workbench shows **red X** / Error 1048 (Column cannot be null) |
-| **Notes** | Homework supplies name, birthdate, address only; schema also requires ContactNumber, Position, DepartmentID, StatusID. |
+| **Notes** | Homework supplies name, birthdate, address only. |
 
 **Screenshot (Actual Result):**  
 <!-- Paste Action Output showing NOT NULL / Error 1048 here -->
@@ -132,7 +132,7 @@
 1. Deploy [`payrollsystem_db_final.sql`](payrollsystem_db_final.sql) (or MS1 01–05 + M2 scripts).
 2. Open [`16_terminal_assessment_test_cases.sql`](16_terminal_assessment_test_cases.sql).
 3. Run **DBTC01-A**, then **01-B**, then **01-C** (screenshot each result grid).
-4. Run **DBTC02-A** alone — expect error (screenshot Action Output).
-5. Run **DBTC02-B** alone — expect error (screenshot Action Output).  
+4. Run **DBTC02-A** alone — expect **Error 544** identity insert OFF (screenshot Messages).
+5. Run **DBTC02-B** alone — expect **Error 1048** NOT NULL (screenshot Messages).  
    Tip: Preferences → SQL Editor → stop on error helps isolate constraint tests.
 6. Paste screenshots into this file’s placeholders for submission.

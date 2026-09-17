@@ -22,6 +22,20 @@ CREATE DATABASE IF NOT EXISTS payrollsystem_db
   COLLATE utf8mb4_unicode_ci;
 
 USE payrollsystem_db;
+SHOW TABLES;
+SELECT COUNT(*) AS total_employees FROM Employee;
+SELECT e.EmployeeID, e.FirstName, e.LastName, d.DepartmentName,
+       es.StatusName, s.BaseSalary
+FROM Employee e
+JOIN Department d ON e.DepartmentID = d.DepartmentID
+JOIN EmploymentStatus es ON e.StatusID = es.StatusID
+JOIN Salary s ON e.EmployeeID = s.EmployeeID
+WHERE e.EmployeeID = 10001;
+SELECT * FROM GovernmentID WHERE EmployeeID = 10001;
+SELECT BenefitType, Amount FROM Benefit WHERE EmployeeID = 10001;
+SELECT COUNT(*) FROM SSSContributionBracket;
+SELECT BracketID, RangeDescription, ContributionAmount
+FROM SSSContributionBracket ORDER BY BracketID LIMIT 3;
 
 -- <<< END 01_create_database.sql
 
@@ -49,6 +63,7 @@ DROP TABLE IF EXISTS Benefit;
 DROP TABLE IF EXISTS Salary;
 DROP TABLE IF EXISTS GovernmentID;
 DROP TABLE IF EXISTS EmployeeAddress;
+DROP TRIGGER IF EXISTS trg_employee_block_explicit_id;
 DROP TABLE IF EXISTS Employee;
 DROP TABLE IF EXISTS Department;
 DROP TABLE IF EXISTS WithholdingTaxBracket;
@@ -110,7 +125,7 @@ CREATE TABLE Department (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE Employee (
-    EmployeeID INT NOT NULL,
+    EmployeeID INT NOT NULL AUTO_INCREMENT,
     FirstName VARCHAR(100) NOT NULL,
     LastName VARCHAR(100) NOT NULL,
     DateOfBirth DATE NOT NULL,
@@ -129,6 +144,10 @@ CREATE TABLE Employee (
     -- DateOfBirth <= today (design doc): MySQL CHECK cannot use CURDATE() (Error 3814); validate in app
     CONSTRAINT chk_employee_dob CHECK (DateOfBirth >= '1900-01-01')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Identity-insert guard (Error 544) lives in 02b_employee_identity_trigger.sql
+-- so payrollsystem_db.sql has no DELIMITER (avoids Error 1064 with File > Run SQL Script).
+-- Terminal Assessment final script includes 02b after this schema.
 
 ALTER TABLE Department
     ADD CONSTRAINT fk_department_manager
@@ -459,7 +478,9 @@ INSERT INTO RolePermission (RoleID, PermissionID) VALUES
 
 USE payrollsystem_db;
 
--- Employees
+-- Employees (explicit MotorPH IDs require IDENTITY_INSERT-style session flag)
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
+
 INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, Address, ContactNumber, Position, DepartmentID, StatusID) VALUES
 (10001, 'Manuel III', 'Garcia', '1983-10-11', NULL, '966-860-270', 'Chief Executive Officer', 1, 1),
 (10002, 'Antonio', 'Lim', '1988-06-19', NULL, '171-867-411', 'Chief Operating Officer', 1, 1),
@@ -495,6 +516,8 @@ INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, Address, Con
 (10032, 'John Rafael', 'Castro', '1992-02-09', NULL, '332-424-955', 'Sales & Marketing', 6, 1),
 (10033, 'Carlos Ian', 'Martinez', '1990-11-16', NULL, '078-854-208', 'Supply Chain and Logistics', 7, 1),
 (10034, 'Beatriz', 'Santos', '1990-08-07', NULL, '526-639-511', 'Customer Service and Relations', 8, 1);
+
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
 
 -- Assign department managers
 UPDATE Department SET ManagerID = 10001 WHERE DepartmentID = 1;
@@ -903,3 +926,5 @@ ORDER BY d.DepartmentID;
 -- Constraint validation tests are in 07_constraint_tests.sql (run each block separately in Workbench).
 
 -- <<< END 06_validation_and_queries.sql
+
+

@@ -22,7 +22,8 @@ USE payrollsystem_db;
 
 -- ============================================================================
 -- MMDC-DBTC01-A: Create a New Employee Record
--- Expected: 3 employees stored successfully (10035, 10036, 10037)
+-- Expected: existing 10001-10034 remain; 10035-10037 added (total 37)
+-- Screenshot the FULL roster AFTER insert — new hires flagged as NEW HIRE
 -- ============================================================================
 
 SELECT '=== MMDC-DBTC01-A: Create Employee Record ===' AS TestSection;
@@ -38,6 +39,33 @@ DELETE FROM EmployeeAddress WHERE EmployeeID IN (10035, 10036, 10037);
 DELETE FROM Employee WHERE EmployeeID IN (10035, 10036, 10037);
 
 SET SQL_SAFE_UPDATES = @OLD_SQL_SAFE_UPDATES;
+
+-- BEFORE: existing employees only (expect 34)
+SELECT '=== DBTC01-A BEFORE CREATE: Existing employees (expect 34) ===' AS TestSection;
+
+SELECT
+    e.EmployeeID AS `Employee No`,
+    CONCAT(e.FirstName, ' ', e.LastName) AS `Employee Full Name`,
+    e.Position AS `Position`,
+    d.DepartmentName AS `Department`,
+    es.StatusName AS `Status`,
+    s.BaseSalary AS `Basic Salary`,
+    g.SSSNumber AS `Social Security No.`,
+    g.PhilHealthNumber AS `Philhealth No.`,
+    g.PagIBIGNumber AS `Pag-ibig No.`,
+    g.TINNumber AS `TIN`,
+    'EXISTING' AS `Roster Status`
+FROM Employee e
+INNER JOIN Department d ON e.DepartmentID = d.DepartmentID
+INNER JOIN EmploymentStatus es ON e.StatusID = es.StatusID
+INNER JOIN Salary s ON e.EmployeeID = s.EmployeeID
+INNER JOIN GovernmentID g ON e.EmployeeID = g.EmployeeID
+ORDER BY e.EmployeeID;
+
+SELECT COUNT(*) AS `Total Employees Before Create` FROM Employee; -- expect 34
+
+-- Explicit MotorPH IDs require IDENTITY_INSERT-style session flag (AUTO_INCREMENT)
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
 
 -- 1) Billy Lloyd Calasang — HR Team Leader, Regular, Dept Human Resources (3)
 INSERT INTO Employee (
@@ -111,23 +139,61 @@ INSERT INTO Benefit (EmployeeID, BenefitType, Amount) VALUES
 INSERT INTO GovernmentID (EmployeeID, SSSNumber, PhilHealthNumber, TINNumber, PagIBIGNumber)
 VALUES (10037, '32-5213838-6', '675893056701', '327-367-815-000', '133337008927');
 
--- Proof: stored employee records (screenshot this result)
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
+
+-- AFTER: FULL roster — existing + newly added (screenshot this result grid)
+-- Expect 37 rows; last three rows flagged NEW HIRE (10035, 10036, 10037)
+SELECT '=== DBTC01-A AFTER CREATE: Full roster — new employees added (expect 37) ===' AS TestSection;
+
 SELECT
-    e.EmployeeID,
-    CONCAT(e.FirstName, ' ', e.LastName) AS EmployeeName,
+    e.EmployeeID AS `Employee No`,
+    CONCAT(e.FirstName, ' ', e.LastName) AS `Employee Full Name`,
+    e.Position AS `Position`,
+    d.DepartmentName AS `Department`,
+    es.StatusName AS `Status`,
+    s.BaseSalary AS `Basic Salary`,
+    ROUND(s.BaseSalary / 2, 2) AS `Gross Semi-Monthly Rate`,
+    ROUND(s.BaseSalary / 20 / 8, 2) AS `Hourly Rate`,
+    g.SSSNumber AS `Social Security No.`,
+    g.PhilHealthNumber AS `Philhealth No.`,
+    g.PagIBIGNumber AS `Pag-ibig No.`,
+    g.TINNumber AS `TIN`,
+    CASE
+        WHEN e.EmployeeID IN (10035, 10036, 10037) THEN 'NEW HIRE ADDED'
+        ELSE 'EXISTING'
+    END AS `Roster Status`
+FROM Employee e
+INNER JOIN Department d ON e.DepartmentID = d.DepartmentID
+INNER JOIN EmploymentStatus es ON e.StatusID = es.StatusID
+INNER JOIN Salary s ON e.EmployeeID = s.EmployeeID
+INNER JOIN GovernmentID g ON e.EmployeeID = g.EmployeeID
+ORDER BY e.EmployeeID;
+
+SELECT COUNT(*) AS `Total Employees After Create` FROM Employee; -- expect 37
+
+SELECT
+    SUM(CASE WHEN EmployeeID < 10035 THEN 1 ELSE 0 END) AS `Existing Employees`,
+    SUM(CASE WHEN EmployeeID IN (10035, 10036, 10037) THEN 1 ELSE 0 END) AS `New Employees Added`
+FROM Employee;
+
+-- New hires detail (proof they were added with full homework data)
+SELECT
+    e.EmployeeID AS `Employee No`,
+    CONCAT(e.FirstName, ' ', e.LastName) AS `Employee Full Name`,
     e.DateOfBirth,
     ea.StreetName AS Address,
     e.ContactNumber,
-    e.Position,
-    d.DepartmentName,
-    es.StatusName,
-    s.BaseSalary,
-    ROUND(s.BaseSalary / 2, 2) AS GrossSemiMonthlyRate,
-    ROUND(s.BaseSalary / 20 / 8, 2) AS HourlyRateApprox,
-    g.TINNumber,
-    g.SSSNumber,
-    g.PhilHealthNumber,
-    g.PagIBIGNumber
+    e.Position AS `Position`,
+    d.DepartmentName AS `Department`,
+    es.StatusName AS `Status`,
+    s.BaseSalary AS `Basic Salary`,
+    ROUND(s.BaseSalary / 2, 2) AS `Gross Semi-Monthly Rate`,
+    ROUND(s.BaseSalary / 20 / 8, 2) AS `Hourly Rate`,
+    g.TINNumber AS `TIN`,
+    g.SSSNumber AS `Social Security No.`,
+    g.PhilHealthNumber AS `Philhealth No.`,
+    g.PagIBIGNumber AS `Pag-ibig No.`,
+    'NEW HIRE ADDED' AS `Roster Status`
 FROM Employee e
 INNER JOIN Department d ON e.DepartmentID = d.DepartmentID
 INNER JOIN EmploymentStatus es ON e.StatusID = es.StatusID
@@ -138,8 +204,8 @@ WHERE e.EmployeeID IN (10035, 10036, 10037)
 ORDER BY e.EmployeeID;
 
 SELECT
-    e.EmployeeID,
-    CONCAT(e.FirstName, ' ', e.LastName) AS EmployeeName,
+    e.EmployeeID AS `Employee No`,
+    CONCAT(e.FirstName, ' ', e.LastName) AS `Employee Full Name`,
     b.BenefitType,
     b.Amount
 FROM Employee e
@@ -147,7 +213,7 @@ INNER JOIN Benefit b ON e.EmployeeID = b.EmployeeID
 WHERE e.EmployeeID IN (10035, 10036, 10037)
 ORDER BY e.EmployeeID, b.BenefitType;
 
-SELECT 'MMDC-DBTC01-A COMPLETE — expect 3 employees stored. Screenshot Result Grid.' AS Note;
+SELECT 'MMDC-DBTC01-A COMPLETE — screenshot FULL roster AFTER CREATE (37 rows; 3 NEW HIRE ADDED).' AS Note;
 
 -- ============================================================================
 -- MMDC-DBTC01-B: Update Existing Employee Information
@@ -257,41 +323,50 @@ SELECT 'MMDC-DBTC01-C COMPLETE — expect 0 remaining rows. Screenshot.' AS Note
 
 -- ============================================================================
 -- MMDC-DBTC02-A: Check Employee ID Uniqueness
--- Homework "Employee Number 40" adapted: insert with EXISTING EmployeeID 10001
--- Expected: ERROR — duplicate primary key (RED X in Workbench = PASS)
+-- EmployeeID is AUTO_INCREMENT (identity). Attempting a predefined ID (40)
+-- with IDENTITY_INSERT OFF must FAIL — same idea as sample Msg 544.
+-- Expected: ERROR 544 — Cannot insert explicit value for identity column
+--           (RED X in Workbench = PASS)
 -- ============================================================================
 
 SELECT '=== MMDC-DBTC02-A: Check Employee ID Uniqueness ===' AS TestSection;
-SELECT 'NEXT STATEMENT MUST FAIL (duplicate EmployeeID 10001). Red X = PASS.' AS Note;
+SELECT 'NEXT STATEMENT MUST FAIL (explicit EmployeeID 40 on AUTO_INCREMENT). Red X = PASS.' AS Note;
 
--- This INSERT must be rejected (Error 1062 Duplicate entry for PRIMARY key)
+-- Ensure IDENTITY_INSERT-style flag is OFF (default)
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
+
+-- Attempt to add Mac Arnold Almirol with predefined Employee Number 40
+-- This INSERT must be rejected (Error 544 — identity / AUTO_INCREMENT)
 INSERT INTO Employee (
     EmployeeID, FirstName, LastName, DateOfBirth, Address, ContactNumber,
     Position, DepartmentID, StatusID
 ) VALUES (
-    10001, 'Mac Arnold', 'Almirol', '1996-10-08',
+    40, 'Mac Arnold', 'Almirol', '1996-10-08',
     'Unit 2802 One San Miguel Bldg, Shaw Blvd Cor San Miguel Ave, Ortigas Ctr 1605, Pasig City',
     '477-771-607', 'IT Technical Support', 2, 2
 );
 
--- If you reached this line, uniqueness FAILED (should not run after error if stopped on error)
-SELECT 'MMDC-DBTC02-A UNEXPECTED SUCCESS — uniqueness constraint may be missing' AS Warning;
+-- If you reached this line, uniqueness / identity test FAILED
+SELECT 'MMDC-DBTC02-A UNEXPECTED SUCCESS — identity block may be missing' AS Warning;
 
 -- ============================================================================
 -- MMDC-DBTC02-B: Check Null Values
--- Expected: ERROR — NOT NULL violation on ContactNumber / Position (RED X = PASS)
+-- Omit EmployeeID (AUTO_INCREMENT assigns it). Leave ContactNumber/Position NULL.
+-- Expected: ERROR 1048 — Column cannot be null (RED X = PASS)
 -- Run this after acknowledging the previous error, or run this block alone.
 -- ============================================================================
 
 SELECT '=== MMDC-DBTC02-B: Check Null Values ===' AS TestSection;
 SELECT 'NEXT STATEMENT MUST FAIL (NULL ContactNumber and Position). Red X = PASS.' AS Note;
 
--- Missing mandatory ContactNumber and Position (NOT NULL)
+SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
+
+-- Missing mandatory ContactNumber and Position (NOT NULL); ID is auto-generated
 INSERT INTO Employee (
-    EmployeeID, FirstName, LastName, DateOfBirth, Address, ContactNumber,
+    FirstName, LastName, DateOfBirth, Address, ContactNumber,
     Position, DepartmentID, StatusID
 ) VALUES (
-    10099, 'Ian', 'Correa', '1996-12-16',
+    'Ian', 'Correa', '1996-12-16',
     '8435 West Service Road Marcelo Green Village South Superhighway, Paranaque City',
     NULL,
     NULL,

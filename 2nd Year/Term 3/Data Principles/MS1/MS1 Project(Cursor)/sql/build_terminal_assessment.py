@@ -41,8 +41,10 @@ def main() -> None:
         "-- =============================================================================",
         "-- MotorPH Payroll System - FINALIZED database script (Terminal Assessment)",
         "-- Database: payrollsystem_db | MySQL 8.0+",
-        "-- Includes: MS1 schema/seed + M2 semi-monthly tax, pay periods, report views,",
-        "--           and stored procedures (definitions only).",
+        "-- Includes: MS1 schema/seed + identity trigger + M2 semi-monthly tax,",
+        "--           pay periods, report views, and stored procedures.",
+        "-- IMPORTANT: Open this file in a Workbench SQL Editor tab and Execute.",
+        "--            File > Run SQL Script may Error 1064 on DELIMITER (trigger).",
         "-- Test cases: run 16_terminal_assessment_test_cases.sql separately.",
         "-- Regenerate: python sql/build_terminal_assessment.py",
         "-- =============================================================================",
@@ -55,6 +57,7 @@ def main() -> None:
         "03_seed_lookup.sql",
         "04_seed_employees.sql",
         "05_seed_statutory.sql",
+        "02b_employee_identity_trigger.sql",  # after seed; DELIMITER - open in SQL Editor
     ]
     for name in ms1:
         parts.append(f"-- >>> BEGIN {name}")

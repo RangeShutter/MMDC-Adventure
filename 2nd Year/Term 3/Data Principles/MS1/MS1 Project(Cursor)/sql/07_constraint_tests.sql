@@ -1,11 +1,16 @@
 -- MotorPH Payroll System - Step 7: Constraint validation (expected failures)
 -- Run ONE test block at a time in MySQL Workbench. Each failing statement should error.
+-- Note: EmployeeID is AUTO_INCREMENT. Explicit IDs require:
+--   SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
+-- before INSERT (see Terminal Assessment DBTC02-A for the identity-insert test).
 
 USE payrollsystem_db;
 
 -- Test 1: NOT NULL on Employee.FirstName (expect ERROR 1048)
+-- SET @ALLOW_EXPLICIT_EMPLOYEE_ID = 1;
 -- INSERT INTO Employee (EmployeeID, FirstName, LastName, DateOfBirth, ContactNumber, Position, DepartmentID, StatusID)
 -- VALUES (99999, NULL, 'Test', '2000-01-01', '000-000-000', 'Tester', 1, 1);
+-- SET @ALLOW_EXPLICIT_EMPLOYEE_ID = NULL;
 
 -- Test 2: UNIQUE username (expect ERROR 1062 on second INSERT)
 -- INSERT INTO UserAccount (EmployeeID, Username, PasswordHash) VALUES
