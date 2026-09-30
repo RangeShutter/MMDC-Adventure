@@ -1,0 +1,71 @@
+,,,,
+,MO-IT150 Social and Professional Issues,,,
+,Refined Proposed Issue,,,
+,,,,
+,Team Information,,,
+,Group Number/Team Name:,,,
+,Team Members,,"
+Colin Bactong",Marketing Technology
+,,,Angelica Mae Calipayan,Software Development
+,,,Charlize Bactong,Software Development
+,,,"Mico Angelo Uy
+",Software Development
+,,,,
+,Proposed Issue,,,
+,Write the technology-related social or professional issue your team wants to investigate.,,,
+,"How clearly mobile applications explain their recurring subscription terms and how easily users can navigate interface layouts to accept or cancel these financial commitments.",,,
+,,,,
+,Initial Context,,,
+,Briefly explain where this issue appears and what situation surrounds it.,,,
+,"Many mobile applications, including utility tools, photo editors, and casual games, offer free trials that automatically transition into paid subscriptions. Users encounter subscription prompts during their first use of an app, where the pricing details and cancellation steps are sometimes placed in small font or low-contrast text, while the accept button is large and highlighted. Selecting the trial often triggers an automatic recurring charge unless the user actively cancels the subscription through a multi-layered process.
+",,,
+,,,,
+,Why the Issue Matters,,,
+,Explain why this issue should be taken seriously.,,,
+,"This issue matters because deceptive subscription designs can lead to unexpected and unauthorized financial charges, especially for vulnerable groups like the elderly or those with lower digital literacy. It directly challenges the ethical responsibilities of UX and UI designers. Designing interfaces that exploit cognitive biases to trap users in recurring charges violates the core principle of respecting user autonomy and erodes public trust in digital services.
+",,,
+,,,,
+,Preliminary Evidence,,,
+,List at least 2 preliminary sources that suggest this issue is real enough or relevant enough to investigate.,,,
+,Preliminary Source,,What It Shows,How It Supports the Proposed Issue
+,"Bringing dark patterns to light. (2024, February 13). Federal Trade Commission. https://www.ftc.gov/reports/bringing-dark-patterns-light  
+ ",,"The report documents how companies use deceptive design patterns, including hiding key subscription terms in tiny print, making cancellation processes excessively complex, and using misleading visual hierarchies to trick consumers into recurring payments.
+","It provides official regulatory evidence that subscription-based deceptive designs are a systemic, documented industry practice rather than an isolated or assumed problem, justifying a formal investigation into these interface layouts.
+"
+,"(Apple App Store Review Guidelines, Section 3.1.2): 
+Apple Inc. (n.d.). App review Guidelines - Apple Developer. Apple Developer. https://developer.apple.com/app-store/review/guidelines/#subscriptions ",,"The guidelines state that apps offering auto-renewing subscriptions must clearly present the price, billing frequency, and cancellation terms to the user before they subscribe, and they must not mislead users or trick them into a subscription.
+","It establishes that major technology distributors recognize the risk of deceptive subscription interfaces and have created specific professional rules to prevent them, showing that designing clear and fair subscription layouts is an active professional responsibility.
+"
+,,,,
+,"Reminder: Preliminary evidence does not need to prove the full issue yet. It only needs to show that the issue is not based only on opinion, assumption, or one unsupported example.",,,
+,,,,
+,Initial Stakeholders,,,
+,"Identify people or groups who may be affected, involved, or responsible.",,,
+,Stakeholder,,Why They May Matter,
+,"Mobile application users
+",,"They are the consumers who interact directly with the subscription interfaces, experience the unexpected financial charges, and must navigate the cancellation flows.
+",
+,"UX/UI designers and software developers
+",,"They are the IT professionals who design the visual layouts, write the subscription logic, and must balance business pressure to increase conversion rates with their professional ethical codes.
+",
+,"Platform operators and regulators (such as Apple, Google, and consumer protection agencies)
+",,"They establish the design guidelines, enforce app store policies, and create consumer protection regulations to prevent deceptive market practices.
+",
+,,,,
+,Final Check Before Submission,,,
+,"Before submitting, check that your proposal:",,,
+,TRUE,focuses on a technology-related social or professional issue;,,
+,TRUE,is more specific than a broad topic;,,
+,TRUE,does not propose a solution yet;,,
+,TRUE,includes initial context;,,
+,TRUE,explains why the issue matters;,,
+,TRUE,includes at least 2 preliminary sources;,,
+,TRUE,identifies initial stakeholders and explains why they matter.,,
+,,,,
+,Mentor Review,,,
+,To be completed by your mentor.,,,
+,Decision:,,,
+,TRUE,Approved,,
+,FALSE,Approved with minor clarification,,
+,FALSE,Revise and resubmit,,
+,Mentor comments:,,,
