@@ -1,0 +1,144 @@
+@startuml StudySync_Component_Diagram
+
+title StudySync: MMDC Student Groupmate Matching System - Component Diagram
+
+skinparam componentStyle uml2
+skinparam shadowing false
+skinparam nodesep 90
+skinparam ranksep 110
+skinparam component {
+  BackgroundColor White
+  BorderColor Black
+}
+skinparam interface {
+  BackgroundColor White
+  BorderColor Black
+}
+skinparam package {
+  BackgroundColor #FAFAFA
+  BorderColor Black
+}
+
+' ======================= PRESENTATION =======================
+package "Presentation Subsystem" <<subsystem>> {
+  component "StudentWebUI" as StudentWebUI <<component>>
+  component "AdminWebUI" as AdminWebUI <<component>>
+}
+
+' ======================= GATEWAY =======================
+package "Gateway Subsystem" <<subsystem>> {
+  component "APIGateway" as APIGateway <<component>> {
+    port "studentPort" as PortStudent
+    port "adminPort" as PortAdmin
+  }
+}
+
+' ======================= ACCOUNT AND ACCESS =======================
+package "Account and Access Subsystem" <<subsystem>> {
+  component "AuthenticationService" as AuthenticationService <<component>>
+  component "ModerationService" as ModerationService <<component>>
+}
+
+' ======================= PROFILE AND ENROLLMENT =======================
+package "Profile and Enrollment Subsystem" <<subsystem>> {
+  component "ProfileService" as ProfileService <<component>>
+  component "SubjectEnrollmentService" as SubjectEnrollmentService <<component>>
+}
+
+' ======================= MATCHING AND COLLABORATION =======================
+package "Matching and Collaboration Subsystem" <<subsystem>> {
+  component "MatchingEngine" as MatchingEngine <<component>>
+  component "RequestService" as RequestService <<component>>
+  component "GroupService" as GroupService <<component>>
+}
+
+' ======================= NOTIFICATION =======================
+package "Notification Subsystem" <<subsystem>> {
+  component "NotificationService" as NotificationService <<component>>
+}
+
+' ======================= DATA =======================
+package "Data Subsystem" <<subsystem>> {
+  component "DataAccessLayer" as DataAccessLayer <<component>> {
+    port "dbPort" as PortDb
+  }
+  database "StudySync Database" as Database
+}
+
+' ======================= INTERFACES =======================
+interface "IStudentRequests" as IStudentRequests
+interface "IAdminRequests" as IAdminRequests
+interface "IAuthentication" as IAuthentication
+interface "IProfileManagement" as IProfileManagement
+interface "ISubjectEnrollment" as ISubjectEnrollment
+interface "IMatching" as IMatching
+interface "IGroupmateRequest" as IGroupmateRequest
+interface "IGroupManagement" as IGroupManagement
+interface "INotification" as INotification
+interface "IModeration" as IModeration
+interface "IDataAccess" as IDataAccess
+
+' ---------- Provided interfaces (ball) ----------
+APIGateway -up- IStudentRequests
+APIGateway -up- IAdminRequests
+AuthenticationService -up- IAuthentication
+ProfileService -up- IProfileManagement
+SubjectEnrollmentService -up- ISubjectEnrollment
+MatchingEngine -up- IMatching
+RequestService -up- IGroupmateRequest
+GroupService -up- IGroupManagement
+NotificationService -up- INotification
+ModerationService -up- IModeration
+DataAccessLayer -up- IDataAccess
+
+' ---------- Required interfaces (socket) ----------
+IStudentRequests )-- PortStudent
+IAdminRequests )-- PortAdmin
+StudentWebUI --( IStudentRequests
+AdminWebUI --( IAdminRequests
+
+APIGateway --( IAuthentication
+APIGateway --( IProfileManagement
+APIGateway --( ISubjectEnrollment
+APIGateway --( IMatching
+APIGateway --( IGroupmateRequest
+APIGateway --( IGroupManagement
+APIGateway --( INotification
+APIGateway --( IModeration
+
+MatchingEngine --( IProfileManagement
+MatchingEngine --( ISubjectEnrollment
+MatchingEngine --( INotification
+
+RequestService --( IMatching
+RequestService --( INotification
+
+GroupService --( IGroupmateRequest
+GroupService --( ISubjectEnrollment
+GroupService --( INotification
+
+ModerationService --( IAuthentication
+
+AuthenticationService --( IDataAccess
+ProfileService --( IDataAccess
+SubjectEnrollmentService --( IDataAccess
+MatchingEngine --( IDataAccess
+RequestService --( IDataAccess
+GroupService --( IDataAccess
+NotificationService --( IDataAccess
+ModerationService --( IDataAccess
+
+' ---------- Data access to storage ----------
+PortDb --> Database : <<use>> JDBC
+
+legend right
+  |= Notation |= Meaning |
+  | «component» | Modular, replaceable part of the system |
+  | «subsystem» | Group of related components forming one architectural unit |
+  | Ball (circle) | Provided interface: services the component offers |
+  | Socket (half-circle) | Required interface: services the component needs |
+  | Small square on border | Port: defined interaction point |
+  | Dashed arrow | Dependency («use») |
+endlegend
+
+@enduml

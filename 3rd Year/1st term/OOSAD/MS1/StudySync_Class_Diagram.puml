@@ -1,0 +1,435 @@
+@startuml StudySync_Class_Diagram
+
+title StudySync: MMDC Student Groupmate Matching System - Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam nodesep 60
+skinparam ranksep 70
+skinparam shadowing false
+skinparam packageStyle rectangle
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  ArrowColor Black
+}
+
+package "Account and Access" {
+
+  abstract class User {
+    -userId: int
+    -fullName: String
+    -email: String
+    -passwordHash: String
+    -accountStatus: AccountStatus
+    .. Constructor ..
+    +User(userId: int, fullName: String, email: String, passwordHash: String)
+    .. Accessors ..
+    +getUserId(): int
+    +setUserId(userId: int): void
+    +getFullName(): String
+    +setFullName(fullName: String): void
+    +getEmail(): String
+    +setEmail(email: String): void
+    +getPasswordHash(): String
+    +setPasswordHash(passwordHash: String): void
+    +getAccountStatus(): AccountStatus
+    +setAccountStatus(accountStatus: AccountStatus): void
+    .. Operations ..
+    +login(email: String, password: String): boolean
+    +logout(): void
+    +updateBasicInfo(fullName: String, email: String): void
+    +{abstract} getRole(): String
+  }
+
+  class Student {
+    -studentNumber: String
+    .. Constructor ..
+    +Student(userId: int, fullName: String, email: String, passwordHash: String, studentNumber: String)
+    .. Accessors ..
+    +getStudentNumber(): String
+    +setStudentNumber(studentNumber: String): void
+    .. Operations ..
+    +getRole(): String
+    +viewPotentialGroupmates(subjectId: int): List<MatchRecommendation>
+    +sendGroupmateRequest(receiverId: int, subjectId: int): GroupmateRequest
+    +respondToRequest(requestId: int, accept: boolean): void
+    +createProjectGroup(subjectId: int, groupName: String): ProjectGroup
+    +submitReport(reportedUserId: int, reason: String): UserReport
+  }
+
+  class Administrator {
+    -adminCode: String
+    .. Constructor ..
+    +Administrator(userId: int, fullName: String, email: String, passwordHash: String, adminCode: String)
+    .. Accessors ..
+    +getAdminCode(): String
+    +setAdminCode(adminCode: String): void
+    .. Operations ..
+    +getRole(): String
+    +manageUser(userId: int, action: String): void
+    +manageSubject(subjectId: int, action: String): void
+    +reviewReport(reportId: int, resolution: String): void
+  }
+
+  class UserReport {
+    -reportId: int
+    -reason: String
+    -details: String
+    -status: ReportStatus
+    -submittedAt: LocalDateTime
+    -resolution: String
+    .. Constructor ..
+    +UserReport(reportId: int, reason: String, details: String, submittedAt: LocalDateTime)
+    .. Accessors ..
+    +getReportId(): int
+    +setReportId(reportId: int): void
+    +getReason(): String
+    +setReason(reason: String): void
+    +getDetails(): String
+    +setDetails(details: String): void
+    +getStatus(): ReportStatus
+    +setStatus(status: ReportStatus): void
+    +getSubmittedAt(): LocalDateTime
+    +setSubmittedAt(submittedAt: LocalDateTime): void
+    +getResolution(): String
+    +setResolution(resolution: String): void
+    .. Operations ..
+    +resolve(resolution: String): void
+  }
+}
+
+package "Profile and Enrollment" {
+
+  class CollaborationProfile {
+    -profileId: int
+    -itMajor: String
+    -employmentStatus: EmploymentStatus
+    -workSchedule: String
+    -workingStyle: WorkingStyle
+    -profileSummary: String
+    -lastUpdated: LocalDateTime
+    .. Constructor ..
+    +CollaborationProfile(profileId: int, itMajor: String, employmentStatus: EmploymentStatus, workingStyle: WorkingStyle)
+    .. Accessors ..
+    +getProfileId(): int
+    +setProfileId(profileId: int): void
+    +getItMajor(): String
+    +setItMajor(itMajor: String): void
+    +getEmploymentStatus(): EmploymentStatus
+    +setEmploymentStatus(employmentStatus: EmploymentStatus): void
+    +getWorkSchedule(): String
+    +setWorkSchedule(workSchedule: String): void
+    +getWorkingStyle(): WorkingStyle
+    +setWorkingStyle(workingStyle: WorkingStyle): void
+    +getProfileSummary(): String
+    +setProfileSummary(profileSummary: String): void
+    +getLastUpdated(): LocalDateTime
+    +setLastUpdated(lastUpdated: LocalDateTime): void
+    .. Operations ..
+    +updateProfile(itMajor: String, employmentStatus: EmploymentStatus, workSchedule: String, workingStyle: WorkingStyle): void
+    +addAvailability(availability: Availability): void
+    +removeAvailability(availabilityId: int): void
+  }
+
+  class Availability {
+    -availabilityId: int
+    -dayOfWeek: String
+    -startTime: LocalTime
+    -endTime: LocalTime
+    -recurring: boolean
+    .. Constructor ..
+    +Availability(availabilityId: int, dayOfWeek: String, startTime: LocalTime, endTime: LocalTime, recurring: boolean)
+    .. Accessors ..
+    +getAvailabilityId(): int
+    +setAvailabilityId(availabilityId: int): void
+    +getDayOfWeek(): String
+    +setDayOfWeek(dayOfWeek: String): void
+    +getStartTime(): LocalTime
+    +setStartTime(startTime: LocalTime): void
+    +getEndTime(): LocalTime
+    +setEndTime(endTime: LocalTime): void
+    +isRecurring(): boolean
+    +setRecurring(recurring: boolean): void
+    .. Operations ..
+    +overlaps(other: Availability): boolean
+    +getDurationInHours(): double
+  }
+
+  class Subject {
+    -subjectId: int
+    -subjectCode: String
+    -subjectName: String
+    -term: String
+    -active: boolean
+    .. Constructor ..
+    +Subject(subjectId: int, subjectCode: String, subjectName: String, term: String)
+    .. Accessors ..
+    +getSubjectId(): int
+    +setSubjectId(subjectId: int): void
+    +getSubjectCode(): String
+    +setSubjectCode(subjectCode: String): void
+    +getSubjectName(): String
+    +setSubjectName(subjectName: String): void
+    +getTerm(): String
+    +setTerm(term: String): void
+    +isActive(): boolean
+    +setActive(active: boolean): void
+    .. Operations ..
+    +updateDetails(subjectCode: String, subjectName: String, term: String): void
+  }
+
+  class SubjectEnrollment {
+    -enrollmentId: int
+    -lookingForGroup: boolean
+    -enrolledAt: LocalDate
+    .. Constructor ..
+    +SubjectEnrollment(enrollmentId: int, lookingForGroup: boolean, enrolledAt: LocalDate)
+    .. Accessors ..
+    +getEnrollmentId(): int
+    +setEnrollmentId(enrollmentId: int): void
+    +isLookingForGroup(): boolean
+    +setLookingForGroup(lookingForGroup: boolean): void
+    +getEnrolledAt(): LocalDate
+    +setEnrolledAt(enrolledAt: LocalDate): void
+  }
+}
+
+package "Matching and Collaboration" {
+
+  class MatchingService {
+    -minimumScore: double
+    -maximumResults: int
+    .. Constructor ..
+    +MatchingService(minimumScore: double, maximumResults: int)
+    .. Accessors ..
+    +getMinimumScore(): double
+    +setMinimumScore(minimumScore: double): void
+    +getMaximumResults(): int
+    +setMaximumResults(maximumResults: int): void
+    .. Operations ..
+    +findCandidates(studentId: int, subjectId: int): List<Student>
+    +calculateCompatibility(studentId: int, candidateId: int): double
+    +generateRecommendations(studentId: int, subjectId: int): List<MatchRecommendation>
+  }
+
+  class MatchRecommendation {
+    -recommendationId: int
+    -compatibilityScore: double
+    -status: RecommendationStatus
+    -createdAt: LocalDateTime
+    .. Constructor ..
+    +MatchRecommendation(recommendationId: int, compatibilityScore: double, createdAt: LocalDateTime)
+    .. Accessors ..
+    +getRecommendationId(): int
+    +setRecommendationId(recommendationId: int): void
+    +getCompatibilityScore(): double
+    +setCompatibilityScore(compatibilityScore: double): void
+    +getStatus(): RecommendationStatus
+    +setStatus(status: RecommendationStatus): void
+    +getCreatedAt(): LocalDateTime
+    +setCreatedAt(createdAt: LocalDateTime): void
+    .. Operations ..
+    +markViewed(): void
+    +dismiss(): void
+  }
+
+  class GroupmateRequest {
+    -requestId: int
+    -status: RequestStatus
+    -message: String
+    -sentAt: LocalDateTime
+    -respondedAt: LocalDateTime
+    .. Constructor ..
+    +GroupmateRequest(requestId: int, message: String, sentAt: LocalDateTime)
+    .. Accessors ..
+    +getRequestId(): int
+    +setRequestId(requestId: int): void
+    +getStatus(): RequestStatus
+    +setStatus(status: RequestStatus): void
+    +getMessage(): String
+    +setMessage(message: String): void
+    +getSentAt(): LocalDateTime
+    +setSentAt(sentAt: LocalDateTime): void
+    +getRespondedAt(): LocalDateTime
+    +setRespondedAt(respondedAt: LocalDateTime): void
+    .. Operations ..
+    +accept(): void
+    +decline(): void
+    +cancel(): void
+  }
+
+  class ProjectGroup {
+    -groupId: int
+    -groupName: String
+    -maximumMembers: int
+    -createdAt: LocalDateTime
+    -status: GroupStatus
+    .. Constructor ..
+    +ProjectGroup(groupId: int, groupName: String, maximumMembers: int, createdAt: LocalDateTime)
+    .. Accessors ..
+    +getGroupId(): int
+    +setGroupId(groupId: int): void
+    +getGroupName(): String
+    +setGroupName(groupName: String): void
+    +getMaximumMembers(): int
+    +setMaximumMembers(maximumMembers: int): void
+    +getCreatedAt(): LocalDateTime
+    +setCreatedAt(createdAt: LocalDateTime): void
+    +getStatus(): GroupStatus
+    +setStatus(status: GroupStatus): void
+    .. Operations ..
+    +addMember(studentId: int): void
+    +removeMember(studentId: int): void
+    +viewMembers(): List<GroupMembership>
+    +isFull(): boolean
+  }
+
+  class GroupMembership {
+    -membershipId: int
+    -role: MembershipRole
+    -joinedAt: LocalDateTime
+    -active: boolean
+    .. Constructor ..
+    +GroupMembership(membershipId: int, role: MembershipRole, joinedAt: LocalDateTime)
+    .. Accessors ..
+    +getMembershipId(): int
+    +setMembershipId(membershipId: int): void
+    +getRole(): MembershipRole
+    +setRole(role: MembershipRole): void
+    +getJoinedAt(): LocalDateTime
+    +setJoinedAt(joinedAt: LocalDateTime): void
+    +isActive(): boolean
+    +setActive(active: boolean): void
+    .. Operations ..
+    +leaveGroup(): void
+  }
+}
+
+package "Notification" {
+
+  class Notification {
+    -notificationId: int
+    -type: NotificationType
+    -message: String
+    -read: boolean
+    -createdAt: LocalDateTime
+    .. Constructor ..
+    +Notification(notificationId: int, type: NotificationType, message: String, createdAt: LocalDateTime)
+    .. Accessors ..
+    +getNotificationId(): int
+    +setNotificationId(notificationId: int): void
+    +getType(): NotificationType
+    +setType(type: NotificationType): void
+    +getMessage(): String
+    +setMessage(message: String): void
+    +isRead(): boolean
+    +setRead(read: boolean): void
+    +getCreatedAt(): LocalDateTime
+    +setCreatedAt(createdAt: LocalDateTime): void
+    .. Operations ..
+    +markAsRead(): void
+  }
+}
+
+package "Enumerations" {
+
+  enum AccountStatus <<enumeration>> {
+    ACTIVE
+    SUSPENDED
+    DEACTIVATED
+  }
+
+  enum EmploymentStatus <<enumeration>> {
+    FULL_TIME_STUDENT
+    WORKING_STUDENT
+  }
+
+  enum WorkingStyle <<enumeration>> {
+    INDEPENDENT
+    FREQUENT_COLLABORATION
+    STRUCTURED_MEETINGS
+    FLEXIBLE
+  }
+
+  enum RecommendationStatus <<enumeration>> {
+    NEW
+    VIEWED
+    DISMISSED
+  }
+
+  enum RequestStatus <<enumeration>> {
+    PENDING
+    ACCEPTED
+    DECLINED
+    CANCELLED
+  }
+
+  enum GroupStatus <<enumeration>> {
+    FORMING
+    COMPLETE
+    DISBANDED
+  }
+
+  enum MembershipRole <<enumeration>> {
+    LEADER
+    MEMBER
+  }
+
+  enum NotificationType <<enumeration>> {
+    MATCH_FOUND
+    REQUEST_RECEIVED
+    REQUEST_ACCEPTED
+    REQUEST_DECLINED
+    GROUP_INVITATION
+    GROUP_UPDATE
+  }
+
+  enum ReportStatus <<enumeration>> {
+    PENDING
+    UNDER_REVIEW
+    RESOLVED
+    DISMISSED
+  }
+}
+
+' ---------- Generalization ----------
+User <|-- Student
+User <|-- Administrator
+
+' ---------- Composition ----------
+Student "1" *-- "1" CollaborationProfile : owns >
+CollaborationProfile "1" *-- "0..*" Availability : contains >
+Student "1" *-- "0..*" Notification : receives >
+ProjectGroup "1" *-- "1..*" GroupMembership : contains >
+
+' ---------- Association classes ----------
+Student "0..*" -- "0..*" Subject : enrolled in >
+(Student, Subject) . SubjectEnrollment
+
+Student "0..*" -- "0..*" ProjectGroup : member of >
+(Student, ProjectGroup) . GroupMembership
+
+' ---------- Associations ----------
+Student "1" -- "0..*" MatchRecommendation : receives >
+Subject "1" -- "0..*" MatchRecommendation : concerns >
+GroupmateRequest "0..*" -- "1" Student : sender >
+GroupmateRequest "0..*" -- "1" Student : receiver >
+Subject "1" -- "0..*" GroupmateRequest : concerns >
+Subject "1" -- "0..*" ProjectGroup : has >
+UserReport "0..*" -- "1" Student : reporter >
+UserReport "0..*" -- "1" User : reportedUser >
+Administrator "0..1" -- "0..*" UserReport : reviews >
+
+' ---------- Dependencies ----------
+MatchingService ..> CollaborationProfile : <<use>> compares
+MatchingService ..> SubjectEnrollment : <<use>> filters
+MatchingService ..> MatchRecommendation : <<create>>
+MatchRecommendation ..> GroupmateRequest : <<use>> initiates
+Student ..> ProjectGroup : <<create>>
+Student ..> GroupmateRequest : <<create>>
+GroupmateRequest ..> Notification : <<create>> triggers
+ProjectGroup ..> Notification : <<create>> triggers
+Administrator ..> User : <<use>> manages
+Administrator ..> Subject : <<use>> maintains
+
+@enduml

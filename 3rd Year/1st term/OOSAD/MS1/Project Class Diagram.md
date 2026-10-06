@@ -61,165 +61,30 @@ The system allows students to register and maintain a collaboration profile, sel
 | `Notification`         | Provides a student with updates about recommendations, requests, invitations, membership, and other relevant group activity.                           |
 | `UserReport`           | Records a report submitted by a student about another user or inappropriate activity for administrator review.                                         |
 
+Each class follows the standard UML member syntax. Attributes are written as `visibility name: Type` and are private by default, and every class provides a constructor together with public getter and setter operations for its attributes. Operations declare typed parameters and a return type, for example `+calculateCompatibility(studentId: int, candidateId: int): double`.
+
+Nine `«enumeration»` types replace the free-text status and preference fields, so the permitted values of each are fixed in the model rather than left open.
+
+| Enumeration | Permitted Values |
+| ----- | ----- |
+| `AccountStatus` | ACTIVE, SUSPENDED, DEACTIVATED |
+| `EmploymentStatus` | FULL_TIME_STUDENT, WORKING_STUDENT |
+| `WorkingStyle` | INDEPENDENT, FREQUENT_COLLABORATION, STRUCTURED_MEETINGS, FLEXIBLE |
+| `RecommendationStatus` | NEW, VIEWED, DISMISSED |
+| `RequestStatus` | PENDING, ACCEPTED, DECLINED, CANCELLED |
+| `GroupStatus` | FORMING, COMPLETE, DISBANDED |
+| `MembershipRole` | LEADER, MEMBER |
+| `NotificationType` | MATCH_FOUND, REQUEST_RECEIVED, REQUEST_ACCEPTED, REQUEST_DECLINED, GROUP_INVITATION, GROUP_UPDATE |
+| `ReportStatus` | PENDING, UNDER_REVIEW, RESOLVED, DISMISSED |
+
 
 
 
 ## 3. Class Diagram
 
-```mermaid
-classDiagram
-    class User {
-        <<abstract>>
-        +String userId
-        +String fullName
-        +String email
-        -String passwordHash
-        +String accountStatus
-        +login(email, password) Boolean
-        +logout() void
-        +updateBasicInfo(fullName, email) void
-    }
+![StudySync Class Diagram](StudySync_Class_Diagram.png)
 
-    class Student {
-        +String studentNumber
-        +viewPotentialGroupmates(subjectId) List
-        +sendGroupmateRequest(receiverId, subjectId) GroupmateRequest
-        +createProjectGroup(subjectId, groupName) ProjectGroup
-        +submitReport(reportedUserId, reason) UserReport
-    }
-
-    class Administrator {
-        +manageUser(userId, action) void
-        +manageSubject(subjectId, action) void
-        +reviewReport(reportId, resolution) void
-    }
-
-    class CollaborationProfile {
-        +String profileId
-        +String itMajor
-        +String employmentStatus
-        +String workSchedule
-        +String workingStyle
-        +String profileSummary
-        +updateProfile() void
-    }
-
-    class Availability {
-        +String availabilityId
-        +String dayOfWeek
-        +Time startTime
-        +Time endTime
-        +Boolean isRecurring
-        +overlaps(otherAvailability) Boolean
-    }
-
-    class Subject {
-        +String subjectId
-        +String subjectCode
-        +String subjectName
-        +String status
-        +updateDetails() void
-    }
-
-    class SubjectEnrollment {
-        +String enrollmentId
-        +Boolean lookingForGroup
-        +Date enrolledAt
-        +setLookingForGroup(status) void
-    }
-
-    class MatchingService {
-        +findCandidates(studentId, subjectId) List
-        +calculateCompatibility(studentId, candidateId) Decimal
-        +generateRecommendations(studentId, subjectId) List
-    }
-
-    class MatchRecommendation {
-        +String recommendationId
-        +Decimal compatibilityScore
-        +String status
-        +DateTime createdAt
-        +markViewed() void
-        +dismiss() void
-    }
-
-    class GroupmateRequest {
-        +String requestId
-        +String status
-        +String message
-        +DateTime sentAt
-        +DateTime respondedAt
-        +accept() void
-        +decline() void
-        +cancel() void
-    }
-
-    class ProjectGroup {
-        +String groupId
-        +String groupName
-        +Integer maximumMembers
-        +DateTime createdAt
-        +String status
-        +addMember(studentId) void
-        +removeMember(studentId) void
-        +viewMembers() List
-    }
-
-    class GroupMembership {
-        +String membershipId
-        +String role
-        +String status
-        +DateTime joinedAt
-        +leaveGroup() void
-    }
-
-    class Notification {
-        +String notificationId
-        +String type
-        +String message
-        +Boolean isRead
-        +DateTime createdAt
-        +markAsRead() void
-    }
-
-    class UserReport {
-        +String reportId
-        +String reason
-        +String details
-        +String status
-        +DateTime submittedAt
-        +String resolution
-        +resolve(resolution) void
-    }
-
-    User <|-- Student
-    User <|-- Administrator
-    Student "1" *-- "1" CollaborationProfile : owns
-    CollaborationProfile "1" *-- "0..*" Availability : contains
-    Student "1" -- "0..*" SubjectEnrollment : has
-    Subject "1" -- "0..*" SubjectEnrollment : includes
-    MatchingService ..> CollaborationProfile : compares
-    MatchingService ..> SubjectEnrollment : filters
-    MatchingService ..> MatchRecommendation : creates
-    Student "1" -- "0..*" MatchRecommendation : receives
-    Subject "1" -- "0..*" MatchRecommendation : concerns
-    MatchRecommendation "0..1" ..> GroupmateRequest : initiates
-    Student "1" --> "0..*" GroupmateRequest : sends
-    Student "1" <-- "0..*" GroupmateRequest : receives
-    Subject "1" -- "0..*" GroupmateRequest : concerns
-    Student "1" --> "0..*" ProjectGroup : creates
-    Subject "1" -- "0..*" ProjectGroup : has
-    ProjectGroup "1" *-- "1..*" GroupMembership : contains
-    Student "1" -- "0..*" GroupMembership : holds
-    Student "1" *-- "0..*" Notification : receives
-    GroupmateRequest ..> Notification : triggers
-    ProjectGroup ..> Notification : triggers
-    Student "1" --> "0..*" UserReport : submits
-    User "1" <-- "0..*" UserReport : concerns
-    Administrator "0..1" -- "0..*" UserReport : reviews
-    Administrator ..> User : manages
-    Administrator ..> Subject : maintains
-```
+*Figure: StudySync class diagram, drawn in standard UML notation. Full-resolution versions are available as `StudySync_Class_Diagram.svg` and `StudySync_Class_Diagram.pdf`. The diagram is generated from the PlantUML source `StudySync_Class_Diagram.puml`.*
 
 
 
@@ -231,7 +96,7 @@ The diagram uses **inheritance** to model `Student` and `Administrator` as speci
 
 A `Student` has exactly one `CollaborationProfile`, and the profile contains zero or more `Availability` records. These are **composition relationships** because the profile belongs exclusively to a student, and availability entries exist as parts of that profile. Separating availability into individual records lets the system represent multiple collaboration schedules instead of storing a single unstructured value.
 
-The many-to-many relationship between students and subjects is resolved through `SubjectEnrollment`. One student may enroll in several subjects, and one subject may include many students. The association class also stores whether the student is actively looking for a group, allowing `MatchingService` to exclude students who are not currently available for matching.
+The many-to-many relationship between students and subjects is resolved through `SubjectEnrollment`. One student may enroll in several subjects, and one subject may include many students. The association class also stores whether the student is actively looking for a group, allowing `MatchingService` to exclude students who are not currently available for matching. `SubjectEnrollment` and `GroupMembership` are drawn using proper **association class** notation, as a dashed line from the class to the association path it describes, rather than as ordinary classes joined by two separate associations.
 
 `MatchingService` depends on `CollaborationProfile` and `SubjectEnrollment` to find eligible students and compare major, availability, employment schedule, and working-style information. It creates `MatchRecommendation` records for a student and subject. A recommendation may lead to a `GroupmateRequest`, which associates one sender and one receiver with the relevant subject and records whether the request is pending, accepted, declined, or cancelled.
 
@@ -254,3 +119,11 @@ The selected classes correspond directly to the system's major responsibilities 
 The model assumes that students enter accurate profile and enrollment information, one collaboration profile belongs to each student, each project group is associated with one subject, and only students marked as looking for a group are eligible for recommendations. It also assumes that account and subject data are maintained within StudySync because direct access to official MMDC enrollment systems is outside the project's scope.
 
 The main analysis challenge was balancing a detailed model with the project's limited academic-term scope. Features belonging to Coursera, MyCamu, Google Meet, Google Workspace, project-task management, file sharing, grading, and class delivery were therefore excluded. The resulting diagram focuses on the complete required flow from profile creation and subject selection through matching, requests, group formation, notifications, and basic administration.
+
+**Notation corrections applied after review.** An earlier version of this diagram declared members in a programming-language order, writing the type before the name as in `+String userId`. The UML specification defines an attribute as `visibility name: type-expression` and an operation as `visibility name(parameter-list): return-type`, so every member has been rewritten accordingly, for example `-userId: int` and `+login(email: String, password: String): boolean`. Attribute visibility is now private, which is the reason each class exposes public accessors.
+
+**Encapsulation members added.** Every class now declares a constructor that takes the attributes required to create a valid instance, together with a public getter and setter for each attribute. Boolean attributes use the `isX()` form, as in `+isLookingForGroup(): boolean`. The operation compartment of each class is divided into labelled sections for Constructor, Accessors, and Operations, which the UML specification permits as a presentation option for named compartments, so the business behaviour of a class remains readable despite the number of accessors.
+
+**Enumerations introduced.** Attributes that previously held free text, such as account status, employment status, working style, and the several status fields, are now typed against the nine `«enumeration»` classes listed in Section 2. Fixing the permitted values in the model removes a source of ambiguity and documents the lifecycle of a request, a group, a membership, a recommendation, and a report.
+
+**Other refinements.** `Administrator` now carries an `adminCode` attribute so it holds state of its own rather than only inherited state. `User` declares the abstract operation `+getRole(): String`, which both subclasses implement, giving the generalization a concrete purpose. `MatchingService` holds `minimumScore` and `maximumResults` so its rule-based thresholds are visible. Object creation that is not an ownership relationship, such as a student creating a project group or a groupmate request, is now shown as a `«create»` dependency rather than a second association, which removes duplicate paths between the same pair of classes.
