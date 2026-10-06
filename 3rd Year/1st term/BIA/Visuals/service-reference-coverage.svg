@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">Service Reference Coverage</title>
+  <desc id="desc">A 100 percent stacked horizontal bar showing 266 matched engagements or 26.1 percent and 754 unmatched engagements or 73.9 percent.</desc>
+  <rect width="1200" height="520" fill="#ffffff"/>
+  <text x="600" y="55" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#172033">Service Reference Coverage</text>
+  <text x="600" y="88" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#5c667a">1,020 total engagement records</text>
+  <text x="110" y="160" font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#172033">All Engagements</text>
+  <rect x="110" y="185" width="255.8" height="110" rx="6" fill="#2f6b9a"/>
+  <rect x="365.8" y="185" width="724.2" height="110" rx="6" fill="#e5893a"/>
+  <text x="237.9" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#ffffff">266 records</text>
+  <text x="237.9" y="264" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#ffffff">26.1%</text>
+  <text x="727.9" y="230" text-anchor="middle" font-family="Arial, sans-serif" font-size="23" font-weight="700" fill="#ffffff">754 records</text>
+  <text x="727.9" y="264" text-anchor="middle" font-family="Arial, sans-serif" font-size="21" fill="#ffffff">73.9%</text>
+  <line x1="110" y1="320" x2="1090" y2="320" stroke="#b8bec9" stroke-width="1"/>
+  <g font-family="Arial, sans-serif" font-size="14" fill="#5c667a" text-anchor="middle">
+    <text x="110" y="345">0%</text><text x="306" y="345">20%</text><text x="502" y="345">40%</text>
+    <text x="698" y="345">60%</text><text x="894" y="345">80%</text><text x="1090" y="345">100%</text>
+  </g>
+  <rect x="165" y="390" width="22" height="22" rx="3" fill="#2f6b9a"/>
+  <text x="198" y="407" font-family="Arial, sans-serif" font-size="17" fill="#172033">Matched (PROD001-PROD005): $13.21M revenue (25.9%)</text>
+  <rect x="645" y="390" width="22" height="22" rx="3" fill="#e5893a"/>
+  <text x="678" y="407" font-family="Arial, sans-serif" font-size="17" fill="#172033">Unmatched (PROD006-PROD020): $37.76M revenue (74.1%)</text>
+  <text x="600" y="472" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#5c667a">Source: FinMark_Engagements.csv joined to finmark_services.csv by service_id</text>
+</svg>

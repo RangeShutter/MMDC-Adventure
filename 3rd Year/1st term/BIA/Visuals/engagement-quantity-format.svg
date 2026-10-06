@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Raw Engagement Quantity Format</title>
+  <desc id="desc">Bar chart showing 274 records with quantity 1, 239 with quantity 2, 232 with non-standard quantity 2 units, and 275 with quantity 3.</desc>
+  <rect width="1200" height="700" fill="#ffffff"/>
+  <text x="600" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#172033">Raw Engagement Quantity Format</text>
+  <text x="600" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#5c667a">788 numeric records (77.3%) " 232 non-standard records (22.7%)</text>
+  <line x1="120" y1="570" x2="1110" y2="570" stroke="#697386" stroke-width="2"/>
+  <line x1="120" y1="130" x2="120" y2="570" stroke="#697386" stroke-width="2"/>
+  <g stroke="#d9dde5" stroke-width="1">
+    <line x1="120" y1="423.3" x2="1110" y2="423.3"/><line x1="120" y1="276.7" x2="1110" y2="276.7"/><line x1="120" y1="130" x2="1110" y2="130"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="14" fill="#5c667a" text-anchor="end">
+    <text x="105" y="575">0</text><text x="105" y="428">100</text><text x="105" y="282">200</text><text x="105" y="135">300</text>
+  </g>
+  <text x="34" y="350" transform="rotate(-90 34 350)" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#172033">Number of Engagement Records</text>
+  <rect x="190" y="168.1" width="150" height="401.9" rx="4" fill="#2f6b9a"/>
+  <rect x="430" y="219.5" width="150" height="350.5" rx="4" fill="#2f6b9a"/>
+  <rect x="670" y="229.7" width="150" height="340.3" rx="4" fill="#e5893a"/>
+  <rect x="910" y="166.7" width="150" height="403.3" rx="4" fill="#2f6b9a"/>
+  <g font-family="Arial, sans-serif" font-size="18" font-weight="700" fill="#172033" text-anchor="middle">
+    <text x="265" y="144">274 (26.9%)</text><text x="505" y="195">239 (23.4%)</text>
+    <text x="745" y="205">232 (22.7%)</text><text x="985" y="143">275 (27.0%)</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="19" fill="#172033" text-anchor="middle">
+    <text x="265" y="605">1</text><text x="505" y="605">2</text><text x="745" y="605">2 units</text><text x="985" y="605">3</text>
+  </g>
+  <path d="M745 216 L745 175 L845 175" fill="none" stroke="#e5893a" stroke-width="3"/>
+  <text x="855" y="168" font-family="Arial, sans-serif" font-size="16" font-weight="700" fill="#c66f20">Non-standard text</text>
+  <text x="855" y="190" font-family="Arial, sans-serif" font-size="15" fill="#c66f20">Normalize to numeric 2</text>
+  <text x="615" y="645" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#172033">Raw Quantity Value</text>
+  <text x="600" y="680" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" fill="#5c667a">Source: FinMark_Engagements.csv (quantity)</text>
+</svg>

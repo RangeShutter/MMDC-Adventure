@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">Effect of Feedback Cleaning on CSAT</title>
+  <desc id="desc">Grouped bar chart comparing raw and cleaned feedback. Raw data has 46 valid and 14 missing ratings with CSAT 3.54. Cleaned data has 38 valid and 12 missing ratings with CSAT 3.45.</desc>
+  <rect width="1200" height="700" fill="#ffffff"/>
+  <text x="600" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#172033">Effect of Feedback Cleaning on CSAT</text>
+  <text x="600" y="84" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#5c667a">10 duplicate rows removed before calculating cleaned CSAT</text>
+  <line x1="130" y1="570" x2="1090" y2="570" stroke="#697386" stroke-width="2"/>
+  <line x1="130" y1="140" x2="130" y2="570" stroke="#697386" stroke-width="2"/>
+  <g stroke="#d9dde5" stroke-width="1">
+    <line x1="130" y1="484" x2="1090" y2="484"/><line x1="130" y1="398" x2="1090" y2="398"/>
+    <line x1="130" y1="312" x2="1090" y2="312"/><line x1="130" y1="226" x2="1090" y2="226"/><line x1="130" y1="140" x2="1090" y2="140"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="14" fill="#5c667a" text-anchor="end">
+    <text x="115" y="575">0</text><text x="115" y="489">10</text><text x="115" y="403">20</text>
+    <text x="115" y="317">30</text><text x="115" y="231">40</text><text x="115" y="145">50</text>
+  </g>
+  <text x="38" y="355" transform="rotate(-90 38 355)" text-anchor="middle" font-family="Arial, sans-serif" font-size="17" fill="#172033">Feedback Records</text>
+  <rect x="285" y="174.4" width="135" height="395.6" rx="4" fill="#4e9b68"/>
+  <rect x="435" y="449.6" width="135" height="120.4" rx="4" fill="#c95852"/>
+  <rect x="675" y="243.2" width="135" height="326.8" rx="4" fill="#4e9b68"/>
+  <rect x="825" y="466.8" width="135" height="103.2" rx="4" fill="#c95852"/>
+  <g font-family="Arial, sans-serif" font-size="19" font-weight="700" fill="#172033" text-anchor="middle">
+    <text x="352.5" y="154">46</text><text x="502.5" y="430">14</text><text x="742.5" y="223">38</text><text x="892.5" y="447">12</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#172033" text-anchor="middle">
+    <text x="427.5" y="610">Raw Data</text><text x="817.5" y="610">Cleaned Data</text>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="20" font-weight="700" fill="#2f6b9a" text-anchor="middle">
+    <text x="427.5" y="125">CSAT 3.54 / 5.00</text><text x="817.5" y="125">CSAT 3.45 / 5.00</text>
+  </g>
+  <rect x="395" y="645" width="20" height="20" rx="3" fill="#4e9b68"/>
+  <text x="425" y="661" font-family="Arial, sans-serif" font-size="16" fill="#172033">Valid ratings</text>
+  <rect x="595" y="645" width="20" height="20" rx="3" fill="#c95852"/>
+  <text x="625" y="661" font-family="Arial, sans-serif" font-size="16" fill="#172033">Missing ratings</text>
+</svg>
