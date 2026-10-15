@@ -1,0 +1,70 @@
+kpi_code,kpi_name,period,period_start,frequency,series_type,value,numerator,denominator,forecast_lower_95,forecast_upper_95,is_partial
+CRR,Customer Retention Rate,2022-Q2,2022-04-01,Quarterly,Completed Actual,58.3333,28,48,,,No
+CRR,Customer Retention Rate,2022-Q3,2022-07-01,Quarterly,Completed Actual,62.2642,33,53,,,No
+CRR,Customer Retention Rate,2022-Q4,2022-10-01,Quarterly,Completed Actual,49.1525,29,59,,,No
+CRR,Customer Retention Rate,2023-Q1,2023-01-01,Quarterly,Completed Actual,52.2727,23,44,,,No
+CRR,Customer Retention Rate,2023-Q2,2023-04-01,Quarterly,Completed Actual,50.8772,29,57,,,No
+CRR,Customer Retention Rate,2023-Q3,2023-07-01,Quarterly,Completed Actual,53.0612,26,49,,,No
+CRR,Customer Retention Rate,2023-Q4,2023-10-01,Quarterly,Completed Actual,54.717,29,53,,,No
+CRR,Customer Retention Rate,2024-Q1,2024-01-01,Quarterly,Completed Actual,50.9434,27,53,,,No
+CRR,Customer Retention Rate,2024-Q2,2024-04-01,Quarterly,Completed Actual,57.6923,30,52,,,No
+CRR,Customer Retention Rate,2024-Q3,2024-07-01,Quarterly,Completed Actual,42.3729,25,59,,,No
+CRR,Customer Retention Rate,2024-Q4,2024-10-01,Quarterly,Completed Actual,44.898,22,49,,,No
+CRR,Customer Retention Rate,2025-Q1,2025-01-01,Quarterly,Completed Actual,51.0204,25,49,,,No
+CRR,Customer Retention Rate,2025-Q2,2025-04-01,Quarterly,Partial Actual,49.0196,25,51,,,Yes
+CRR,Customer Retention Rate,2025-Q2,2025-04-01,Quarterly,Forecast,45.0801,,,23.5776,66.5827,No
+CRR,Customer Retention Rate,2025-Q3,2025-07-01,Quarterly,Forecast,43.5962,,,19.6047,67.5877,No
+CRR,Customer Retention Rate,2025-Q4,2025-10-01,Quarterly,Forecast,42.1122,,,15.3329,68.8915,No
+CRR,Customer Retention Rate,2026-Q1,2026-01-01,Quarterly,Forecast,40.6282,,,10.8461,70.4104,No
+ARPC,Average Revenue per Client,2022-Q1,2022-01-01,Quarterly,Completed Actual,64586.196,3100137.41,48,,,No
+ARPC,Average Revenue per Client,2022-Q2,2022-04-01,Quarterly,Completed Actual,69207.6089,3668003.27,53,,,No
+ARPC,Average Revenue per Client,2022-Q3,2022-07-01,Quarterly,Completed Actual,69109.8639,4077481.97,59,,,No
+ARPC,Average Revenue per Client,2022-Q4,2022-10-01,Quarterly,Completed Actual,73692.1952,3242456.59,44,,,No
+ARPC,Average Revenue per Client,2023-Q1,2023-01-01,Quarterly,Completed Actual,76220.8232,4344586.92,57,,,No
+ARPC,Average Revenue per Client,2023-Q2,2023-04-01,Quarterly,Completed Actual,76007.5188,3724368.42,49,,,No
+ARPC,Average Revenue per Client,2023-Q3,2023-07-01,Quarterly,Completed Actual,74194.5908,3932313.31,53,,,No
+ARPC,Average Revenue per Client,2023-Q4,2023-10-01,Quarterly,Completed Actual,70068.0751,3713607.98,53,,,No
+ARPC,Average Revenue per Client,2024-Q1,2024-01-01,Quarterly,Completed Actual,68179.319,3545324.59,52,,,No
+ARPC,Average Revenue per Client,2024-Q2,2024-04-01,Quarterly,Completed Actual,66323.7514,3913101.33,59,,,No
+ARPC,Average Revenue per Client,2024-Q3,2024-07-01,Quarterly,Completed Actual,78856.4765,3863967.35,49,,,No
+ARPC,Average Revenue per Client,2024-Q4,2024-10-01,Quarterly,Completed Actual,61359.7722,3006628.84,49,,,No
+ARPC,Average Revenue per Client,2025-Q1,2025-01-01,Quarterly,Completed Actual,69523.0225,3545674.15,51,,,No
+ARPC,Average Revenue per Client,2025-Q2,2025-04-01,Quarterly,Partial Actual,63387.0267,3296125.39,52,,,Yes
+ARPC,Average Revenue per Client,2025-Q2,2025-04-01,Quarterly,Forecast,67986.6183,,,43765.2543,92207.9824,No
+ARPC,Average Revenue per Client,2025-Q3,2025-07-01,Quarterly,Forecast,67682.299,,,40657.3132,94707.2848,No
+ARPC,Average Revenue per Client,2025-Q4,2025-10-01,Quarterly,Forecast,67377.9796,,,37212.7001,97543.2591,No
+ARPC,Average Revenue per Client,2026-Q1,2026-01-01,Quarterly,Forecast,67073.6602,,,33525.8264,100621.4941,No
+CGR,Client Growth Rate,2023-Q3,2023-07-01,Quarterly,Completed Actual,100.0,11,11,,,No
+CGR,Client Growth Rate,2023-Q4,2023-10-01,Quarterly,Completed Actual,54.5455,12,22,,,No
+CGR,Client Growth Rate,2024-Q1,2024-01-01,Quarterly,Completed Actual,38.2353,13,34,,,No
+CGR,Client Growth Rate,2024-Q2,2024-04-01,Quarterly,Completed Actual,21.2766,10,47,,,No
+CGR,Client Growth Rate,2024-Q3,2024-07-01,Quarterly,Completed Actual,21.0526,12,57,,,No
+CGR,Client Growth Rate,2024-Q4,2024-10-01,Quarterly,Completed Actual,18.8406,13,69,,,No
+CGR,Client Growth Rate,2025-Q1,2025-01-01,Quarterly,Completed Actual,10.9756,9,82,,,No
+CGR,Client Growth Rate,2025-Q2,2025-04-01,Quarterly,Partial Actual,9.8901,9,91,,,Yes
+CGR,Client Growth Rate,2025-Q2,2025-04-01,Quarterly,Forecast,0.0,,,0.0,25.6403,No
+CGR,Client Growth Rate,2025-Q3,2025-07-01,Quarterly,Forecast,0.0,,,0.0,20.7311,No
+CGR,Client Growth Rate,2025-Q4,2025-10-01,Quarterly,Forecast,0.0,,,0.0,16.1802,No
+CGR,Client Growth Rate,2026-Q1,2026-01-01,Quarterly,Forecast,0.0,,,0.0,11.8871,No
+CER,Customer Engagement Rate,2023-Q2,2023-04-01,Quarterly,Completed Actual,36.3636,4,11,,,No
+CER,Customer Engagement Rate,2023-Q3,2023-07-01,Quarterly,Completed Actual,45.4545,10,22,,,No
+CER,Customer Engagement Rate,2023-Q4,2023-10-01,Quarterly,Completed Actual,50.0,17,34,,,No
+CER,Customer Engagement Rate,2024-Q1,2024-01-01,Quarterly,Completed Actual,57.4468,27,47,,,No
+CER,Customer Engagement Rate,2024-Q2,2024-04-01,Quarterly,Completed Actual,61.4035,35,57,,,No
+CER,Customer Engagement Rate,2024-Q3,2024-07-01,Quarterly,Completed Actual,44.9275,31,69,,,No
+CER,Customer Engagement Rate,2024-Q4,2024-10-01,Quarterly,Completed Actual,51.2195,42,82,,,No
+CER,Customer Engagement Rate,2025-Q1,2025-01-01,Quarterly,Completed Actual,49.4505,45,91,,,No
+CER,Customer Engagement Rate,2025-Q2,2025-04-01,Quarterly,Partial Actual,52.0,52,100,,,Yes
+CER,Customer Engagement Rate,2025-Q2,2025-04-01,Quarterly,Forecast,48.6175,,,24.8033,72.4317,No
+CER,Customer Engagement Rate,2025-Q3,2025-07-01,Quarterly,Forecast,47.5345,,,20.9638,74.1052,No
+CER,Customer Engagement Rate,2025-Q4,2025-10-01,Quarterly,Forecast,46.4515,,,16.7933,76.1097,No
+CER,Customer Engagement Rate,2026-Q1,2026-01-01,Quarterly,Forecast,45.3685,,,12.3846,78.3523,No
+CSAT,Customer Satisfaction Score,2025-01,2025-01-01,Monthly,Completed Actual,3.4,17.0,5,,,No
+CSAT,Customer Satisfaction Score,2025-02,2025-02-01,Monthly,Completed Actual,2.5,10.0,4,,,No
+CSAT,Customer Satisfaction Score,2025-03,2025-03-01,Monthly,Completed Actual,3.625,29.0,8,,,No
+CSAT,Customer Satisfaction Score,2025-04,2025-04-01,Monthly,Completed Actual,4.1429,29.0,7,,,No
+CSAT,Customer Satisfaction Score,2025-05,2025-05-01,Monthly,Partial Actual,3.6,18.0,5,,,Yes
+CSAT,Customer Satisfaction Score,2025-05,2025-05-01,Monthly,Forecast,4.2554,,,1.0,5.0,No
+CSAT,Customer Satisfaction Score,2025-06,2025-06-01,Monthly,Forecast,4.5907,,,1.0,5.0,No
+CSAT,Customer Satisfaction Score,2025-07,2025-07-01,Monthly,Forecast,4.9261,,,1.0,5.0,No
+CSAT,Customer Satisfaction Score,2025-08,2025-08-01,Monthly,Forecast,5.0,,,1.0,5.0,No

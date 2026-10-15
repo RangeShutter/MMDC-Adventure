@@ -1,0 +1,6 @@
+display_order,kpi_code,latest_finding,principal_risk,recommended_action
+1,CRR,Q1 2025 retention is 51.0%; the model declines to 40.6% by Q1 2026.,Approximately half of active clients do not return in the following quarter.,Trigger quarterly inactivity alerts and targeted re-engagement.
+2,ARPC,"Q1 2025 ARPC is $69,523; the forecast remains near $67,000.","Partial Q2 is lower, and incomplete service references prevent reliable service-level attribution.",Bundle and cross-sell services; complete the service master before service-level decisions.
+3,CGR,Quarterly growth slowed to 11.0%; partial Q2 remains positive at 9.9%.,Percentage growth is decelerating as the client base increases.,Set quarterly net-client targets and strengthen referral and segment campaigns.
+4,CER,Q1 2025 engagement is 49.5%; the model declines to 45.4% by Q1 2026.,"Many eligible clients are inactive, and pre-signup engagements weaken comparisons.",Create engagement alerts and enforce chronological validation.
+5,CSAT,"April CSAT is 4.14, while partial May is 3.60.",Sparse dated feedback makes the upward forecast highly uncertain.,"Improve feedback collection, review low ratings, and recalculate monthly."
