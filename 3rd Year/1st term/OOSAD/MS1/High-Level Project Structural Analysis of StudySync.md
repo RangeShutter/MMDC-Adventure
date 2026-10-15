@@ -137,89 +137,59 @@ For permissions or inquiries, please contact MMDC-ISD at [isd@mmdc.mcl.edu.ph](m
 | `DataAccessLayer` | Provides a consistent persistence interface for all application services, translating domain objects into database operations and keeping query logic out of the service components. |
 | `Database` | Stores all persistent system data, including accounts, collaboration profiles, availability, subjects, enrollments, recommendations, requests, groups, memberships, notifications, and reports. |
 
+      These components are organized into six `«subsystem»` packages, each a collection of related components supporting one larger business function.
+
+| Subsystem | Components | Business Function |
+| ----- | ----- | ----- |
+| Presentation | `StudentWebUI`, `AdminWebUI` | Browser-based user interaction |
+| Gateway | `APIGateway` | Request routing and session validation |
+| Account and Access | `AuthenticationService`, `ModerationService` | Account identity, access control, and moderation |
+| Profile and Enrollment | `ProfileService`, `SubjectEnrollmentService` | Collaboration profiles and subject enrollment |
+| Matching and Collaboration | `MatchingEngine`, `RequestService`, `GroupService` | Groupmate discovery, requests, and group formation |
+| Notification | `NotificationService` | Delivery of in-app status updates |
+| Data | `DataAccessLayer`, `Database` | Persistence of all system data |
+
+      Each component publishes its services through a named interface, drawn ball-and-socket on the diagram.
+
+| Interface | Provided By | Required By |
+| ----- | ----- | ----- |
+| `IStudentRequests` | `APIGateway` | `StudentWebUI` |
+| `IAdminRequests` | `APIGateway` | `AdminWebUI` |
+| `IAuthentication` | `AuthenticationService` | `APIGateway`, `ModerationService` |
+| `IProfileManagement` | `ProfileService` | `APIGateway`, `MatchingEngine` |
+| `ISubjectEnrollment` | `SubjectEnrollmentService` | `APIGateway`, `MatchingEngine`, `GroupService` |
+| `IMatching` | `MatchingEngine` | `APIGateway`, `RequestService` |
+| `IGroupmateRequest` | `RequestService` | `APIGateway`, `GroupService` |
+| `IGroupManagement` | `GroupService` | `APIGateway` |
+| `INotification` | `NotificationService` | `APIGateway`, `MatchingEngine`, `RequestService`, `GroupService` |
+| `IModeration` | `ModerationService` | `APIGateway` |
+| `IDataAccess` | `DataAccessLayer` | All eight application services |
+
       
 
    2. ## **Component Diagram** {#component-diagram}
 
-```mermaid
-flowchart TB
-    subgraph presentation [Presentation Layer]
-        StudentWebUI["«component»<br/>StudentWebUI"]
-        AdminWebUI["«component»<br/>AdminWebUI"]
-    end
+![StudySync Component Diagram](StudySync_Component_Diagram.png)
 
-    subgraph gateway [Interface Layer]
-        APIGateway["«component»<br/>APIGateway"]
-    end
-
-    subgraph application [Application / Business Logic Layer]
-        AuthenticationService["«component»<br/>AuthenticationService"]
-        ProfileService["«component»<br/>ProfileService"]
-        SubjectEnrollmentService["«component»<br/>SubjectEnrollmentService"]
-        MatchingEngine["«component»<br/>MatchingEngine"]
-        RequestService["«component»<br/>RequestService"]
-        GroupService["«component»<br/>GroupService"]
-        NotificationService["«component»<br/>NotificationService"]
-        ModerationService["«component»<br/>ModerationService"]
-    end
-
-    subgraph data [Data Layer]
-        DataAccessLayer["«component»<br/>DataAccessLayer"]
-        Database[("Database")]
-    end
-
-    StudentWebUI -->|"IStudentRequests (HTTPS)"| APIGateway
-    AdminWebUI -->|"IAdminRequests (HTTPS)"| APIGateway
-
-    APIGateway -->|IAuthentication| AuthenticationService
-    APIGateway -->|IProfileManagement| ProfileService
-    APIGateway -->|ISubjectEnrollment| SubjectEnrollmentService
-    APIGateway -->|IMatching| MatchingEngine
-    APIGateway -->|IGroupmateRequest| RequestService
-    APIGateway -->|IGroupManagement| GroupService
-    APIGateway -->|INotification| NotificationService
-    APIGateway -->|IModeration| ModerationService
-
-    APIGateway -.->|"validates session"| AuthenticationService
-
-    MatchingEngine -->|"reads profile data"| ProfileService
-    MatchingEngine -->|"reads enrollment data"| SubjectEnrollmentService
-    RequestService -.->|"uses recommendation"| MatchingEngine
-    GroupService -.->|"uses accepted request"| RequestService
-    GroupService -->|"verifies enrollment"| SubjectEnrollmentService
-
-    MatchingEngine -->|"publishes match event"| NotificationService
-    RequestService -->|"publishes request event"| NotificationService
-    GroupService -->|"publishes group event"| NotificationService
-    ModerationService -.->|"updates account status"| AuthenticationService
-
-    AuthenticationService --> DataAccessLayer
-    ProfileService --> DataAccessLayer
-    SubjectEnrollmentService --> DataAccessLayer
-    MatchingEngine --> DataAccessLayer
-    RequestService --> DataAccessLayer
-    GroupService --> DataAccessLayer
-    NotificationService -->|IDataAccess| DataAccessLayer
-    ModerationService --> DataAccessLayer
-
-    DataAccessLayer -->|"SQL queries"| Database
-```
+*Figure: StudySync component diagram, drawn in standard UML component notation. Full-resolution versions are available as `StudySync_Component_Diagram.svg` and `StudySync_Component_Diagram.pdf`. The diagram is generated from the PlantUML source `StudySync_Component_Diagram.puml`.*
 
    3. ## **Component Interaction Analysis** {#component-interaction-analysis}
 
-      All user interaction begins in the presentation layer. `StudentWebUI` and `AdminWebUI` run in the user's web browser and send requests over HTTPS to `APIGateway`. Neither interface communicates with an application service directly, so the presentation layer depends only on the gateway. This keeps the browser code independent of how the services are internally organized.
+      The diagram is read through UML component notation. Every connection between components passes through a named interface drawn ball-and-socket: the full circle, or ball, marks the interface a component **provides**, and the open half-circle, or socket, marks the interface a component **requires**. Where a socket meets a ball the two form an assembly connector, meaning the required service is satisfied by the provided one. The small squares on the boundary of `APIGateway` and `DataAccessLayer` are ports, the defined interaction points through which those components expose or access their interfaces.
 
-      `APIGateway` validates the session with `AuthenticationService` before forwarding any request that requires a signed-in user. It then dispatches the request to the responsible service through a named interface, such as `IProfileManagement` for profile updates or `IMatching` for recommendation requests. `AuthenticationService` also supplies the user's role, which determines whether administrative operations in `ModerationService` and `SubjectEnrollmentService` are permitted.
+      All user interaction begins in the Presentation Subsystem. `StudentWebUI` and `AdminWebUI` run in the user's web browser and require `IStudentRequests` and `IAdminRequests`, the two interfaces provided by `APIGateway` through its `studentPort` and `adminPort`. Neither interface communicates with an application service directly, so the presentation layer depends only on the gateway. This keeps the browser code independent of how the services are internally organized.
 
-      The matching flow contains the most significant dependencies between services. When a student requests potential groupmates, `MatchingEngine` reads collaboration profile information from `ProfileService` and subject enrollment information from `SubjectEnrollmentService`. It uses the enrollment records to restrict candidates to students taking the same subject who are marked as looking for a group, then compares IT major, availability, employment schedule, and working-style preference to compute a compatibility score. The resulting recommendations are returned to the student through the gateway.
+      `APIGateway` requires `IAuthentication` and validates the session with `AuthenticationService` before forwarding any request that needs a signed-in user. It then dispatches the request to the responsible service through that service's provided interface, such as `IProfileManagement` for profile updates or `IMatching` for recommendation requests. `AuthenticationService` also supplies the user's role, which determines whether administrative operations in `ModerationService` and `SubjectEnrollmentService` are permitted.
 
-      `RequestService` depends on `MatchingEngine` because a groupmate request normally originates from a displayed recommendation. Once a request is accepted, `GroupService` uses that accepted request to establish a project group and create the corresponding membership records, and it verifies with `SubjectEnrollmentService` that each member is enrolled in the group's subject.
+      The matching flow contains the most significant dependencies between services. `MatchingEngine` requires both `IProfileManagement` and `ISubjectEnrollment`, which is visible on the diagram as two sockets reaching out of the Matching and Collaboration Subsystem. When a student requests potential groupmates, it reads collaboration profile information from `ProfileService` and subject enrollment information from `SubjectEnrollmentService`. It uses the enrollment records to restrict candidates to students taking the same subject who are marked as looking for a group, then compares IT major, availability, employment schedule, and working-style preference to compute a compatibility score. The resulting recommendations are returned to the student through the gateway.
 
-      `NotificationService` is a shared consumer rather than a caller. `MatchingEngine`, `RequestService`, and `GroupService` publish events to it whenever recommendations are generated, requests are sent or answered, or group membership changes. Because these components depend on `NotificationService` rather than on one another for messaging, notification behavior can change without affecting the matching or group-formation logic.
+      `RequestService` requires `IMatching` because a groupmate request normally originates from a displayed recommendation. `GroupService` requires `IGroupmateRequest` so that an accepted request can be used to establish a project group and create the corresponding membership records, and it also requires `ISubjectEnrollment` to verify that each member is enrolled in the group's subject.
 
-      On the administrative path, a student submits a report through `ModerationService`, which stores it for review. An administrator retrieves pending reports through `AdminWebUI` and records a resolution. When a resolution affects an account, `ModerationService` asks `AuthenticationService` to update that account's status.
+      `NotificationService` is a shared provider rather than a caller. It provides a single interface, `INotification`, which `MatchingEngine`, `RequestService`, `GroupService`, and `APIGateway` all require. Because those components depend on the notification contract rather than on one another for messaging, notification behavior can change without affecting the matching or group-formation logic.
 
-      Every application service persists and retrieves data through `DataAccessLayer`, which executes queries against `Database`. No service accesses the database directly.
+      On the administrative path, a student submits a report through `IModeration`, provided by `ModerationService`, which stores it for review. An administrator retrieves pending reports through `AdminWebUI` and records a resolution. When a resolution affects an account, `ModerationService` requires `IAuthentication` to update that account's status.
+
+      Every application service requires `IDataAccess`, the single interface provided by `DataAccessLayer`. This is the most widely required interface in the architecture, with eight consuming components. `DataAccessLayer` then reaches `Database` through its `dbPort` as a `«use»` dependency, so no service accesses storage directly.
 
       Regarding external interfaces, StudySync deliberately has none beyond the web browser. It does not integrate with Coursera, MyCamu, Google Meet, or Google Workspace, and it does not read official MMDC enrollment records. Subject and account data are maintained within the system itself. This boundary is what keeps the project feasible within the academic term.
 
@@ -228,7 +198,7 @@ flowchart TB
 
    4. ## **Architectural Decisions** {#architectural-decisions}
 
-      **Why the components were organized this way.** The components were derived by grouping classes according to shared responsibility rather than by screen or page. Each application component owns a small, closely related set of classes: `ProfileService` owns `CollaborationProfile` and `Availability`, `SubjectEnrollmentService` owns `Subject` and `SubjectEnrollment`, and `GroupService` owns `ProjectGroup` and `GroupMembership`. This keeps each component cohesive and makes the component boundaries match the boundaries already present in the class model. The three-layer arrangement was chosen because the proposal specifies a web-based system reachable from common desktop and mobile browsers, which implies a browser client separated from server-side logic and storage.
+      **Why the components were organized this way.** The components were derived by grouping classes according to shared responsibility rather than by screen or page. Each application component owns a small, closely related set of classes: `ProfileService` owns `CollaborationProfile` and `Availability`, `SubjectEnrollmentService` owns `Subject` and `SubjectEnrollment`, and `GroupService` owns `ProjectGroup` and `GroupMembership`. This keeps each component cohesive and makes the component boundaries match the boundaries already present in the class model. The three-layer arrangement was chosen because the proposal specifies a web-based system reachable from common desktop and mobile browsers, which implies a browser client separated from server-side logic and storage. Those three layers are expressed in the diagram as six `«subsystem»` packages, so that related components supporting one business function are enclosed together. `AuthenticationService` and `ModerationService` share the Account and Access Subsystem because both operate on accounts, while `APIGateway` was given its own subsystem because it mediates between the browser and every other subsystem rather than belonging to any one of them.
 
       Two components, `APIGateway` and `DataAccessLayer`, have no corresponding class in the class diagram. They were added because the proposal's non-functional requirements call for authentication, access control, and consistent data. The gateway gives the browser a single point of contact and one place to validate sessions, and the data access layer keeps persistence logic out of the individual services.
 
@@ -236,7 +206,9 @@ flowchart TB
 
       **Alternative structures considered.** The team first considered a single monolithic application component containing all business logic, which was rejected because it hid the dependencies between matching, requests, and group formation that this analysis is meant to expose. The opposite extreme, one component per class, was also rejected as producing too many small units to be meaningful for a project of this size. A separate recommendation component was considered and merged into `MatchingEngine`, since a recommendation has no meaning apart from the matching process. Similarly, a dedicated invitation component was dropped because group membership can be established from an accepted groupmate request.
 
-      **Significant challenges encountered.** The main challenge was choosing the right granularity for the application layer, which the team resolved by aligning components with the major system functions listed in Section 2.3. A second challenge was resisting scope creep toward functionality already provided by Coursera, MyCamu, Google Meet, and Google Workspace; file sharing, task management, grading, and class delivery were explicitly excluded from the architecture. A third was deciding where notification logic belongs, which was settled by making `NotificationService` a shared consumer of events rather than letting each service notify users on its own.
+      **Significant challenges encountered.** The main challenge was choosing the right granularity for the application layer, which the team resolved by aligning components with the major system functions listed in Section 2.3. A second challenge was resisting scope creep toward functionality already provided by Coursera, MyCamu, Google Meet, and Google Workspace; file sharing, task management, grading, and class delivery were explicitly excluded from the architecture. A third was deciding where notification logic belongs, which was settled by making `NotificationService` a shared provider of one interface rather than letting each service notify users on its own.
+
+      **Notation corrections applied after review.** An earlier version of the component diagram was drawn as a layered flowchart, with components shown as plain boxes and interface names written as text labels on the connecting arrows. That is not UML component notation. The diagram has been redrawn so that components carry the `«component»` stereotype and icon, related components are enclosed in `«subsystem»` packages, and each interface is modelled as a first-class element connected ball-and-socket to the components that provide and require it. Ports were added to `APIGateway` and `DataAccessLayer` to mark their explicit interaction points, and a legend on the diagram records the meaning of each symbol. Beyond correctness, drawing the sockets made the real coupling visible in a way the flowchart did not: `IDataAccess` is required by eight components and `INotification` by four, while `MatchingEngine` is the only service requiring two other business interfaces, which confirms it as the most coupled component in the system.
 
 
 4. # **Class Analysis** {#class-analysis}
@@ -262,162 +234,27 @@ flowchart TB
 | `Notification` | Provides a student with updates about recommendations, requests, invitations, membership, and other relevant group activity. |
 | `UserReport` | Records a report submitted by a student about another user or inappropriate activity for administrator review. |
 
+      Each class follows the standard UML member syntax. Attributes are written as `visibility name: Type` and are private by default, and every class provides a constructor together with public getter and setter operations for its attributes. Operations declare typed parameters and a return type, for example `+calculateCompatibility(studentId: int, candidateId: int): double`.
+
+      Nine `«enumeration»` types supply the permitted values for the model's status and category attributes, replacing the free-text fields used in the first draft.
+
+| Enumeration | Permitted Values |
+| ----- | ----- |
+| `AccountStatus` | ACTIVE, SUSPENDED, DEACTIVATED |
+| `EmploymentStatus` | STUDENT_ONLY, PART_TIME, FULL_TIME |
+| `WorkingStyle` | EARLY_STARTER, STEADY_PACER, DEADLINE_DRIVEN |
+| `RecommendationStatus` | NEW, VIEWED, REQUESTED, DISMISSED |
+| `RequestStatus` | PENDING, ACCEPTED, DECLINED, CANCELLED |
+| `GroupStatus` | FORMING, ACTIVE, COMPLETED, DISBANDED |
+| `MembershipRole` | LEADER, MEMBER |
+| `NotificationType` | RECOMMENDATION, REQUEST_RECEIVED, REQUEST_RESPONSE, GROUP_INVITATION, GROUP_UPDATE |
+| `ReportStatus` | PENDING, UNDER_REVIEW, RESOLVED, DISMISSED |
+
    2. ## **Class Diagram** {#class-diagram}
 
-```mermaid
-classDiagram
-    class User {
-        <<abstract>>
-        +String userId
-        +String fullName
-        +String email
-        -String passwordHash
-        +String accountStatus
-        +login(email, password) Boolean
-        +logout() void
-        +updateBasicInfo(fullName, email) void
-    }
+![StudySync Class Diagram](StudySync_Class_Diagram.png)
 
-    class Student {
-        +String studentNumber
-        +viewPotentialGroupmates(subjectId) List
-        +sendGroupmateRequest(receiverId, subjectId) GroupmateRequest
-        +createProjectGroup(subjectId, groupName) ProjectGroup
-        +submitReport(reportedUserId, reason) UserReport
-    }
-
-    class Administrator {
-        +manageUser(userId, action) void
-        +manageSubject(subjectId, action) void
-        +reviewReport(reportId, resolution) void
-    }
-
-    class CollaborationProfile {
-        +String profileId
-        +String itMajor
-        +String employmentStatus
-        +String workSchedule
-        +String workingStyle
-        +String profileSummary
-        +updateProfile() void
-    }
-
-    class Availability {
-        +String availabilityId
-        +String dayOfWeek
-        +Time startTime
-        +Time endTime
-        +Boolean isRecurring
-        +overlaps(otherAvailability) Boolean
-    }
-
-    class Subject {
-        +String subjectId
-        +String subjectCode
-        +String subjectName
-        +String status
-        +updateDetails() void
-    }
-
-    class SubjectEnrollment {
-        +String enrollmentId
-        +Boolean lookingForGroup
-        +Date enrolledAt
-        +setLookingForGroup(status) void
-    }
-
-    class MatchingService {
-        +findCandidates(studentId, subjectId) List
-        +calculateCompatibility(studentId, candidateId) Decimal
-        +generateRecommendations(studentId, subjectId) List
-    }
-
-    class MatchRecommendation {
-        +String recommendationId
-        +Decimal compatibilityScore
-        +String status
-        +DateTime createdAt
-        +markViewed() void
-        +dismiss() void
-    }
-
-    class GroupmateRequest {
-        +String requestId
-        +String status
-        +String message
-        +DateTime sentAt
-        +DateTime respondedAt
-        +accept() void
-        +decline() void
-        +cancel() void
-    }
-
-    class ProjectGroup {
-        +String groupId
-        +String groupName
-        +Integer maximumMembers
-        +DateTime createdAt
-        +String status
-        +addMember(studentId) void
-        +removeMember(studentId) void
-        +viewMembers() List
-    }
-
-    class GroupMembership {
-        +String membershipId
-        +String role
-        +String status
-        +DateTime joinedAt
-        +leaveGroup() void
-    }
-
-    class Notification {
-        +String notificationId
-        +String type
-        +String message
-        +Boolean isRead
-        +DateTime createdAt
-        +markAsRead() void
-    }
-
-    class UserReport {
-        +String reportId
-        +String reason
-        +String details
-        +String status
-        +DateTime submittedAt
-        +String resolution
-        +resolve(resolution) void
-    }
-
-    User <|-- Student
-    User <|-- Administrator
-    Student "1" *-- "1" CollaborationProfile : owns
-    CollaborationProfile "1" *-- "0..*" Availability : contains
-    Student "1" -- "0..*" SubjectEnrollment : has
-    Subject "1" -- "0..*" SubjectEnrollment : includes
-    MatchingService ..> CollaborationProfile : compares
-    MatchingService ..> SubjectEnrollment : filters
-    MatchingService ..> MatchRecommendation : creates
-    Student "1" -- "0..*" MatchRecommendation : receives
-    Subject "1" -- "0..*" MatchRecommendation : concerns
-    MatchRecommendation "0..1" ..> GroupmateRequest : initiates
-    Student "1" --> "0..*" GroupmateRequest : sends
-    Student "1" <-- "0..*" GroupmateRequest : receives
-    Subject "1" -- "0..*" GroupmateRequest : concerns
-    Student "1" --> "0..*" ProjectGroup : creates
-    Subject "1" -- "0..*" ProjectGroup : has
-    ProjectGroup "1" *-- "1..*" GroupMembership : contains
-    Student "1" -- "0..*" GroupMembership : holds
-    Student "1" *-- "0..*" Notification : receives
-    GroupmateRequest ..> Notification : triggers
-    ProjectGroup ..> Notification : triggers
-    Student "1" --> "0..*" UserReport : submits
-    User "1" <-- "0..*" UserReport : concerns
-    Administrator "0..1" -- "0..*" UserReport : reviews
-    Administrator ..> User : manages
-    Administrator ..> Subject : maintains
-```
+*Figure: StudySync class diagram, drawn in standard UML notation. Full-resolution versions are available as `StudySync_Class_Diagram.svg` and `StudySync_Class_Diagram.pdf`. The diagram is generated from the PlantUML source `StudySync_Class_Diagram.puml`.*
 
    3. ## **Relationship Analysis** {#relationship-analysis}
 
@@ -425,7 +262,7 @@ classDiagram
 
       **Composition.** A `Student` has exactly one `CollaborationProfile`, and that profile contains zero or more `Availability` records. Both are compositions because the profile belongs exclusively to one student and the availability entries exist only as parts of that profile; deleting the student removes both. `ProjectGroup` likewise composes one or more `GroupMembership` records, so a group's roster cannot outlive the group. `Student` composes its `Notification` records for the same reason.
 
-      **Associations and association classes.** The many-to-many relationship between students and subjects is resolved through `SubjectEnrollment`. One student may enroll in several subjects and one subject may include many students, and the association class stores the `lookingForGroup` flag that belongs to the pairing rather than to either side. `GroupMembership` resolves the many-to-many relationship between students and project groups in the same way, carrying the member's role and join status. `GroupmateRequest` is an association between two students, one as sender and one as receiver, scoped to a subject.
+      **Associations and association classes.** The many-to-many relationship between students and subjects is resolved through `SubjectEnrollment`. One student may enroll in several subjects and one subject may include many students, and the association class stores the `lookingForGroup` flag that belongs to the pairing rather than to either side. `GroupMembership` resolves the many-to-many relationship between students and project groups in the same way, carrying the member's role and join status. Both are drawn using proper association class notation, as a dashed line from the class to the association path it describes, rather than as ordinary classes joined by two separate associations. `GroupmateRequest` is an association between two students, distinguished by the role names `sender` and `receiver`, and scoped to a subject.
 
       **Dependencies.** `MatchingService` depends on `CollaborationProfile` and `SubjectEnrollment` to find eligible candidates and compare their attributes, and it creates `MatchRecommendation` records. A recommendation may in turn initiate a `GroupmateRequest`. `GroupmateRequest` and `ProjectGroup` trigger `Notification` records, and `Administrator` depends on `User` and `Subject` for its management operations. Dependencies rather than associations were used here because these classes use one another transiently without holding a permanent reference.
 
@@ -444,6 +281,12 @@ classDiagram
 
       **Challenges.** The principal challenge was balancing a sufficiently detailed model against the limited academic term. Functionality belonging to Coursera, MyCamu, Google Meet, and Google Workspace, along with project task management, file sharing, grading, and class delivery, was deliberately excluded. A second challenge was deciding how much behavior to place on entity classes versus the service class, which the team resolved by keeping entity operations limited to their own state and assigning cross-entity computation to `MatchingService`.
 
+      **Notation corrections applied after review.** The classes themselves were identified correctly in the first draft, but their members were written incorrectly. Attributes appeared as `+String userId`, placing the type before the name and defaulting to public visibility. UML specifies the opposite order, `visibility name: type-expression`, so the attribute is now `-userId: int`, private and typed after the name. Operations follow the matching form `visibility name(parameter-list): return-type`, as in `+login(email: String, password: String): boolean`. Every attribute in all fourteen classes was rewritten accordingly.
+
+      **Encapsulation members added.** The first draft also omitted constructors and accessors. Each class now declares a constructor that takes the attributes required at creation time, together with a public getter and setter for every attribute, with boolean attributes using the `isX()` form. Because these members make each class box considerably taller, the diagram separates them into labelled compartments for Constructor, Accessors, and Operations, so that the behavior specific to each class stays easy to find.
+
+      **Enumerations introduced.** The status and category attributes previously held free text, which left their permitted values undefined. Nine enumerations now supply those values and are referenced directly as attribute types, which both documents the valid states and removes a class of data-entry error.
+
 5. # **Structural Findings** {#structural-findings}
 
    **How the components and classes work together.** The two models describe the same system at different levels of detail, and they align cleanly. Every one of the fourteen classes is owned by exactly one application component, and no class is split across components. The component view shows the flow of control, from browser through gateway to service to database, while the class view shows the data and behavior each service operates on. The two meet most visibly in the matching flow: the component diagram shows `MatchingEngine` depending on `ProfileService` and `SubjectEnrollmentService`, and the class diagram explains why, since `MatchingService` must read `CollaborationProfile`, `Availability`, and `SubjectEnrollment` to compute a compatibility score. Reading the models together confirms that each major system function in Section 2.3 has both a component responsible for it and the classes needed to carry it out.
@@ -452,7 +295,7 @@ classDiagram
 
    **Potential risks and limitations.** The most significant risk is that matching quality depends entirely on self-reported data. If students enter inaccurate or incomplete availability, employment, or working-style information, the compatibility scores will be unreliable no matter how the structure is designed. A second risk is that `MatchingEngine` depends on two other services, making it the most coupled component in the architecture and the one most affected by changes to profile or enrollment data. Third, the compatibility algorithm itself is not specified by the structural model; the class diagram shows that `calculateCompatibility` exists but not how it weighs major, availability, and working style, and that weighting will materially affect whether students find the recommendations useful. Fourth, keeping notifications in-app means a student who does not log in will not learn about a pending request, which could stall group formation. Finally, maintaining subject and account data inside StudySync rather than reading MMDC records means the data can drift out of step with actual enrollment.
 
-   **Areas requiring further refinement.** Four areas need more work before implementation. The compatibility scoring rules and their weighting must be defined concretely, including how partial availability overlap is scored. The lifecycle of `GroupmateRequest` and `ProjectGroup` needs to be specified, since both carry a `status` attribute whose permitted values and transitions are not yet fixed. Group capacity rules need clarification, particularly what happens when accepting a request would exceed `maximumMembers`, and whether a student may belong to more than one group for the same subject. The moderation workflow also needs detail on what resolutions an administrator can apply and how each affects an account's status.
+   **Areas requiring further refinement.** Four areas need more work before implementation. The compatibility scoring rules and their weighting must be defined concretely, including how partial availability overlap is scored. The lifecycle of `GroupmateRequest` and `ProjectGroup` needs to be specified: the `RequestStatus` and `GroupStatus` enumerations now fix the permitted values, but the transitions between them, and the conditions that trigger each transition, still belong to the state modeling work of Milestone 2. Group capacity rules need clarification, particularly what happens when accepting a request would exceed `maximumMembers`, and whether a student may belong to more than one group for the same subject. The moderation workflow also needs detail on what resolutions an administrator can apply and how each affects an account's status.
 
 
 6. # **Recommendations for Future Design Activities** {#recommendations-for-future-design-activities}
@@ -465,7 +308,7 @@ classDiagram
 
    **Prototype Development.** The three-layer separation means the presentation layer can be prototyped against defined service interfaces before the services are fully implemented. Prototyping should begin with the screens that carry the most design risk: collaboration profile creation, including how availability is entered, and the potential groupmates list, since how compatibility is presented determines whether students trust the recommendations. The attributes listed on `CollaborationProfile` and `Availability` give a concrete field list for the profile form.
 
-   **Behavioral Analysis.** The `status` attributes on `GroupmateRequest`, `ProjectGroup`, `GroupMembership`, `MatchRecommendation`, and `UserReport` are natural candidates for state machine diagrams, and modeling them will resolve the lifecycle gaps identified in Section 5. The request lifecycle of pending, accepted, declined, and cancelled is the most important, since it governs whether a project group can be formed. Activity diagrams for the end-to-end group-formation process will also help confirm that the component and class structures support the complete flow under alternative paths, such as a declined request or a group that reaches capacity.
+   **Behavioral Analysis.** The `status` attributes on `GroupmateRequest`, `ProjectGroup`, `GroupMembership`, `MatchRecommendation`, and `UserReport` are natural candidates for state machine diagrams, and modeling them will resolve the lifecycle gaps identified in Section 5. The enumerations already supply the state names, so the remaining work is to define the transitions between them. The `RequestStatus` lifecycle of PENDING, ACCEPTED, DECLINED, and CANCELLED is the most important, since it governs whether a project group can be formed. Activity diagrams for the end-to-end group-formation process will also help confirm that the component and class structures support the complete flow under alternative paths, such as a declined request or a group that reaches capacity.
 
    Taken together, these activities extend the static structure documented here into the dynamic behavior required for Milestone 2. The classes, components, and relationships defined in this analysis provide the vocabulary those models will use, and the open questions raised in Section 5 provide their starting agenda.
 

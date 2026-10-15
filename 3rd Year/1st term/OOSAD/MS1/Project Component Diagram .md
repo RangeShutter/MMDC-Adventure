@@ -54,93 +54,63 @@ For permissions or inquiries, please contact MMDC-ISD at [isd@mmdc.mcl.edu.ph](m
 | `DataAccessLayer`          | Provides a consistent persistence interface for all application services, translating domain objects into database operations and keeping query logic out of the service components.                                                                                           |
 | `Database`                 | Stores all persistent system data, including accounts, collaboration profiles, availability, subjects, enrollments, recommendations, requests, groups, memberships, notifications, and reports.                                                                                |
 
+These components are organized into six `«subsystem»` packages, each a collection of related components supporting one larger business function.
+
+| Subsystem | Components | Business Function |
+| ----- | ----- | ----- |
+| Presentation | `StudentWebUI`, `AdminWebUI` | Browser-based user interaction |
+| Gateway | `APIGateway` | Request routing and session validation |
+| Account and Access | `AuthenticationService`, `ModerationService` | Account identity, access control, and moderation |
+| Profile and Enrollment | `ProfileService`, `SubjectEnrollmentService` | Collaboration profiles and subject enrollment |
+| Matching and Collaboration | `MatchingEngine`, `RequestService`, `GroupService` | Groupmate discovery, requests, and group formation |
+| Notification | `NotificationService` | Delivery of in-app status updates |
+| Data | `DataAccessLayer`, `Database` | Persistence of all system data |
+
+Each component publishes its services through a named interface. The following interfaces define the contracts between components.
+
+| Interface | Provided By | Required By |
+| ----- | ----- | ----- |
+| `IStudentRequests` | `APIGateway` | `StudentWebUI` |
+| `IAdminRequests` | `APIGateway` | `AdminWebUI` |
+| `IAuthentication` | `AuthenticationService` | `APIGateway`, `ModerationService` |
+| `IProfileManagement` | `ProfileService` | `APIGateway`, `MatchingEngine` |
+| `ISubjectEnrollment` | `SubjectEnrollmentService` | `APIGateway`, `MatchingEngine`, `GroupService` |
+| `IMatching` | `MatchingEngine` | `APIGateway`, `RequestService` |
+| `IGroupmateRequest` | `RequestService` | `APIGateway`, `GroupService` |
+| `IGroupManagement` | `GroupService` | `APIGateway` |
+| `INotification` | `NotificationService` | `APIGateway`, `MatchingEngine`, `RequestService`, `GroupService` |
+| `IModeration` | `ModerationService` | `APIGateway` |
+| `IDataAccess` | `DataAccessLayer` | All eight application services |
+
 
 
 
 ## 2. Component Diagram
 
-```mermaid
-flowchart TB
-    subgraph presentation [Presentation Layer]
-        StudentWebUI["«component»<br/>StudentWebUI"]
-        AdminWebUI["«component»<br/>AdminWebUI"]
-    end
+![StudySync Component Diagram](StudySync_Component_Diagram.png)
 
-    subgraph gateway [Interface Layer]
-        APIGateway["«component»<br/>APIGateway"]
-    end
-
-    subgraph application [Application / Business Logic Layer]
-        AuthenticationService["«component»<br/>AuthenticationService"]
-        ProfileService["«component»<br/>ProfileService"]
-        SubjectEnrollmentService["«component»<br/>SubjectEnrollmentService"]
-        MatchingEngine["«component»<br/>MatchingEngine"]
-        RequestService["«component»<br/>RequestService"]
-        GroupService["«component»<br/>GroupService"]
-        NotificationService["«component»<br/>NotificationService"]
-        ModerationService["«component»<br/>ModerationService"]
-    end
-
-    subgraph data [Data Layer]
-        DataAccessLayer["«component»<br/>DataAccessLayer"]
-        Database[("Database")]
-    end
-
-    StudentWebUI -->|"IStudentRequests (HTTPS)"| APIGateway
-    AdminWebUI -->|"IAdminRequests (HTTPS)"| APIGateway
-
-    APIGateway -->|IAuthentication| AuthenticationService
-    APIGateway -->|IProfileManagement| ProfileService
-    APIGateway -->|ISubjectEnrollment| SubjectEnrollmentService
-    APIGateway -->|IMatching| MatchingEngine
-    APIGateway -->|IGroupmateRequest| RequestService
-    APIGateway -->|IGroupManagement| GroupService
-    APIGateway -->|INotification| NotificationService
-    APIGateway -->|IModeration| ModerationService
-
-    APIGateway -.->|"validates session"| AuthenticationService
-
-    MatchingEngine -->|"reads profile data"| ProfileService
-    MatchingEngine -->|"reads enrollment data"| SubjectEnrollmentService
-    RequestService -.->|"uses recommendation"| MatchingEngine
-    GroupService -.->|"uses accepted request"| RequestService
-    GroupService -->|"verifies enrollment"| SubjectEnrollmentService
-
-    MatchingEngine -->|"publishes match event"| NotificationService
-    RequestService -->|"publishes request event"| NotificationService
-    GroupService -->|"publishes group event"| NotificationService
-    ModerationService -.->|"updates account status"| AuthenticationService
-
-    AuthenticationService --> DataAccessLayer
-    ProfileService --> DataAccessLayer
-    SubjectEnrollmentService --> DataAccessLayer
-    MatchingEngine --> DataAccessLayer
-    RequestService --> DataAccessLayer
-    GroupService --> DataAccessLayer
-    NotificationService -->|IDataAccess| DataAccessLayer
-    ModerationService --> DataAccessLayer
-
-    DataAccessLayer -->|"SQL queries"| Database
-```
+*Figure: StudySync component diagram, drawn in standard UML component notation. Full-resolution versions are available as `StudySync_Component_Diagram.svg` and `StudySync_Component_Diagram.pdf`. The diagram is generated from the PlantUML source `StudySync_Component_Diagram.puml`.*
 
 
 
 
 ## 3. Component Interaction Analysis
 
-All user interaction begins in the presentation layer. `StudentWebUI` and `AdminWebUI` run in the student's or administrator's web browser and send requests over HTTPS to `APIGateway`. Neither interface communicates with an application service directly, so the presentation layer depends only on the gateway. This keeps the browser code independent of how the services are internally organized.
+The diagram is read through UML component notation. Each component is a modular, replaceable unit marked `«component»` and carrying the component icon. Related components are grouped into `«subsystem»` packages. Every connection between components passes through a named interface drawn ball-and-socket: the full circle, or ball, marks the interface a component **provides**, and the open half-circle, or socket, marks the interface a component **requires**. Where a socket meets a ball the two form an assembly connector, meaning the required service is satisfied by the provided one. The small squares on the boundary of `APIGateway` and `DataAccessLayer` are ports, the defined interaction points through which those components expose or access their interfaces. The dashed arrow to the database is a `«use»` dependency, used only where no interface contract applies.
 
-`APIGateway` validates the session with `AuthenticationService` before forwarding any request that requires a signed-in user. It then dispatches the request to the responsible service through a named interface, such as `IProfileManagement` for profile updates or `IMatching` for recommendation requests. `AuthenticationService` also supplies the user's role, which determines whether administrative operations in `ModerationService` and `SubjectEnrollmentService` are permitted.
+All user interaction begins in the Presentation Subsystem. `StudentWebUI` and `AdminWebUI` run in the student's or administrator's web browser and require `IStudentRequests` and `IAdminRequests`, the two interfaces provided by `APIGateway` through its `studentPort` and `adminPort`. Neither interface communicates with an application service directly, so the presentation layer depends only on the gateway. This keeps the browser code independent of how the services are internally organized.
 
-The matching flow shows the most significant dependencies between services. When a student requests potential groupmates, `MatchingEngine` reads collaboration profile information from `ProfileService` and subject enrollment information from `SubjectEnrollmentService`. It uses the enrollment records to restrict candidates to students taking the same subject who are marked as looking for a group, then compares IT major, availability, employment schedule, and working-style preference to compute a compatibility score. The resulting recommendations are returned to the student through the gateway.
+`APIGateway` requires `IAuthentication` and validates the session with `AuthenticationService` before forwarding any request that needs a signed-in user. It then dispatches the request to the responsible service through that service's provided interface, such as `IProfileManagement` for profile updates or `IMatching` for recommendation requests. `AuthenticationService` also supplies the user's role, which determines whether administrative operations in `ModerationService` and `SubjectEnrollmentService` are permitted.
 
-`RequestService` depends on `MatchingEngine` because a groupmate request usually originates from a displayed recommendation. Once a request is accepted, `GroupService` uses that accepted request to establish a project group and create the corresponding membership records, and it verifies with `SubjectEnrollmentService` that each member is enrolled in the group's subject.
+The matching flow shows the most significant dependencies between services. `MatchingEngine` requires both `IProfileManagement` and `ISubjectEnrollment`, which is visible on the diagram as two sockets reaching out of the Matching and Collaboration Subsystem. When a student requests potential groupmates, it reads collaboration profile information from `ProfileService` and subject enrollment information from `SubjectEnrollmentService`. It uses the enrollment records to restrict candidates to students taking the same subject who are marked as looking for a group, then compares IT major, availability, employment schedule, and working-style preference to compute a compatibility score. The resulting recommendations are returned to the student through the gateway.
 
-`NotificationService` is a shared consumer rather than a caller. `MatchingEngine`, `RequestService`, and `GroupService` publish events to it whenever recommendations are generated, requests are sent or answered, or group membership changes. Because these components depend on `NotificationService` rather than on one another for messaging, notification behavior can change without affecting the matching or group-formation logic.
+`RequestService` requires `IMatching` because a groupmate request usually originates from a displayed recommendation. `GroupService` requires `IGroupmateRequest` so that an accepted request can be used to establish a project group and create the corresponding membership records, and it also requires `ISubjectEnrollment` to verify that each member is enrolled in the group's subject.
 
-On the administrative path, a student submits a report through `ModerationService`, which stores it for review. An administrator retrieves pending reports through `AdminWebUI` and records a resolution. When a resolution affects an account, `ModerationService` asks `AuthenticationService` to update that account's status.
+`NotificationService` is a shared provider rather than a caller. It provides a single interface, `INotification`, which `MatchingEngine`, `RequestService`, `GroupService`, and `APIGateway` all require. Because those components depend on the notification contract rather than on one another for messaging, notification behavior can change without affecting the matching or group-formation logic.
 
-Every application service persists and retrieves data through `DataAccessLayer`, which in turn executes queries against `Database`. No service accesses the database directly. Together these interactions support the system's complete flow: account creation, profile and subject setup, groupmate discovery, requests, group formation, notifications, and administration.
+On the administrative path, a student submits a report through `IModeration`, provided by `ModerationService`, which stores it for review. An administrator retrieves pending reports through `AdminWebUI` and records a resolution. When a resolution affects an account, `ModerationService` requires `IAuthentication` to update that account's status.
+
+Every application service requires `IDataAccess`, the single interface provided by `DataAccessLayer`. This is the most widely required interface in the architecture, with eight consuming components. `DataAccessLayer` then reaches the database through its `dbPort` as a `«use»` dependency, so no service accesses storage directly. Together these interactions support the system's complete flow: account creation, profile and subject setup, groupmate discovery, requests, group formation, notifications, and administration.
 
 ## 4. Architectural Decisions
 
@@ -155,6 +125,10 @@ Several components were deliberately combined or simplified. `MatchingEngine` al
 The architecture assumes a three-layer web deployment accessible from common desktop and mobile browsers, as stated in the proposal's Compatibility requirement. It also assumes that all StudySync data is stored in a single system-owned database, because direct integration with official MMDC enrollment records is outside the project's scope, and that matching remains rule-based on predefined criteria rather than an AI recommendation engine.
 
 The main challenge during the analysis was deciding how finely to divide the application layer. An earlier grouping placed matching, requests, and group formation in one large component, which hid the dependencies between them, while dividing every class into its own component produced too many small pieces for an academic-term project. The final set balances the two by keeping components aligned with the major functions defined in the proposal. A related challenge was avoiding scope creep toward features already provided by Coursera, MyCamu, Google Meet, and Google Workspace; those responsibilities were intentionally excluded from the architecture.
+
+**Notation corrections applied after review.** An earlier version of this diagram was drawn as a layered flowchart, with components shown as plain boxes and interface names written as text labels on the connecting arrows. That is not UML component notation. The diagram has been redrawn so that components carry the `«component»` stereotype and icon, related components are enclosed in `«subsystem»` packages, and each interface is modelled as a first-class element connected ball-and-socket to the components that provide and require it. Ports were added to `APIGateway` and `DataAccessLayer` to mark their explicit interaction points. A legend on the diagram records the meaning of each symbol.
+
+**Decisions arising from the notation change.** Making the interfaces explicit changed how the architecture is grouped. The three informal layers became six named subsystems, which the course material identifies as collections of related components supporting a larger business function. `AuthenticationService` and `ModerationService` were placed together in the Account and Access Subsystem because both operate on accounts, and `APIGateway` was given its own subsystem because it mediates between the browser and every other subsystem rather than belonging to any one of them. Drawing the sockets also made the real coupling visible in a way the flowchart did not: `IDataAccess` is required by eight components and `INotification` by four, while `MatchingEngine` is the only service that requires two other business interfaces, which confirms it as the most coupled component in the system.
 
 ## 5. Project Resources
 
