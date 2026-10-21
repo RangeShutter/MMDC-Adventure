@@ -365,3 +365,165 @@ A packaged workbook includes the CSV extracts and is easier to move to another c
 4. Review the published version to confirm that tooltips, labels, and text wrapping still display correctly.
 
 Do not publish confidential information if the course data are not approved for public sharing.
+
+## 16. Revise an existing workbook (feedback fixes)
+
+Use this section if the dashboard from Sections 1–15 already exists. These steps add the missing client-count context, required forecast encodings, KPI-specific axis titles, and a Decision Center.
+
+The visual target is `tableau_executive_dashboard_revised_mockup.svg`. Keep the original mockup as the before state.
+
+### 16.1 Connect the two new CSV files
+
+Do **not** join these files to the existing KPI sources. They have different grain.
+
+1. Select **Data > New Data Source > Text File**.
+2. Open `client_base_timeseries.csv`.
+3. Rename the source to **Client Base**.
+4. Confirm field types:
+   - `period_start` — Date
+   - `cumulative_signed_clients`, `net_new_clients`, `prior_cumulative_clients`, `cgr_percent` — Number
+   - remaining fields — String
+5. Add another data source for `executive_decision_center.csv`.
+6. Rename it to **Decision Center**.
+7. Confirm `priority` is a whole number and all other fields are strings.
+
+`executive_kpi_timeseries.csv` now includes `axis_title`. After refresh, confirm that field is a String. `executive_kpi_cards.csv` now includes `supporting_text`.
+
+### 16.2 Fix the CGR chart so a falling rate is not read as a shrinking base
+
+Q1 2025 CGR is **11.0%**, but the client base still grew by **+9 clients** (82 to 91). Partial Q2 is **9.9%** with another **+9 clients** (91 to 100).
+
+1. Open **Trend - CGR**.
+2. Keep `kpi_code` = `CGR` from **KPI Time Series** on the left axis.
+3. Build the required three-series encoding from Section 16.3 on the CGR % axis.
+4. Drag a new worksheet named **Trend - Client Count**, or add **Client Base** as a dual axis on the same sheet:
+   - Columns: continuous `period_start` at Quarter
+   - Rows: `cumulative_signed_clients` as a line
+   - Color: a distinct count color, such as dark gray
+   - Filter out quarters where `cumulative_signed_clients` = 0 if the early empty base clutters the view (signed clients begin in 2023-Q2)
+5. If using one worksheet, place CGR % on the left axis and cumulative signed clients on the right axis. Select **Dual Axis**, then **Synchronize** only if the scales are comparable — they are not, so **do not synchronize**.
+6. Edit axis titles:
+   - Left: `Client Growth Rate (%)`
+   - Right: `Cumulative Signed Clients (Count)`
+7. Add this caption on the worksheet or dashboard:
+
+> Declining percentage growth does not mean the number of clients is declining. Q1 added +9 clients (base 91). Partial Q2 also added +9 clients (base 100).
+
+8. On **Card - CGR**, add `supporting_text` under the headline so the card shows `11.0%` plus `+9 net new clients; cumulative base 91`.
+
+### 16.3 Require actual vs partial vs forecast on every trend chart
+
+The earlier “simple version” is no longer acceptable. Every forecast chart must use three encodings.
+
+Create or keep these calculated fields on **KPI Time Series**:
+
+```text
+Completed Actual Value
+IF [series_type] = "Completed Actual" THEN [value] END
+
+Partial Actual Value
+IF [series_type] = "Partial Actual" THEN [value] END
+
+Forecast Value
+IF [series_type] = "Forecast" THEN [value] END
+
+Forecast Lower
+IF [series_type] = "Forecast" THEN [forecast_lower_95] END
+
+Forecast Upper
+IF [series_type] = "Forecast" THEN [forecast_upper_95] END
+```
+
+On **Trend - CRR and CER**, **Trend - ARPC**, **Trend - CGR**, and **Trend - CSAT**:
+
+1. Place `Completed Actual Value` on Rows as a **solid line**.
+2. Place `Forecast Value` on a dual axis as a **dashed line** (or a lighter color if dashes are unavailable).
+3. Synchronize the dual axis.
+4. Add `Partial Actual Value` as circles with a white fill and orange outline. Do not connect partial points into the completed or forecast line.
+5. Color:
+   - Completed actual — KPI color, solid
+   - Forecast — same hue, dashed or 50% lighter
+   - Partial actual — orange outline
+6. Show a visible legend: **Completed Actual**, **Partial Actual**, **Forecast**.
+7. Add the 95% prediction band:
+   - Place `Forecast Lower` and `Forecast Upper` on the view
+   - Use a dual-axis area, measure names/values area, or reference band between the two fields
+   - Pale transparent fill
+   - Keep the forecast line on top of the band
+8. For **CSAT**, the band spans almost 1–5. That width must remain visible. Add the note:
+
+> CSAT forecast uncertainty is very high because only 29 cleaned ratings have usable dates. Do not manage to the 5.00 upper bound.
+
+### 16.4 Replace generic axis labels
+
+Tableau often titles the Y-axis `AVG(Value)` or `Value`. Replace it on every chart.
+
+1. Right-click the Y-axis > **Edit Axis**.
+2. Under **Axis Title**, replace the default with the matching `axis_title` value:
+
+| Worksheet | Axis title |
+| --- | --- |
+| Trend - CRR and CER | `Retention / Engagement (%)` |
+| Trend - ARPC | `Average Revenue per Client (USD)` |
+| Trend - CGR (left) | `Client Growth Rate (%)` |
+| Trend - CGR (right) | `Cumulative Signed Clients (Count)` |
+| Trend - CSAT | `Customer Satisfaction Score (1-5)` |
+
+3. Keep percentage KPIs formatted as numbers with one decimal plus a `%` suffix. Do not use Tableau Percent format on 0–100 stored values.
+4. Format ARPC as currency with thousands separators.
+5. Fix CSAT from 1 to 5.
+
+### 16.5 Replace the action table with a Decision Center
+
+1. Hide or remove **Executive Action Table** from the dashboard. Keep `executive_recommendations.csv` in the folder if needed for backup, but do not display it.
+2. Create a worksheet named **Decision Center** from the **Decision Center** source.
+3. Drag `priority` to **Rows**.
+4. Then add, in order:
+   - `kpi_code`
+   - `business_issue`
+   - `specific_action`
+   - `timeline`
+   - `kpi_target`
+   - `expected_impact`
+5. Put `clients_or_records_affected` and `success_measure` in the tooltip or as extra wrapped columns if space allows.
+6. Sort ascending by `priority`.
+7. Hide the `priority` header after sorting, or show it as **P1–P5**.
+8. Rename headers:
+
+| Field | Header |
+| --- | --- |
+| kpi_code | KPI |
+| business_issue | Priority issue |
+| specific_action | Action |
+| timeline | When |
+| kpi_target | KPI target |
+| expected_impact | Expected impact |
+
+9. Enable text wrapping and increase row height. P1 is retention and should read as the top management action.
+
+### 16.6 Rebuild the dashboard layout
+
+1. Change dashboard size to about **1600 × 1100**, Fixed Size.
+2. Keep the title and five KPI cards.
+3. Keep the 2×2 chart grid.
+4. Replace the bottom recommendations table with **Decision Center** across the full width.
+5. Add a dashboard legend near the charts: solid = completed actual, outlined circle = partial period, dashed = forecast, shaded band = 95% prediction interval.
+6. Fit objects to the container and wrap Decision Center text.
+
+### 16.7 Validate the revised dashboard
+
+Confirm these completed-period headlines:
+
+- CRR 51.0% in Q1 2025, supporting text `25 of 49 prior-quarter active clients returned`
+- ARPC $69,523 in Q1 2025
+- CGR 11.0% in Q1 2025, supporting text `+9 net new clients; cumulative base 91`
+- CER 49.5% in Q1 2025
+- CSAT 4.14 / 5 in April 2025
+
+Confirm Decision Center P1:
+
+- About **5 extra clients** are at risk if Q1’s 51 active clients retain at 40.6% instead of 51%
+- Target: completed Q2 CRR **at least 51.0%**
+- Timeline: outreach before Q2 2025 close
+
+If CGR still looks like a decline-only story, the dual-axis client count or card supporting text is missing.

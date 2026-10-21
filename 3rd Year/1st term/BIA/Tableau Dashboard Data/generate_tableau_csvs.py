@@ -30,6 +30,14 @@ KPI_NAMES = {
     "CSAT": "Customer Satisfaction Score",
 }
 
+AXIS_TITLES = {
+    "CRR": "Customer Retention Rate (%)",
+    "ARPC": "Average Revenue per Client (USD)",
+    "CGR": "Client Growth Rate (%)",
+    "CER": "Customer Engagement Rate (%)",
+    "CSAT": "Customer Satisfaction Score (1-5)",
+}
+
 
 def read_csv(name: str) -> list[dict[str, str]]:
     with (DATA_DIR / name).open(newline="", encoding="utf-8-sig") as handle:
@@ -148,13 +156,14 @@ def series_row(
         "forecast_lower_95": "" if lower_bound is None else round(lower_bound, 4),
         "forecast_upper_95": "" if upper_bound is None else round(upper_bound, 4),
         "is_partial": "Yes" if series_type == "Partial Actual" else "No",
+        "axis_title": AXIS_TITLES[kpi_code],
     }
 
 
 def calculate_quarterly_series(
     clients: list[dict[str, str]],
     engagements: list[dict[str, str]],
-) -> tuple[list[dict[str, object]], dict[str, dict[str, float]]]:
+) -> tuple[list[dict[str, object]], dict[str, dict[str, float]], list[dict[str, object]]]:
     signup_dates = {
         row["customer_id"]: parse_date(row["signup_date"])
         for row in clients
@@ -173,6 +182,7 @@ def calculate_quarterly_series(
     }
     metrics: dict[str, dict[str, float]] = defaultdict(dict)
     components: dict[tuple[str, str], tuple[float, float]] = {}
+    client_base_rows: list[dict[str, object]] = []
     previous_cumulative: int | None = None
 
     for index, period in enumerate(quarters):
@@ -199,10 +209,27 @@ def calculate_quarterly_series(
             metrics["CER"][period] = engaged_eligible / cumulative * 100
             components[("CER", period)] = (engaged_eligible, cumulative)
 
-        if previous_cumulative not in (None, 0):
-            net_new = cumulative - previous_cumulative
-            metrics["CGR"][period] = net_new / previous_cumulative * 100
+        net_new = 0 if previous_cumulative in (None, 0) else cumulative - previous_cumulative
+        cgr_value = (
+            None if previous_cumulative in (None, 0) else net_new / previous_cumulative * 100
+        )
+        if cgr_value is not None:
+            metrics["CGR"][period] = cgr_value
             components[("CGR", period)] = (net_new, previous_cumulative)
+
+        if period <= PARTIAL_QUARTER:
+            client_base_rows.append({
+                "period": period,
+                "period_start": quarter_start(period),
+                "series_type": "Partial Actual" if period == PARTIAL_QUARTER else "Completed Actual",
+                "is_partial": "Yes" if period == PARTIAL_QUARTER else "No",
+                "cumulative_signed_clients": cumulative,
+                "net_new_clients": net_new,
+                "prior_cumulative_clients": "" if previous_cumulative is None else previous_cumulative,
+                "cgr_percent": "" if cgr_value is None else round(cgr_value, 4),
+                "axis_title_left": AXIS_TITLES["CGR"],
+                "axis_title_right": "Cumulative Signed Clients (Count)",
+            })
         previous_cumulative = cumulative
 
     rows: list[dict[str, object]] = []
@@ -246,7 +273,7 @@ def calculate_quarterly_series(
             )
             forecast_period = next_quarter(forecast_period)
 
-    return rows, metrics
+    return rows, metrics, client_base_rows
 
 
 def calculate_csat_series(
@@ -320,7 +347,9 @@ def main() -> None:
     engagements = read_csv("FinMark_Engagements.csv")
     feedback = read_csv("FinMark_client_feedback.csv")
 
-    quarterly_rows, quarterly_metrics = calculate_quarterly_series(clients, engagements)
+    quarterly_rows, quarterly_metrics, client_base_rows = calculate_quarterly_series(
+        clients, engagements
+    )
     csat_rows, csat_metrics = calculate_csat_series(feedback)
     timeseries_rows = sorted(
         quarterly_rows + csat_rows,
@@ -344,8 +373,11 @@ def main() -> None:
         "forecast_lower_95",
         "forecast_upper_95",
         "is_partial",
+        "axis_title",
     ]
     write_csv(OUTPUT_DIR / "executive_kpi_timeseries.csv", timeseries_rows, time_fields)
+    client_base_fields = list(client_base_rows[0])
+    write_csv(OUTPUT_DIR / "client_base_timeseries.csv", client_base_rows, client_base_fields)
 
     forecast_end = {
         code: next(
@@ -355,30 +387,46 @@ def main() -> None:
         )
         for code in KPI_NAMES
     }
+    cgr_completed = next(row for row in client_base_rows if row["period"] == LATEST_COMPLETED_QUARTER)
+    cgr_partial = next(row for row in client_base_rows if row["period"] == PARTIAL_QUARTER)
+    cgr_support = (
+        f"+{int(cgr_completed['net_new_clients'])} net new clients; "
+        f"cumulative base {int(cgr_completed['cumulative_signed_clients'])}"
+    )
+    cgr_partial_support = (
+        f"+{int(cgr_partial['net_new_clients'])} net new clients; "
+        f"cumulative base {int(cgr_partial['cumulative_signed_clients'])}"
+    )
+
     card_specs = [
         ("CRR", 1, LATEST_COMPLETED_QUARTER, quarterly_metrics["CRR"][LATEST_COMPLETED_QUARTER],
          PARTIAL_QUARTER, quarterly_metrics["CRR"][PARTIAL_QUARTER], "Percent", "Declining risk",
          "Active clients returning from the prior quarter divided by prior-quarter active clients.",
-         "696 engagements predate recorded signup dates, weakening lifecycle interpretation."),
+         "696 engagements predate recorded signup dates, weakening lifecycle interpretation.",
+         "25 of 49 prior-quarter active clients returned"),
         ("ARPC", 2, LATEST_COMPLETED_QUARTER, quarterly_metrics["ARPC"][LATEST_COMPLETED_QUARTER],
          PARTIAL_QUARTER, quarterly_metrics["ARPC"][PARTIAL_QUARTER], "Currency", "Broadly stable",
          "Quarterly billed amount divided by unique active clients.",
-         "74.1% of billed revenue cannot be assigned to a named service, although headline ARPC remains calculable."),
+         "74.1% of billed revenue cannot be assigned to a named service, although headline ARPC remains calculable.",
+         "Partial Q2 is $63,387 versus a ~$67,000 forecast"),
         ("CGR", 3, LATEST_COMPLETED_QUARTER, quarterly_metrics["CGR"][LATEST_COMPLETED_QUARTER],
-         PARTIAL_QUARTER, quarterly_metrics["CGR"][PARTIAL_QUARTER], "Percent", "Flattening risk",
+         PARTIAL_QUARTER, quarterly_metrics["CGR"][PARTIAL_QUARTER], "Percent", "Rate slowing; count still rising",
          "Quarter-over-quarter change in cumulative clients divided by the prior cumulative client count.",
-         "The 40% strategic target is cumulative over five years, not a quarterly CGR target."),
+         "A declining CGR percentage does not mean the client base is shrinking.",
+         cgr_support),
         ("CER", 4, LATEST_COMPLETED_QUARTER, quarterly_metrics["CER"][LATEST_COMPLETED_QUARTER],
          PARTIAL_QUARTER, quarterly_metrics["CER"][PARTIAL_QUARTER], "Percent", "Declining risk",
          "Clients signed by quarter-end who engaged during the quarter divided by all clients signed by quarter-end.",
-         "Pre-signup engagements make earlier historical comparisons less reliable."),
+         "Pre-signup engagements make earlier historical comparisons less reliable.",
+         "45 of 91 eligible clients engaged in Q1"),
         ("CSAT", 5, LATEST_COMPLETED_MONTH, csat_metrics[LATEST_COMPLETED_MONTH],
          PARTIAL_MONTH, csat_metrics[PARTIAL_MONTH], "Score out of 5", "Improving but uncertain",
          "Average valid rating after duplicate feedback IDs and missing ratings are removed.",
-         "Only 29 deduplicated valid ratings have usable dates; the forecast is highly uncertain."),
+         "Only 29 deduplicated valid ratings have usable dates; the forecast is highly uncertain.",
+         "Do not manage to the 5.00 upper-bound forecast"),
     ]
     card_rows = []
-    for code, order, completed_period, completed_value, partial_period, partial_value, unit, direction, definition, warning in card_specs:
+    for code, order, completed_period, completed_value, partial_period, partial_value, unit, direction, definition, warning, supporting_text in card_specs:
         endpoint = forecast_end[code]
         card_rows.append({
             "display_order": order,
@@ -392,6 +440,7 @@ def main() -> None:
             "forecast_end_value": endpoint["value"],
             "unit": unit,
             "direction": direction,
+            "supporting_text": supporting_text if code != "CGR" else f"{cgr_support}; partial {cgr_partial_support}",
             "definition": definition,
             "data_warning": warning,
         })
@@ -412,9 +461,71 @@ def main() -> None:
         recommendation_fields,
     )
 
+    decision_center_rows = [
+        {
+            "priority": 1,
+            "business_issue": "Retention is the highest-priority operating risk.",
+            "kpi_code": "CRR",
+            "clients_or_records_affected": "If Q1's 51 active clients retain at 40.6% instead of 51%, about 5 extra clients fail to return.",
+            "specific_action": "Assign account owners to every Q1-active client with no Q2 engagement and complete a re-engagement contact before quarter-end.",
+            "timeline": "Start immediately; complete outreach before Q2 2025 close.",
+            "kpi_target": "Keep completed Q2 CRR at least 51.0%, not the 40.6% model path.",
+            "success_measure": "Share of Q1-active clients with at least one Q2 engagement; count of completed outreach cases.",
+            "expected_impact": "Protects roughly 5 repeat clients and recurring relationship value heading into Q3.",
+        },
+        {
+            "priority": 2,
+            "business_issue": "Nearly half of eligible clients are not using services in a typical quarter.",
+            "kpi_code": "CER",
+            "clients_or_records_affected": "46 of 91 eligible clients had no Q1 2025 engagement.",
+            "specific_action": "Create inactivity alerts and send personalized service recommendations to eligible clients with zero current-quarter activity.",
+            "timeline": "Launch alerts this week; review weekly until Q2 close.",
+            "kpi_target": "Raise completed Q2 CER to at least 52.0% (current partial check).",
+            "success_measure": "Eligible clients with >=1 Q2 engagement divided by clients signed by Q2-end.",
+            "expected_impact": "Converts inactive signed clients into current users and supports later retention.",
+        },
+        {
+            "priority": 3,
+            "business_issue": "CGR % is slowing, but the client count is still rising.",
+            "kpi_code": "CGR",
+            "clients_or_records_affected": "Q1 added +9 clients (82 to 91); partial Q2 also added +9 (91 to 100).",
+            "specific_action": "Set a quarterly net-client target and run referral plus industry/region campaigns. Do not treat a lower CGR % as a shrinking base.",
+            "timeline": "Lock the Q2 net-client target this week; review at Q2 close.",
+            "kpi_target": "At least +9 net new signed clients in completed Q2 2025.",
+            "success_measure": "Net new signed clients and cumulative signed-client count, not CGR % alone.",
+            "expected_impact": "Keeps acquisition on the recent headcount pace while the percentage naturally decelerates.",
+        },
+        {
+            "priority": 4,
+            "business_issue": "Headline ARPC is usable, but service-level decisions are not.",
+            "kpi_code": "ARPC",
+            "clients_or_records_affected": "754 unmatched engagements; 74.1% of billed revenue cannot be named to a service.",
+            "specific_action": "Complete the PROD006-PROD020 service master before pricing changes, and review accounts below the ~$67,000 forecast range for bundling.",
+            "timeline": "Finish the service master within 30 days; complete below-range account reviews by Q2 close.",
+            "kpi_target": "Hold completed quarterly ARPC near $67,000-$69,500 after Q2 close.",
+            "success_measure": "Share of engagements matched to a service name; ARPC versus the $67,000 forecast band.",
+            "expected_impact": "Prevents understated joined ARPC and focuses cross-sell on true low-value accounts.",
+        },
+        {
+            "priority": 5,
+            "business_issue": "CSAT is too sparse to manage against the 5.00 forecast.",
+            "kpi_code": "CSAT",
+            "clients_or_records_affected": "Only 29 cleaned valid ratings have usable dates; April CSAT is 4.14 from 7 ratings.",
+            "specific_action": "Require a unique feedback ID, rating, and timestamp. Review ratings of 1-2 within five business days. Recalculate CSAT only after each month closes.",
+            "timeline": "Turn on required-field validation this month; first cleaned monthly restatement after June close.",
+            "kpi_target": "Do not use the 5.00 forecast as a target. Keep monthly CSAT at least 4.00 once the dated sample is larger.",
+            "success_measure": "Count of unique dated ratings per month and cleaned monthly CSAT with the 1-5 prediction range shown.",
+            "expected_impact": "Stops overreacting to a wide CSAT interval and builds a sample that can support service-quality decisions.",
+        },
+    ]
+    decision_fields = list(decision_center_rows[0])
+    write_csv(OUTPUT_DIR / "executive_decision_center.csv", decision_center_rows, decision_fields)
+
     print(f"Generated {len(card_rows)} KPI card rows")
     print(f"Generated {len(timeseries_rows)} time-series rows")
+    print(f"Generated {len(client_base_rows)} client-base rows")
     print(f"Generated {len(recommendation_rows)} recommendation rows")
+    print(f"Generated {len(decision_center_rows)} Decision Center rows")
 
 
 if __name__ == "__main__":

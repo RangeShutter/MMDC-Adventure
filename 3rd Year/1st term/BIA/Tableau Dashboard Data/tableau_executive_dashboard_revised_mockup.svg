@@ -1,0 +1,231 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180" role="img" aria-labelledby="title desc">
+  <title id="title">FinMark Executive KPI Dashboard Revised Mockup</title>
+  <desc id="desc">Revised Tableau-style dashboard with CGR client counts, actual/partial/forecast encodings, confidence intervals, specific axis titles, and a Decision Center.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#123047" flood-opacity="0.10"/>
+    </filter>
+    <style>
+      .font { font-family: Inter, Segoe UI, Arial, sans-serif; }
+      .title { font-size: 28px; font-weight: 700; fill: #15324a; }
+      .subtitle { font-size: 13px; fill: #637487; }
+      .card-title { font-size: 12px; font-weight: 700; fill: #637487; letter-spacing: .6px; }
+      .card-value { font-size: 30px; font-weight: 700; fill: #15324a; }
+      .card-note { font-size: 11px; fill: #637487; }
+      .panel-title { font-size: 16px; font-weight: 700; fill: #15324a; }
+      .axis { font-size: 10px; fill: #728295; }
+      .small { font-size: 11px; fill: #526578; }
+      .table-head { font-size: 11px; font-weight: 700; fill: #ffffff; }
+      .table-text { font-size: 10px; fill: #30485f; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="1180" fill="#f4f7fa"/>
+  <g class="font">
+    <text x="40" y="42" class="title">FinMark Executive KPI Dashboard</text>
+    <text x="40" y="64" class="subtitle">Latest completed quarter: Q1 2025  |  CSAT through April 2025  |  Solid = completed  |  Circle = partial  |  Dashed = forecast  |  Shaded = 95% interval</text>
+    <rect x="1285" y="22" width="275" height="38" rx="19" fill="#e8f0f6"/>
+    <text x="1422" y="46" text-anchor="middle" font-size="13" font-weight="600" fill="#2f6385">Revised Decision Center view</text>
+
+    <g filter="url(#shadow)">
+      <rect x="40" y="86" width="294" height="128" rx="12" fill="#ffffff"/>
+      <rect x="346" y="86" width="294" height="128" rx="12" fill="#ffffff"/>
+      <rect x="652" y="86" width="294" height="128" rx="12" fill="#ffffff"/>
+      <rect x="958" y="86" width="294" height="128" rx="12" fill="#ffffff"/>
+      <rect x="1264" y="86" width="296" height="128" rx="12" fill="#ffffff"/>
+    </g>
+    <rect x="40" y="86" width="6" height="128" rx="3" fill="#3878a8"/>
+    <text x="62" y="112" class="card-title">CUSTOMER RETENTION</text>
+    <text x="62" y="148" class="card-value">51.0%</text>
+    <text x="62" y="170" class="card-note">Q1 2025  |  25 of 49 returned</text>
+    <text x="62" y="192" font-size="11" font-weight="600" fill="#c65d42">P1 target: keep Q2 at 51%+</text>
+
+    <rect x="346" y="86" width="6" height="128" rx="3" fill="#36a17a"/>
+    <text x="368" y="112" class="card-title">AVG REVENUE PER CLIENT</text>
+    <text x="368" y="148" class="card-value">$69,523</text>
+    <text x="368" y="170" class="card-note">Q1 2025 completed</text>
+    <text x="368" y="192" font-size="11" font-weight="600" fill="#39866b">Hold near $67K-$69.5K</text>
+
+    <rect x="652" y="86" width="6" height="128" rx="3" fill="#df9a38"/>
+    <text x="674" y="112" class="card-title">CLIENT GROWTH RATE</text>
+    <text x="674" y="148" class="card-value">11.0%</text>
+    <text x="674" y="170" class="card-note">+9 clients (base 91)</text>
+    <text x="674" y="192" font-size="11" font-weight="600" fill="#b06c18">Rate slowing; count still rising</text>
+
+    <rect x="958" y="86" width="6" height="128" rx="3" fill="#7266b7"/>
+    <text x="980" y="112" class="card-title">CUSTOMER ENGAGEMENT</text>
+    <text x="980" y="148" class="card-value">49.5%</text>
+    <text x="980" y="170" class="card-note">Q1 2025  |  45 of 91 engaged</text>
+    <text x="980" y="192" font-size="11" font-weight="600" fill="#c65d42">Q2 target: at least 52%</text>
+
+    <rect x="1264" y="86" width="6" height="128" rx="3" fill="#d76d92"/>
+    <text x="1286" y="112" class="card-title">CUSTOMER SATISFACTION</text>
+    <text x="1286" y="148" class="card-value">4.14 / 5</text>
+    <text x="1286" y="170" class="card-note">April 2025  |  7 dated ratings</text>
+    <text x="1286" y="192" font-size="11" font-weight="600" fill="#a95c76">Do not manage to 5.00 forecast</text>
+
+    <g filter="url(#shadow)">
+      <rect x="40" y="230" width="750" height="255" rx="12" fill="#ffffff"/>
+      <rect x="810" y="230" width="750" height="255" rx="12" fill="#ffffff"/>
+      <rect x="40" y="501" width="750" height="255" rx="12" fill="#ffffff"/>
+      <rect x="810" y="501" width="750" height="255" rx="12" fill="#ffffff"/>
+    </g>
+
+    <text x="62" y="258" class="panel-title">Retention and Engagement</text>
+    <text x="62" y="276" class="small">Completed actual, partial Q2 check, forecast, and 95% interval</text>
+    <text x="62" y="368" transform="rotate(-90 62 368)" class="axis">Retention / Engagement (%)</text>
+    <line x1="118" y1="448" x2="760" y2="448" stroke="#b8c3cc"/>
+    <line x1="118" y1="312" x2="118" y2="448" stroke="#b8c3cc"/>
+    <g stroke="#e7ebef"><line x1="118" y1="312" x2="760" y2="312"/><line x1="118" y1="380" x2="760" y2="380"/></g>
+    <polygon points="620,360 680,395 740,418 740,448 680,430 620,400" fill="#3878a8" opacity=".12"/>
+    <polyline points="150,352 255,372 360,338 465,418 570,404 620,372" fill="none" stroke="#3878a8" stroke-width="3"/>
+    <polyline points="150,380 255,342 360,322 465,404 570,372 620,378" fill="none" stroke="#7266b7" stroke-width="3"/>
+    <polyline points="620,372 680,405 740,428" fill="none" stroke="#3878a8" stroke-width="3" stroke-dasharray="8 6"/>
+    <polyline points="620,378 680,390 740,404" fill="none" stroke="#7266b7" stroke-width="3" stroke-dasharray="8 6"/>
+    <circle cx="668" cy="386" r="5" fill="#ffffff" stroke="#e5893a" stroke-width="3"/>
+    <circle cx="668" cy="370" r="5" fill="#ffffff" stroke="#e5893a" stroke-width="3"/>
+    <g class="axis">
+      <text x="108" y="452" text-anchor="end">40%</text>
+      <text x="108" y="384" text-anchor="end">50%</text>
+      <text x="108" y="316" text-anchor="end">60%</text>
+      <text x="150" y="468">Q4 23</text>
+      <text x="360" y="468">Q2 24</text>
+      <text x="570" y="468">Q4 24</text>
+      <text x="700" y="468">Q2 25</text>
+    </g>
+    <rect x="430" y="246" width="12" height="4" fill="#3878a8"/><text x="448" y="252" class="small">CRR actual</text>
+    <rect x="530" y="246" width="12" height="4" fill="#7266b7"/><text x="548" y="252" class="small">CER actual</text>
+    <line x1="630" y1="248" x2="648" y2="248" stroke="#526578" stroke-dasharray="5 4"/><text x="654" y="252" class="small">Forecast</text>
+    <circle cx="730" cy="248" r="4" fill="#ffffff" stroke="#e5893a" stroke-width="2"/><text x="740" y="252" class="small">Partial</text>
+
+    <text x="832" y="258" class="panel-title">Average Revenue per Client</text>
+    <text x="832" y="276" class="small">Currency axis; partial Q2 sits below the forecast band</text>
+    <text x="832" y="368" transform="rotate(-90 832 368)" class="axis">Average Revenue per Client (USD)</text>
+    <line x1="888" y1="448" x2="1530" y2="448" stroke="#b8c3cc"/>
+    <line x1="888" y1="312" x2="888" y2="448" stroke="#b8c3cc"/>
+    <g stroke="#e7ebef"><line x1="888" y1="312" x2="1530" y2="312"/><line x1="888" y1="380" x2="1530" y2="380"/></g>
+    <polygon points="1395,350 1450,355 1515,360 1515,430 1450,418 1395,410" fill="#36a17a" opacity=".12"/>
+    <polyline points="920,380 1025,392 1130,402 1235,328 1340,430 1395,378" fill="none" stroke="#36a17a" stroke-width="3"/>
+    <polyline points="1395,378 1450,386 1515,392" fill="none" stroke="#36a17a" stroke-width="3" stroke-dasharray="8 6"/>
+    <circle cx="1472" cy="418" r="6" fill="#ffffff" stroke="#e5893a" stroke-width="3"/>
+    <text x="1464" y="412" text-anchor="end" class="small">Partial Q2: $63,387</text>
+    <g class="axis">
+      <text x="878" y="452" text-anchor="end">$60K</text>
+      <text x="878" y="384" text-anchor="end">$70K</text>
+      <text x="878" y="316" text-anchor="end">$80K</text>
+      <text x="920" y="468">Q4 23</text>
+      <text x="1130" y="468">Q2 24</text>
+      <text x="1340" y="468">Q4 24</text>
+      <text x="1475" y="468">Q2 25</text>
+    </g>
+
+    <text x="62" y="528" class="panel-title">Client Growth Rate vs Signed Clients</text>
+    <text x="62" y="546" class="small">CGR % can fall while the client count is still rising</text>
+    <text x="62" y="640" transform="rotate(-90 62 640)" class="axis">Client Growth Rate (%)</text>
+    <text x="778" y="640" transform="rotate(-90 778 640)" class="axis">Cumulative Signed Clients (Count)</text>
+    <line x1="118" y1="720" x2="740" y2="720" stroke="#b8c3cc"/>
+    <line x1="118" y1="584" x2="118" y2="720" stroke="#b8c3cc"/>
+    <g stroke="#e7ebef"><line x1="118" y1="584" x2="740" y2="584"/><line x1="118" y1="652" x2="740" y2="652"/></g>
+    <polyline points="150,598 255,628 360,662 465,662 570,668 620,682" fill="none" stroke="#df9a38" stroke-width="3"/>
+    <polyline points="620,682 680,720 730,720" fill="none" stroke="#df9a38" stroke-width="3" stroke-dasharray="8 6"/>
+    <polyline points="150,700 255,688 360,670 465,650 570,632 620,618 668,604 730,590" fill="none" stroke="#526578" stroke-width="2.5"/>
+    <circle cx="668" cy="684" r="6" fill="#ffffff" stroke="#e5893a" stroke-width="3"/>
+    <text x="656" y="672" text-anchor="end" class="small">Partial: 9.9% and +9 clients</text>
+    <g class="axis">
+      <text x="108" y="724" text-anchor="end">0%</text>
+      <text x="108" y="656" text-anchor="end">30%</text>
+      <text x="108" y="588" text-anchor="end">60%</text>
+      <text x="748" y="724">0</text>
+      <text x="748" y="656">50</text>
+      <text x="748" y="588">100</text>
+      <text x="150" y="740">Q4 23</text>
+      <text x="360" y="740">Q2 24</text>
+      <text x="570" y="740">Q4 24</text>
+      <text x="690" y="740">Q2 25</text>
+    </g>
+
+    <text x="832" y="528" class="panel-title">Customer Satisfaction Score</text>
+    <text x="832" y="546" class="small">Required 95% band: almost the full 1-5 scale</text>
+    <text x="832" y="640" transform="rotate(-90 832 640)" class="axis">Customer Satisfaction Score (1-5)</text>
+    <line x1="888" y1="720" x2="1530" y2="720" stroke="#b8c3cc"/>
+    <line x1="888" y1="584" x2="888" y2="720" stroke="#b8c3cc"/>
+    <g stroke="#e7ebef"><line x1="888" y1="584" x2="1530" y2="584"/><line x1="888" y1="652" x2="1530" y2="652"/></g>
+    <polygon points="1288,584 1370,584 1450,584 1530,584 1530,720 1450,720 1370,720 1288,720" fill="#d76d92" opacity=".16"/>
+    <polyline points="920,652 1030,688 1140,640 1288,618" fill="none" stroke="#d76d92" stroke-width="3"/>
+    <polyline points="1288,618 1370,604 1450,592 1530,584" fill="none" stroke="#d76d92" stroke-width="3" stroke-dasharray="8 6"/>
+    <circle cx="1335" cy="644" r="6" fill="#ffffff" stroke="#e5893a" stroke-width="3"/>
+    <text x="1348" y="662" class="small">Partial May: 3.60</text>
+    <g class="axis">
+      <text x="878" y="724" text-anchor="end">1</text>
+      <text x="878" y="656" text-anchor="end">3</text>
+      <text x="878" y="588" text-anchor="end">5</text>
+      <text x="920" y="740">Jan</text>
+      <text x="1030" y="740">Feb</text>
+      <text x="1140" y="740">Mar</text>
+      <text x="1288" y="740">Apr</text>
+      <text x="1450" y="740">Jun</text>
+      <text x="1518" y="740">Aug</text>
+    </g>
+
+    <rect x="40" y="772" width="1520" height="380" rx="12" fill="#ffffff" filter="url(#shadow)"/>
+    <rect x="40" y="772" width="1520" height="36" rx="12" fill="#2f6385"/>
+    <text x="58" y="795" class="table-head">DECISION CENTER  |  Ranked management actions</text>
+    <text x="58" y="828" class="table-head" fill="#2f6385">Pri</text>
+    <text x="100" y="828" font-size="11" font-weight="700" fill="#2f6385">KPI</text>
+    <text x="160" y="828" font-size="11" font-weight="700" fill="#2f6385">Priority issue</text>
+    <text x="430" y="828" font-size="11" font-weight="700" fill="#2f6385">Action</text>
+    <text x="820" y="828" font-size="11" font-weight="700" fill="#2f6385">When</text>
+    <text x="1060" y="828" font-size="11" font-weight="700" fill="#2f6385">KPI target</text>
+    <text x="1300" y="828" font-size="11" font-weight="700" fill="#2f6385">Expected impact</text>
+    <line x1="58" y1="836" x2="1542" y2="836" stroke="#d5dde6"/>
+
+    <g class="table-text">
+      <text x="58" y="860" font-weight="700" fill="#c65d42">P1</text>
+      <text x="100" y="860" font-weight="700">CRR</text>
+      <text x="160" y="860">Retention is the top operating risk.</text>
+      <text x="430" y="860">Contact every Q1-active client with no Q2 engagement.</text>
+      <text x="820" y="860">Before Q2 2025 close</text>
+      <text x="1060" y="860">Keep CRR at least 51.0%</text>
+      <text x="1300" y="860">Protects ~5 extra repeat clients.</text>
+      <text x="160" y="876" fill="#637487">If 51 actives retain at 40.6% instead of 51%, ~5 fail to return.</text>
+
+      <line x1="58" y1="890" x2="1542" y2="890" stroke="#e7ebef"/>
+      <text x="58" y="914" font-weight="700">P2</text>
+      <text x="100" y="914" font-weight="700">CER</text>
+      <text x="160" y="914">46 of 91 eligible clients were inactive in Q1.</text>
+      <text x="430" y="914">Inactivity alerts and personalized recommendations.</text>
+      <text x="820" y="914">Weekly until Q2 close</text>
+      <text x="1060" y="914">Raise CER to at least 52.0%</text>
+      <text x="1300" y="914">Turns signed clients into current users.</text>
+
+      <line x1="58" y1="928" x2="1542" y2="928" stroke="#e7ebef"/>
+      <text x="58" y="952" font-weight="700">P3</text>
+      <text x="100" y="952" font-weight="700">CGR</text>
+      <text x="160" y="952">Rate slowed; headcount still +9 per quarter.</text>
+      <text x="430" y="952">Set a net-client target; do not manage to CGR % only.</text>
+      <text x="820" y="952">Lock target this week</text>
+      <text x="1060" y="952">At least +9 signed clients in Q2</text>
+      <text x="1300" y="952">Keeps acquisition on the recent count pace.</text>
+
+      <line x1="58" y1="966" x2="1542" y2="966" stroke="#e7ebef"/>
+      <text x="58" y="990" font-weight="700">P4</text>
+      <text x="100" y="990" font-weight="700">ARPC</text>
+      <text x="160" y="990">74.1% of revenue has no named service.</text>
+      <text x="430" y="990">Complete PROD006-PROD020; review below-range accounts.</text>
+      <text x="820" y="990">Master list in 30 days</text>
+      <text x="1060" y="990">Hold ARPC near $67K-$69.5K</text>
+      <text x="1300" y="990">Stops understated joined ARPC decisions.</text>
+
+      <line x1="58" y1="1004" x2="1542" y2="1004" stroke="#e7ebef"/>
+      <text x="58" y="1028" font-weight="700">P5</text>
+      <text x="100" y="1028" font-weight="700">CSAT</text>
+      <text x="160" y="1028">Only 29 dated ratings; 5.00 forecast is not usable.</text>
+      <text x="430" y="1028">Require unique ID, rating, and timestamp.</text>
+      <text x="820" y="1028">This month</text>
+      <text x="1060" y="1028">Keep CSAT at least 4.00; ignore 5.00</text>
+      <text x="1300" y="1028">Builds a sample that can support quality decisions.</text>
+    </g>
+    <text x="58" y="1070" class="small">Success measures: P1 outreach completion and Q2 CRR; P2 eligible clients with a Q2 engagement; P3 net new signed clients; P4 matched-service share; P5 unique dated ratings per month.</text>
+    <text x="1560" y="1160" text-anchor="end" font-size="10" fill="#7d8996">Revised mockup for Tableau Dashboard Data Section 16</text>
+  </g>
+</svg>

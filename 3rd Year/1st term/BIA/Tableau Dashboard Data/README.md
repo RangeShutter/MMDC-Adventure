@@ -4,14 +4,19 @@ This folder contains cleaned, derived CSV files for one executive Tableau dashbo
 
 ## Files
 
-- `executive_kpi_cards.csv` — five current KPI cards, partial-period checks, forecast endpoints, definitions, and warnings.
-- `executive_kpi_timeseries.csv` — historical actuals, partial-period observations, forecasts, and 95% prediction bounds in long format.
-- `executive_recommendations.csv` — executive findings, risks, and actions by KPI.
-- `generate_tableau_csvs.py` — reproducibly generates the three CSV files from the source files in `Data`.
+- `executive_kpi_cards.csv` — five current KPI cards, partial-period checks, forecast endpoints, supporting text, definitions, and warnings.
+- `executive_kpi_timeseries.csv` — historical actuals, partial-period observations, forecasts, 95% prediction bounds, and KPI-specific `axis_title` values.
+- `client_base_timeseries.csv` — quarterly cumulative signed clients, net new clients, and CGR for a dual-axis growth chart.
+- `executive_decision_center.csv` — ranked management actions with affected clients, timelines, KPI targets, and expected impact.
+- `executive_recommendations.csv` — earlier findings table, retained as backup. Use the Decision Center on the dashboard instead.
+- `generate_tableau_csvs.py` — regenerates the derived CSV files from the source files in `Data`.
+- `TABLEAU_BUILD_GUIDE.md` — original build steps plus Section 16 revision instructions.
+- `tableau_executive_dashboard_mockup.svg` — original dashboard sample.
+- `tableau_executive_dashboard_revised_mockup.svg` — revised dashboard sample with CGR counts, required forecast encodings, specific axes, and the Decision Center.
 
 ## Recommended dashboard
 
-Use a fixed desktop dashboard of approximately **1300 × 900 pixels**.
+Use a fixed desktop dashboard of approximately **1600 × 1100 pixels**.
 
 ### 1. Five KPI cards
 
@@ -26,7 +31,7 @@ Place the five cards across the top in `display_order`.
 | Main text | `completed_value` |
 | Heading | `kpi_name` |
 | Supporting text | `completed_period`, `direction` |
-| Tooltip | `partial_period`, `partial_value`, `forecast_end_period`, `forecast_end_value`, `definition`, `data_warning` |
+| Tooltip | `partial_period`, `partial_value`, `forecast_end_period`, `forecast_end_value`, `supporting_text`, `definition`, `data_warning` |
 
 Formatting:
 
@@ -34,7 +39,8 @@ Formatting:
 - ARPC: currency with no decimals.
 - CSAT: number with two decimals followed by `/ 5`.
 - Label completed results as the headline. Do not substitute the partial-period result.
-- Use a neutral color for `Broadly stable`, a caution color for declining/flattening risks, and clearly mark uncertain forecasts.
+- Show `supporting_text` under the CGR headline (`+9 net new clients; cumulative base 91`) so a slower rate is not read as a shrinking client base.
+- Use a caution color for declining retention/engagement, a neutral color for stable ARPC, and clearly mark uncertain CSAT forecasts.
 
 ### 2. Retention and engagement trend
 
@@ -55,8 +61,8 @@ Use a 0–100% fixed axis. Display:
 
 - `Completed Actual` as solid lines.
 - `Forecast` as dashed or lighter lines.
-- `Partial Actual` as a distinct shape at Q2 2025.
-- Optional prediction-band area using `forecast_lower_95` and `forecast_upper_95`.
+- `Partial Actual` as a distinct outlined circle at Q2 2025 or May 2025.
+- A visible 95% prediction band using `forecast_lower_95` and `forecast_upper_95`. This band is required, especially on CSAT.
 
 Do not join the CRR and CER values into one calculated KPI. They answer different questions.
 
@@ -70,13 +76,14 @@ Filter `kpi_code` to `ARPC`. Put continuous `period_start` on Columns and `value
 
 ARPC needs its own chart because its currency scale cannot be compared directly with percentage KPIs.
 
-### 4. Client Growth Rate trend
+### 4. Client Growth Rate and client count
 
-**Chart type:** Quarterly line chart with forecast  
-**Purpose:** Show the deceleration in quarter-over-quarter client-base growth.  
-**Data source:** `executive_kpi_timeseries.csv`
+**Chart type:** Dual-axis quarterly chart  
+**Purpose:** Show that CGR % can fall while the signed-client count is still rising.  
+**Data sources:** `executive_kpi_timeseries.csv` (CGR %) and `client_base_timeseries.csv` (cumulative signed clients)
 
-Filter `kpi_code` to `CGR`. Put continuous `period_start` on Columns and `value` on Rows. Format as a percentage and distinguish `series_type`.
+Left axis: CGR % with completed, partial, and forecast encodings.  
+Right axis: cumulative signed clients. Do not synchronize the axes.
 
 The forecast is constrained at 0%. Interpret it as a **flattening-risk signal**, not a literal guarantee of zero new clients. Do not add a 40% quarterly reference line: FinMark's 40% target is cumulative over five years, while this chart shows quarter-over-quarter growth.
 
@@ -93,27 +100,28 @@ Filter `kpi_code` to `CSAT`. Put continuous `period_start` on Columns and `value
 - May–August 2025 as forecasts.
 - `forecast_lower_95` and `forecast_upper_95` in the tooltip or as a shaded band.
 
-The wide 1–5 prediction range must remain visible in the tooltip or chart note so the forecast is not presented as precise.
+The wide 1–5 prediction range must remain visible as a shaded band so the forecast is not presented as precise.
 
-### 6. Executive action table
+### 6. Decision Center
 
-**Chart type:** Text table  
-**Data source:** `executive_recommendations.csv`
+**Chart type:** Ranked text table  
+**Data source:** `executive_decision_center.csv`
 
 | Tableau role | Field |
 | --- | --- |
-| Rows | `display_order`, `kpi_code` |
-| Text | `latest_finding`, `principal_risk`, `recommended_action` |
+| Rows | `priority`, `kpi_code` |
+| Text | `business_issue`, `specific_action`, `timeline`, `kpi_target`, `expected_impact` |
+| Tooltip | `clients_or_records_affected`, `success_measure` |
 
-Hide `display_order` after sorting. Place this table across the bottom of the dashboard and enable text wrapping.
+P1 is retention: keep completed Q2 CRR at least 51.0% or about 5 extra Q1-active clients fail to return. Place this table across the bottom of the dashboard and enable text wrapping.
 
 ## Suggested layout
 
 1. Title and data-as-of note.
 2. Five KPI cards in one horizontal row.
 3. CRR/CER chart on the upper left; ARPC chart on the upper right.
-4. CGR chart on the lower left; CSAT chart on the lower right.
-5. Executive action table across the bottom.
+4. CGR % plus signed-client count on the lower left; CSAT with a visible prediction band on the lower right.
+5. Decision Center across the bottom.
 
 Recommended dashboard filters:
 
@@ -138,6 +146,7 @@ Do not add service, industry, region, or engagement-tier filters to this executi
 | `forecast_lower_95` | Approximate lower 95% prediction bound |
 | `forecast_upper_95` | Approximate upper 95% prediction bound |
 | `is_partial` | `Yes` only for the observed incomplete period |
+| `axis_title` | Exact Y-axis label to use instead of Tableau defaults such as `AVG(Value)` |
 
 ## Calculation rules
 
