@@ -3,6 +3,8 @@
 title StudySync: MMDC Student Groupmate Matching System - Class Diagram
 
 skinparam classAttributeIconSize 0
+hide circle
+hide empty members
 skinparam nodesep 60
 skinparam ranksep 70
 skinparam shadowing false
@@ -15,15 +17,13 @@ skinparam class {
 
 package "Account and Access" {
 
-  abstract class User {
+  abstract class "User\n{abstract}" as User {
     -userId: int
     -fullName: String
     -email: String
     -passwordHash: String
-    -accountStatus: AccountStatus
-    .. Constructor ..
-    +User(userId: int, fullName: String, email: String, passwordHash: String)
-    .. Accessors ..
+    -accountStatus: AccountStatus = ACTIVE
+    {method} «create» +User(userId: int, fullName: String, email: String, passwordHash: String)
     +getUserId(): int
     +setUserId(userId: int): void
     +getFullName(): String
@@ -34,7 +34,6 @@ package "Account and Access" {
     +setPasswordHash(passwordHash: String): void
     +getAccountStatus(): AccountStatus
     +setAccountStatus(accountStatus: AccountStatus): void
-    .. Operations ..
     +login(email: String, password: String): boolean
     +logout(): void
     +updateBasicInfo(fullName: String, email: String): void
@@ -43,14 +42,11 @@ package "Account and Access" {
 
   class Student {
     -studentNumber: String
-    .. Constructor ..
-    +Student(userId: int, fullName: String, email: String, passwordHash: String, studentNumber: String)
-    .. Accessors ..
+    {method} «create» +Student(userId: int, fullName: String, email: String, passwordHash: String, studentNumber: String)
     +getStudentNumber(): String
     +setStudentNumber(studentNumber: String): void
-    .. Operations ..
     +getRole(): String
-    +viewPotentialGroupmates(subjectId: int): List<MatchRecommendation>
+    +viewPotentialGroupmates(subjectId: int): MatchRecommendation[0..*]
     +sendGroupmateRequest(receiverId: int, subjectId: int): GroupmateRequest
     +respondToRequest(requestId: int, accept: boolean): void
     +createProjectGroup(subjectId: int, groupName: String): ProjectGroup
@@ -59,12 +55,9 @@ package "Account and Access" {
 
   class Administrator {
     -adminCode: String
-    .. Constructor ..
-    +Administrator(userId: int, fullName: String, email: String, passwordHash: String, adminCode: String)
-    .. Accessors ..
+    {method} «create» +Administrator(userId: int, fullName: String, email: String, passwordHash: String, adminCode: String)
     +getAdminCode(): String
     +setAdminCode(adminCode: String): void
-    .. Operations ..
     +getRole(): String
     +manageUser(userId: int, action: String): void
     +manageSubject(subjectId: int, action: String): void
@@ -75,12 +68,10 @@ package "Account and Access" {
     -reportId: int
     -reason: String
     -details: String
-    -status: ReportStatus
+    -status: ReportStatus = PENDING
     -submittedAt: LocalDateTime
     -resolution: String
-    .. Constructor ..
-    +UserReport(reportId: int, reason: String, details: String, submittedAt: LocalDateTime)
-    .. Accessors ..
+    {method} «create» +UserReport(reportId: int, reason: String, details: String, submittedAt: LocalDateTime)
     +getReportId(): int
     +setReportId(reportId: int): void
     +getReason(): String
@@ -93,7 +84,6 @@ package "Account and Access" {
     +setSubmittedAt(submittedAt: LocalDateTime): void
     +getResolution(): String
     +setResolution(resolution: String): void
-    .. Operations ..
     +resolve(resolution: String): void
   }
 }
@@ -108,9 +98,7 @@ package "Profile and Enrollment" {
     -workingStyle: WorkingStyle
     -profileSummary: String
     -lastUpdated: LocalDateTime
-    .. Constructor ..
-    +CollaborationProfile(profileId: int, itMajor: String, employmentStatus: EmploymentStatus, workingStyle: WorkingStyle)
-    .. Accessors ..
+    {method} «create» +CollaborationProfile(profileId: int, itMajor: String, employmentStatus: EmploymentStatus, workingStyle: WorkingStyle)
     +getProfileId(): int
     +setProfileId(profileId: int): void
     +getItMajor(): String
@@ -125,7 +113,6 @@ package "Profile and Enrollment" {
     +setProfileSummary(profileSummary: String): void
     +getLastUpdated(): LocalDateTime
     +setLastUpdated(lastUpdated: LocalDateTime): void
-    .. Operations ..
     +updateProfile(itMajor: String, employmentStatus: EmploymentStatus, workSchedule: String, workingStyle: WorkingStyle): void
     +addAvailability(availability: Availability): void
     +removeAvailability(availabilityId: int): void
@@ -136,10 +123,8 @@ package "Profile and Enrollment" {
     -dayOfWeek: String
     -startTime: LocalTime
     -endTime: LocalTime
-    -recurring: boolean
-    .. Constructor ..
-    +Availability(availabilityId: int, dayOfWeek: String, startTime: LocalTime, endTime: LocalTime, recurring: boolean)
-    .. Accessors ..
+    -recurring: boolean = true
+    {method} «create» +Availability(availabilityId: int, dayOfWeek: String, startTime: LocalTime, endTime: LocalTime, recurring: boolean)
     +getAvailabilityId(): int
     +setAvailabilityId(availabilityId: int): void
     +getDayOfWeek(): String
@@ -150,7 +135,6 @@ package "Profile and Enrollment" {
     +setEndTime(endTime: LocalTime): void
     +isRecurring(): boolean
     +setRecurring(recurring: boolean): void
-    .. Operations ..
     +overlaps(other: Availability): boolean
     +getDurationInHours(): double
   }
@@ -160,10 +144,8 @@ package "Profile and Enrollment" {
     -subjectCode: String
     -subjectName: String
     -term: String
-    -active: boolean
-    .. Constructor ..
-    +Subject(subjectId: int, subjectCode: String, subjectName: String, term: String)
-    .. Accessors ..
+    -active: boolean = true
+    {method} «create» +Subject(subjectId: int, subjectCode: String, subjectName: String, term: String)
     +getSubjectId(): int
     +setSubjectId(subjectId: int): void
     +getSubjectCode(): String
@@ -174,17 +156,14 @@ package "Profile and Enrollment" {
     +setTerm(term: String): void
     +isActive(): boolean
     +setActive(active: boolean): void
-    .. Operations ..
     +updateDetails(subjectCode: String, subjectName: String, term: String): void
   }
 
   class SubjectEnrollment {
     -enrollmentId: int
-    -lookingForGroup: boolean
+    -lookingForGroup: boolean = true
     -enrolledAt: LocalDate
-    .. Constructor ..
-    +SubjectEnrollment(enrollmentId: int, lookingForGroup: boolean, enrolledAt: LocalDate)
-    .. Accessors ..
+    {method} «create» +SubjectEnrollment(enrollmentId: int, lookingForGroup: boolean, enrolledAt: LocalDate)
     +getEnrollmentId(): int
     +setEnrollmentId(enrollmentId: int): void
     +isLookingForGroup(): boolean
@@ -199,27 +178,22 @@ package "Matching and Collaboration" {
   class MatchingService {
     -minimumScore: double
     -maximumResults: int
-    .. Constructor ..
-    +MatchingService(minimumScore: double, maximumResults: int)
-    .. Accessors ..
+    {method} «create» +MatchingService(minimumScore: double, maximumResults: int)
     +getMinimumScore(): double
     +setMinimumScore(minimumScore: double): void
     +getMaximumResults(): int
     +setMaximumResults(maximumResults: int): void
-    .. Operations ..
-    +findCandidates(studentId: int, subjectId: int): List<Student>
+    +findCandidates(studentId: int, subjectId: int): Student[0..*]
     +calculateCompatibility(studentId: int, candidateId: int): double
-    +generateRecommendations(studentId: int, subjectId: int): List<MatchRecommendation>
+    +generateRecommendations(studentId: int, subjectId: int): MatchRecommendation[0..*]
   }
 
   class MatchRecommendation {
     -recommendationId: int
     -compatibilityScore: double
-    -status: RecommendationStatus
+    -status: RecommendationStatus = NEW
     -createdAt: LocalDateTime
-    .. Constructor ..
-    +MatchRecommendation(recommendationId: int, compatibilityScore: double, createdAt: LocalDateTime)
-    .. Accessors ..
+    {method} «create» +MatchRecommendation(recommendationId: int, compatibilityScore: double, createdAt: LocalDateTime)
     +getRecommendationId(): int
     +setRecommendationId(recommendationId: int): void
     +getCompatibilityScore(): double
@@ -228,20 +202,17 @@ package "Matching and Collaboration" {
     +setStatus(status: RecommendationStatus): void
     +getCreatedAt(): LocalDateTime
     +setCreatedAt(createdAt: LocalDateTime): void
-    .. Operations ..
     +markViewed(): void
     +dismiss(): void
   }
 
   class GroupmateRequest {
     -requestId: int
-    -status: RequestStatus
+    -status: RequestStatus = PENDING
     -message: String
     -sentAt: LocalDateTime
     -respondedAt: LocalDateTime
-    .. Constructor ..
-    +GroupmateRequest(requestId: int, message: String, sentAt: LocalDateTime)
-    .. Accessors ..
+    {method} «create» +GroupmateRequest(requestId: int, message: String, sentAt: LocalDateTime)
     +getRequestId(): int
     +setRequestId(requestId: int): void
     +getStatus(): RequestStatus
@@ -252,7 +223,6 @@ package "Matching and Collaboration" {
     +setSentAt(sentAt: LocalDateTime): void
     +getRespondedAt(): LocalDateTime
     +setRespondedAt(respondedAt: LocalDateTime): void
-    .. Operations ..
     +accept(): void
     +decline(): void
     +cancel(): void
@@ -263,10 +233,8 @@ package "Matching and Collaboration" {
     -groupName: String
     -maximumMembers: int
     -createdAt: LocalDateTime
-    -status: GroupStatus
-    .. Constructor ..
-    +ProjectGroup(groupId: int, groupName: String, maximumMembers: int, createdAt: LocalDateTime)
-    .. Accessors ..
+    -status: GroupStatus = FORMING
+    {method} «create» +ProjectGroup(groupId: int, groupName: String, maximumMembers: int, createdAt: LocalDateTime)
     +getGroupId(): int
     +setGroupId(groupId: int): void
     +getGroupName(): String
@@ -277,21 +245,18 @@ package "Matching and Collaboration" {
     +setCreatedAt(createdAt: LocalDateTime): void
     +getStatus(): GroupStatus
     +setStatus(status: GroupStatus): void
-    .. Operations ..
     +addMember(studentId: int): void
     +removeMember(studentId: int): void
-    +viewMembers(): List<GroupMembership>
+    +viewMembers(): GroupMembership[1..*]
     +isFull(): boolean
   }
 
   class GroupMembership {
     -membershipId: int
-    -role: MembershipRole
+    -role: MembershipRole = MEMBER
     -joinedAt: LocalDateTime
-    -active: boolean
-    .. Constructor ..
-    +GroupMembership(membershipId: int, role: MembershipRole, joinedAt: LocalDateTime)
-    .. Accessors ..
+    -active: boolean = true
+    {method} «create» +GroupMembership(membershipId: int, role: MembershipRole, joinedAt: LocalDateTime)
     +getMembershipId(): int
     +setMembershipId(membershipId: int): void
     +getRole(): MembershipRole
@@ -300,7 +265,6 @@ package "Matching and Collaboration" {
     +setJoinedAt(joinedAt: LocalDateTime): void
     +isActive(): boolean
     +setActive(active: boolean): void
-    .. Operations ..
     +leaveGroup(): void
   }
 }
@@ -311,11 +275,9 @@ package "Notification" {
     -notificationId: int
     -type: NotificationType
     -message: String
-    -read: boolean
+    -read: boolean = false
     -createdAt: LocalDateTime
-    .. Constructor ..
-    +Notification(notificationId: int, type: NotificationType, message: String, createdAt: LocalDateTime)
-    .. Accessors ..
+    {method} «create» +Notification(notificationId: int, type: NotificationType, message: String, createdAt: LocalDateTime)
     +getNotificationId(): int
     +setNotificationId(notificationId: int): void
     +getType(): NotificationType
@@ -326,7 +288,6 @@ package "Notification" {
     +setRead(read: boolean): void
     +getCreatedAt(): LocalDateTime
     +setCreatedAt(createdAt: LocalDateTime): void
-    .. Operations ..
     +markAsRead(): void
   }
 }
@@ -397,39 +358,34 @@ User <|-- Student
 User <|-- Administrator
 
 ' ---------- Composition ----------
-Student "1" *-- "1" CollaborationProfile : owns >
-CollaborationProfile "1" *-- "0..*" Availability : contains >
-Student "1" *-- "0..*" Notification : receives >
-ProjectGroup "1" *-- "1..*" GroupMembership : contains >
+Student "1" *-- "1" CollaborationProfile
+CollaborationProfile "1" *-- "0..*" Availability
+Student "1" *--> "0..*" Notification
 
 ' ---------- Association classes ----------
-Student "0..*" -- "0..*" Subject : enrolled in >
-(Student, Subject) . SubjectEnrollment
+Student "0..*" -- "0..*" Subject
+(Student, Subject) .. SubjectEnrollment
 
-Student "0..*" -- "0..*" ProjectGroup : member of >
-(Student, ProjectGroup) . GroupMembership
+Student "member\n1..*" -- "0..*" ProjectGroup
+note on link : {members <= maximumMembers}
+(Student, ProjectGroup) .. GroupMembership
 
-' ---------- Associations ----------
-Student "1" -- "0..*" MatchRecommendation : receives >
-Subject "1" -- "0..*" MatchRecommendation : concerns >
-GroupmateRequest "0..*" -- "1" Student : sender >
-GroupmateRequest "0..*" -- "1" Student : receiver >
-Subject "1" -- "0..*" GroupmateRequest : concerns >
-Subject "1" -- "0..*" ProjectGroup : has >
-UserReport "0..*" -- "1" Student : reporter >
-UserReport "0..*" -- "1" User : reportedUser >
-Administrator "0..1" -- "0..*" UserReport : reviews >
+' ---------- Associations (role names at the ends) ----------
+Student "recipient\n1" -- "0..*" MatchRecommendation
+Student "candidate\n1" -- "0..*" MatchRecommendation
+Subject "1" -- "0..*" MatchRecommendation
+Student "sender\n1" -- "0..*" GroupmateRequest
+Student "receiver\n1" -- "0..*" GroupmateRequest
+Subject "1" -- "0..*" GroupmateRequest
+Subject "1" -- "0..*" ProjectGroup
+Student "reporter\n1" -- "0..*" UserReport
+User "reportedUser\n1" -- "0..*" UserReport
+Administrator "reviewer\n0..1" -- "0..*" UserReport
 
-' ---------- Dependencies ----------
-MatchingService ..> CollaborationProfile : <<use>> compares
-MatchingService ..> SubjectEnrollment : <<use>> filters
+' ---------- Dependencies (one stereotype each) ----------
 MatchingService ..> MatchRecommendation : <<create>>
-MatchRecommendation ..> GroupmateRequest : <<use>> initiates
-Student ..> ProjectGroup : <<create>>
-Student ..> GroupmateRequest : <<create>>
-GroupmateRequest ..> Notification : <<create>> triggers
-ProjectGroup ..> Notification : <<create>> triggers
-Administrator ..> User : <<use>> manages
-Administrator ..> Subject : <<use>> maintains
+MatchingService ..> CollaborationProfile : <<use>>
+MatchingService ..> SubjectEnrollment : <<use>>
+Administrator ..> Subject : <<use>>
 
 @enduml

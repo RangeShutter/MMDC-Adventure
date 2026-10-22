@@ -35,7 +35,7 @@ For permissions or inquiries, please contact MMDC-ISD at [isd@mmdc.mcl.edu.ph](m
 
 ## 1. Component Identification
 
-**StudySync: MMDC Student Groupmate Matching System** is organized as a web-based application with a browser presentation layer, an application layer of cooperating service components, and a shared data layer. Each component groups the classes from the class diagram that share a single responsibility.
+**StudySync: MMDC Student Groupmate Matching System** is organized as a web-based application with a browser presentation layer, a gateway, an application layer of cooperating service components, and a shared data layer. The component diagram arranges these parts in four tiers so that communication reads from top to bottom. Each component groups the classes from the class diagram that share a single responsibility.
 
 
 | Component Name             | Purpose/Responsibility                                                                                                                                                                                                                                                         |
@@ -52,9 +52,9 @@ For permissions or inquiries, please contact MMDC-ISD at [isd@mmdc.mcl.edu.ph](m
 | `NotificationService`      | Generates and delivers in-app updates about recommendations, groupmate requests, request responses, group invitations, and group changes. Manages the `Notification` class.                                                                                                    |
 | `ModerationService`        | Accepts reports submitted by students about other users or inappropriate activity, stores them for review, and records the administrator's resolution. Manages the `UserReport` class.                                                                                         |
 | `DataAccessLayer`          | Provides a consistent persistence interface for all application services, translating domain objects into database operations and keeping query logic out of the service components.                                                                                           |
-| `Database`                 | Stores all persistent system data, including accounts, collaboration profiles, availability, subjects, enrollments, recommendations, requests, groups, memberships, notifications, and reports.                                                                                |
+| `StudySync Database`       | Persistent `«datastore»` that holds all system data, including accounts, collaboration profiles, availability, subjects, enrollments, recommendations, requests, groups, memberships, notifications, and reports. Accessed only through `DataAccessLayer`. |
 
-These components are organized into six `«subsystem»` packages, each a collection of related components supporting one larger business function.
+These components are organized into seven `«subsystem»` packages, each a collection of related components supporting one larger business function.
 
 | Subsystem | Components | Business Function |
 | ----- | ----- | ----- |
@@ -64,7 +64,7 @@ These components are organized into six `«subsystem»` packages, each a collect
 | Profile and Enrollment | `ProfileService`, `SubjectEnrollmentService` | Collaboration profiles and subject enrollment |
 | Matching and Collaboration | `MatchingEngine`, `RequestService`, `GroupService` | Groupmate discovery, requests, and group formation |
 | Notification | `NotificationService` | Delivery of in-app status updates |
-| Data | `DataAccessLayer`, `Database` | Persistence of all system data |
+| Data | `DataAccessLayer`, `StudySync Database` | Persistence of all system data |
 
 Each component publishes its services through a named interface. The following interfaces define the contracts between components.
 
@@ -89,7 +89,7 @@ Each component publishes its services through a named interface. The following i
 
 ![StudySync Component Diagram](StudySync_Component_Diagram.png)
 
-*Figure: StudySync component diagram, drawn in standard UML component notation. Full-resolution versions are available as `StudySync_Component_Diagram.svg` and `StudySync_Component_Diagram.pdf`. The diagram is generated from the PlantUML source `StudySync_Component_Diagram.puml`.*
+*Figure: StudySync component diagram in standard UML component notation (source export: `Old Diagrams(1)/StudySync_Component_Diagram.png`). The editable original is the "Component Diagram" page of the [StudySync UML Diagrams Figma file](https://www.figma.com/design/5si3iOF9VrBNsEJkdiDIlL). A note on the diagram traces the four main communication paths: sign in, find potential groupmates, send a request and form a group, and report moderation.*
 
 
 
@@ -98,11 +98,13 @@ Each component publishes its services through a named interface. The following i
 
 The diagram is read through UML component notation. Each component is a modular, replaceable unit marked `«component»` and carrying the component icon. Related components are grouped into `«subsystem»` packages. Every connection between components passes through a named interface drawn ball-and-socket: the full circle, or ball, marks the interface a component **provides**, and the open half-circle, or socket, marks the interface a component **requires**. Where a socket meets a ball the two form an assembly connector, meaning the required service is satisfied by the provided one. The small squares on the boundary of `APIGateway` and `DataAccessLayer` are ports, the defined interaction points through which those components expose or access their interfaces. The dashed arrow to the database is a `«use»` dependency, used only where no interface contract applies.
 
+The layout is organized so that communication reads from top to bottom in four tiers: the browser interfaces, the gateway, the application services, and the data tier. The gateway's assembly connectors drop straight down into the ball of each service it calls. Service-to-service connectors run in separate horizontal lanes above the services. `INotification` and `IDataAccess`, which several components require, are each drawn once, with their consumers joined by junction dots. Where a connector has to cross another, a small hop shows that the two lines are not connected. A note beside the diagram traces the four main communication paths: sign in, find potential groupmates, send a request and form a group, and report moderation.
+
 All user interaction begins in the Presentation Subsystem. `StudentWebUI` and `AdminWebUI` run in the student's or administrator's web browser and require `IStudentRequests` and `IAdminRequests`, the two interfaces provided by `APIGateway` through its `studentPort` and `adminPort`. Neither interface communicates with an application service directly, so the presentation layer depends only on the gateway. This keeps the browser code independent of how the services are internally organized.
 
 `APIGateway` requires `IAuthentication` and validates the session with `AuthenticationService` before forwarding any request that needs a signed-in user. It then dispatches the request to the responsible service through that service's provided interface, such as `IProfileManagement` for profile updates or `IMatching` for recommendation requests. `AuthenticationService` also supplies the user's role, which determines whether administrative operations in `ModerationService` and `SubjectEnrollmentService` are permitted.
 
-The matching flow shows the most significant dependencies between services. `MatchingEngine` requires both `IProfileManagement` and `ISubjectEnrollment`, which is visible on the diagram as two sockets reaching out of the Matching and Collaboration Subsystem. When a student requests potential groupmates, it reads collaboration profile information from `ProfileService` and subject enrollment information from `SubjectEnrollmentService`. It uses the enrollment records to restrict candidates to students taking the same subject who are marked as looking for a group, then compares IT major, availability, employment schedule, and working-style preference to compute a compatibility score. The resulting recommendations are returned to the student through the gateway.
+The matching flow shows the most significant dependencies between services. `MatchingEngine` requires both `IProfileManagement` and `ISubjectEnrollment`, which is visible on the diagram as one connector leaving `MatchingEngine` and branching to the two balls in the Profile and Enrollment Subsystem. When a student requests potential groupmates, it reads collaboration profile information from `ProfileService` and subject enrollment information from `SubjectEnrollmentService`. It uses the enrollment records to restrict candidates to students taking the same subject who are marked as looking for a group, then compares IT major, availability, employment schedule, and working-style preference to compute a compatibility score. The resulting recommendations are returned to the student through the gateway.
 
 `RequestService` requires `IMatching` because a groupmate request usually originates from a displayed recommendation. `GroupService` requires `IGroupmateRequest` so that an accepted request can be used to establish a project group and create the corresponding membership records, and it also requires `ISubjectEnrollment` to verify that each member is enrolled in the group's subject.
 
@@ -110,7 +112,16 @@ The matching flow shows the most significant dependencies between services. `Mat
 
 On the administrative path, a student submits a report through `IModeration`, provided by `ModerationService`, which stores it for review. An administrator retrieves pending reports through `AdminWebUI` and records a resolution. When a resolution affects an account, `ModerationService` requires `IAuthentication` to update that account's status.
 
-Every application service requires `IDataAccess`, the single interface provided by `DataAccessLayer`. This is the most widely required interface in the architecture, with eight consuming components. `DataAccessLayer` then reaches the database through its `dbPort` as a `«use»` dependency, so no service accesses storage directly. Together these interactions support the system's complete flow: account creation, profile and subject setup, groupmate discovery, requests, group formation, notifications, and administration.
+Every application service requires `IDataAccess`, the single interface provided by `DataAccessLayer`. This is the most widely required interface in the architecture, with eight consuming components, so it is drawn as a single shared connector running beneath the services rather than eight separate lines. `DataAccessLayer` then reaches the `«datastore»` StudySync Database through its `dbPort` as a `«use»` dependency, so no service accesses storage directly.
+
+The note on the diagram summarizes these interactions as four communication paths:
+
+1. **Sign in.** `StudentWebUI` → `IStudentRequests` → `APIGateway` → `IAuthentication` → `AuthenticationService` → `IDataAccess` → `DataAccessLayer` → StudySync Database.
+2. **Find potential groupmates.** `StudentWebUI` → `IStudentRequests` → `APIGateway` → `IMatching` → `MatchingEngine`, which then requires `IProfileManagement`, `ISubjectEnrollment`, and `INotification`.
+3. **Send a request and form a group.** `APIGateway` → `IGroupmateRequest` → `RequestService` (which requires `IMatching`), and `APIGateway` → `IGroupManagement` → `GroupService` (which requires `IGroupmateRequest`, `ISubjectEnrollment`, and, with `RequestService`, `INotification`).
+4. **Report and moderation.** `AdminWebUI` → `IAdminRequests` → `APIGateway` → `IModeration` → `ModerationService` → `IAuthentication` → `AuthenticationService`.
+
+Together these interactions support the system's complete flow: account creation, profile and subject setup, groupmate discovery, requests, group formation, notifications, and administration.
 
 ## 4. Architectural Decisions
 
@@ -128,7 +139,9 @@ The main challenge during the analysis was deciding how finely to divide the app
 
 **Notation corrections applied after review.** An earlier version of this diagram was drawn as a layered flowchart, with components shown as plain boxes and interface names written as text labels on the connecting arrows. That is not UML component notation. The diagram has been redrawn so that components carry the `«component»` stereotype and icon, related components are enclosed in `«subsystem»` packages, and each interface is modelled as a first-class element connected ball-and-socket to the components that provide and require it. Ports were added to `APIGateway` and `DataAccessLayer` to mark their explicit interaction points. A legend on the diagram records the meaning of each symbol.
 
-**Decisions arising from the notation change.** Making the interfaces explicit changed how the architecture is grouped. The three informal layers became six named subsystems, which the course material identifies as collections of related components supporting a larger business function. `AuthenticationService` and `ModerationService` were placed together in the Account and Access Subsystem because both operate on accounts, and `APIGateway` was given its own subsystem because it mediates between the browser and every other subsystem rather than belonging to any one of them. Drawing the sockets also made the real coupling visible in a way the flowchart did not: `IDataAccess` is required by eight components and `INotification` by four, while `MatchingEngine` is the only service that requires two other business interfaces, which confirms it as the most coupled component in the system.
+**Decisions arising from the notation change.** Making the interfaces explicit changed how the architecture is grouped. The three informal layers became seven named subsystems, which the course material identifies as collections of related components supporting a larger business function. `AuthenticationService` and `ModerationService` were placed together in the Account and Access Subsystem because both operate on accounts, and `APIGateway` was given its own subsystem because it mediates between the browser and every other subsystem rather than belonging to any one of them. Drawing the sockets also made the real coupling visible in a way the flowchart did not: `IDataAccess` is required by eight components and `INotification` by four, while `MatchingEngine` and `GroupService` each require three interfaces from other services, which makes them the most coupled components in the system.
+
+**Second review: organizing the communication.** The second review found the notation correct but the diagram too cluttered to show how the components communicate. It was redrawn by hand in four tiers so that each request reads from top to bottom. The gateway now spans the services tier and drops one straight connector into each service, and service-to-service connectors were moved into their own lanes. The eight separate `IDataAccess` lines became one shared connector, and `INotification` was given a single ball on the side of `NotificationService`. The services were ordered so that components that talk to each other sit side by side, which leaves only five crossings, each drawn with a hop. A numbered note was added to trace the main request paths through the named interfaces.
 
 ## 5. Project Resources
 
@@ -136,5 +149,6 @@ The main challenge during the analysis was deciding how finely to divide the app
 | --------------------- | :---------------: |
 | Team Project Proposal | *\<paste link\>*  |
 | Class Diagram         | *\<paste link\>*  |
+| UML Diagrams (Figma)  | [StudySync UML Diagrams](https://www.figma.com/design/5si3iOF9VrBNsEJkdiDIlL) |
 
 

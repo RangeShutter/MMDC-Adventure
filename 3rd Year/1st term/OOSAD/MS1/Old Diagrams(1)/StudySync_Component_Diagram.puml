@@ -62,7 +62,7 @@ package "Data Subsystem" <<subsystem>> {
   component "DataAccessLayer" as DataAccessLayer <<component>> {
     port "dbPort" as PortDb
   }
-  database "StudySync Database" as Database
+  component "StudySync Database" as Database <<datastore>>
 }
 
 ' ======================= INTERFACES =======================
@@ -129,7 +129,7 @@ NotificationService --( IDataAccess
 ModerationService --( IDataAccess
 
 ' ---------- Data access to storage ----------
-PortDb --> Database : <<use>> JDBC
+PortDb ..> Database : <<use>>
 
 legend right
   |= Notation |= Meaning |
@@ -140,5 +140,17 @@ legend right
   | Small square on border | Port: defined interaction point |
   | Dashed arrow | Dependency («use») |
 endlegend
+
+note right of NotificationService
+  **How the components communicate**
+  1 Sign in: StudentWebUI > IStudentRequests > APIGateway
+    > IAuthentication > AuthenticationService > IDataAccess > DataAccessLayer
+  2 Find groupmates: APIGateway > IMatching > MatchingEngine
+    > IProfileManagement + ISubjectEnrollment > INotification
+  3 Request and group: APIGateway > IGroupmateRequest > RequestService > IMatching;
+    APIGateway > IGroupManagement > GroupService > IGroupmateRequest + ISubjectEnrollment
+  4 Moderation: AdminWebUI > IAdminRequests > APIGateway > IModeration
+    > ModerationService > IAuthentication
+end note
 
 @enduml
