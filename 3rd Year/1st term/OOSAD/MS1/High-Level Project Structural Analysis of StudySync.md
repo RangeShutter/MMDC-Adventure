@@ -270,7 +270,7 @@ For permissions or inquiries, please contact MMDC-ISD at [isd@mmdc.mcl.edu.ph](m
 
 ![Matching and Group Formation detail](StudySync_Class_Detail_MatchingGroups.png)
 
-*Figure: Detail view — Matching and Group Formation. Enlarges `MatchingService`, `MatchRecommendation`, `GroupmateRequest`, `ProjectGroup`, `GroupMembership`, and `Subject`, including the short `«create»` dependency and the `GroupMembership` association-class attachment with `{members <= maximumMembers}`.*
+*Figure: Detail view — Matching and Group Formation. Enlarges `MatchingService` `«create»` `MatchRecommendation`; `Student` (sender/receiver) with `GroupmateRequest` and `Subject`; and the `Student`–`ProjectGroup` association with association class `GroupMembership` (dashed attachment, no arrowhead) and `{members <= maximumMembers}`.*
 
    3. ## **Relationship Analysis** {#relationship-analysis}
 

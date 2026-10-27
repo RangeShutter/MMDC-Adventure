@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8' ?>
 
 <!-- build 20262.26.0912.1023                               -->
-<workbook _.fcp.WorkbookFingerprinting.true...author-id='b1ca3ddc96014d8f6f5bd67c27047252d7138180d58ae301476a99a2eb3a2323' _.fcp.WorkbookFingerprinting.true...creator-author-id='b1ca3ddc96014d8f6f5bd67c27047252d7138180d58ae301476a99a2eb3a2323' _.fcp.WorkbookFingerprinting.true...creator-license-type='free' _.fcp.WorkbookFingerprinting.true...creator-machine-id='51cb229ac0a2000cb47af0daca26000b1e7645bafe4bf3a87ca27079f277302d' _.fcp.WorkbookFingerprinting.true...license-type='free' _.fcp.WorkbookFingerprinting.true...machine-id='c8f839d1a8424b2fd3ff2f8953e5e480d24f0027fab33c18896fb6ad2adf05ef' original-version='18.1' source-build='2026.2.3 (20262.26.0912.1023)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+<workbook _.fcp.WorkbookFingerprinting.true...author-id='b1ca3ddc96014d8f6f5bd67c27047252d7138180d58ae301476a99a2eb3a2323' _.fcp.WorkbookFingerprinting.true...creator-author-id='b1ca3ddc96014d8f6f5bd67c27047252d7138180d58ae301476a99a2eb3a2323' _.fcp.WorkbookFingerprinting.true...creator-license-type='free' _.fcp.WorkbookFingerprinting.true...creator-machine-id='51cb229ac0a2000cb47af0daca26000b1e7645bafe4bf3a87ca27079f277302d' _.fcp.WorkbookFingerprinting.true...license-type='free' _.fcp.WorkbookFingerprinting.true...machine-id='51cb229ac0a2000cb47af0daca26000b1e7645bafe4bf3a87ca27079f277302d' original-version='18.1' source-build='2026.2.3 (20262.26.0912.1023)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
   <document-format-change-manifest>
     <AccessibleZoneTabOrder />
     <AnimationOnByDefault />
@@ -25,1222 +25,11 @@
     <preference name='ui.shelf.height' value='26' />
   </preferences>
   <datasources>
-    <datasource caption='executive_kpi_timeseries' inline='true' name='federated.1oo8obc0n7o4bw189t5271g8ssg6' version='18.1'>
-      <connection class='federated'>
-        <named-connections>
-          <named-connection caption='executive_kpi_timeseries' name='textscan.1syleer0qioabr1ffvp6t0feit6s'>
-            <connection class='textscan' directory='C:/Users/User/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='executive_kpi_timeseries.csv' password='' server='' />
-          </named-connection>
-        </named-connections>
-        <relation connection='textscan.1syleer0qioabr1ffvp6t0feit6s' name='executive_kpi_timeseries.csv' table='[executive_kpi_timeseries#csv]' type='table'>
-          <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
-            <column datatype='string' name='kpi_code' ordinal='0' />
-            <column datatype='string' name='kpi_name' ordinal='1' />
-            <column datatype='string' name='period' ordinal='2' />
-            <column datatype='date' name='period_start' ordinal='3' />
-            <column datatype='string' name='frequency' ordinal='4' />
-            <column datatype='string' name='series_type' ordinal='5' />
-            <column datatype='real' name='value' ordinal='6' />
-            <column datatype='real' name='numerator' ordinal='7' />
-            <column datatype='integer' name='denominator' ordinal='8' />
-            <column datatype='real' name='forecast_lower_95' ordinal='9' />
-            <column datatype='real' name='forecast_upper_95' ordinal='10' />
-            <column datatype='string' name='is_partial' ordinal='11' />
-          </columns>
-        </relation>
-        <metadata-records>
-          <metadata-record class='capability'>
-            <remote-name />
-            <remote-type>0</remote-type>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias />
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <attributes>
-              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
-              <attribute datatype='string' name='collation'>&quot;en_GB&quot;</attribute>
-              <attribute datatype='string' name='currency'>&quot;₱&quot;</attribute>
-              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
-              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
-              <attribute datatype='string' name='locale'>&quot;en_PH&quot;</attribute>
-              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
-            </attributes>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>kpi_code</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[kpi_code]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>kpi_code</remote-alias>
-            <ordinal>0</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>kpi_name</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[kpi_name]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>kpi_name</remote-alias>
-            <ordinal>1</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>period</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[period]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>period</remote-alias>
-            <ordinal>2</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>period_start</remote-name>
-            <remote-type>133</remote-type>
-            <local-name>[period_start]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>period_start</remote-alias>
-            <ordinal>3</ordinal>
-            <local-type>date</local-type>
-            <aggregation>Year</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>frequency</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[frequency]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>frequency</remote-alias>
-            <ordinal>4</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>series_type</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[series_type]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>series_type</remote-alias>
-            <ordinal>5</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>value</remote-name>
-            <remote-type>5</remote-type>
-            <local-name>[value]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>value</remote-alias>
-            <ordinal>6</ordinal>
-            <local-type>real</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>numerator</remote-name>
-            <remote-type>5</remote-type>
-            <local-name>[numerator]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>numerator</remote-alias>
-            <ordinal>7</ordinal>
-            <local-type>real</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>denominator</remote-name>
-            <remote-type>20</remote-type>
-            <local-name>[denominator]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>denominator</remote-alias>
-            <ordinal>8</ordinal>
-            <local-type>integer</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>forecast_lower_95</remote-name>
-            <remote-type>5</remote-type>
-            <local-name>[forecast_lower_95]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>forecast_lower_95</remote-alias>
-            <ordinal>9</ordinal>
-            <local-type>real</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>forecast_upper_95</remote-name>
-            <remote-type>5</remote-type>
-            <local-name>[forecast_upper_95]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>forecast_upper_95</remote-alias>
-            <ordinal>10</ordinal>
-            <local-type>real</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>is_partial</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[is_partial]</local-name>
-            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
-            <remote-alias>is_partial</remote-alias>
-            <ordinal>11</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-          </metadata-record>
-        </metadata-records>
-      </connection>
-      <aliases enabled='yes' />
-      <column caption='Completed Actual Value' datatype='real' name='[Calculation_0460476558860289]' role='measure' type='quantitative'>
-        <calculation class='tableau' formula='IF [series_type] = &quot;Completed Actual&quot; THEN [value] END' />
-      </column>
-      <column caption='Forecast Value' datatype='real' name='[Calculation_0460476558966786]' role='measure' type='quantitative'>
-        <calculation class='tableau' formula='IF [series_type] = &quot;Forecast&quot; THEN [value] END' />
-      </column>
-      <column caption='Partial Actual Value' datatype='real' name='[Calculation_0460476559036419]' role='measure' type='quantitative'>
-        <calculation class='tableau' formula='IF [series_type] = &quot;Partial Actual&quot; THEN [value] END' />
-      </column>
-      <column caption='Series Label' datatype='string' name='[Calculation_0460476561883140]' role='dimension' type='nominal'>
-        <calculation class='tableau' formula='[kpi_code] + &quot; - &quot; + [series_type]' />
-      </column>
-      <column caption='Calculation1' datatype='string' name='[Calculation_1111662210408448]' role='dimension' type='nominal'>
-        <calculation class='tableau' formula='[kpi_code] + &quot; - &quot; + [series_type]' />
-      </column>
-      <column caption='KPI Time Series' datatype='table' name='[__tableau_internal_object_id__].[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]' role='measure' type='quantitative' />
-      <column caption='Denominator' datatype='integer' name='[denominator]' role='measure' type='quantitative' />
-      <column caption='Forecast Lower 95' datatype='real' name='[forecast_lower_95]' role='measure' type='quantitative' />
-      <column caption='Forecast Upper 95' datatype='real' name='[forecast_upper_95]' role='measure' type='quantitative' />
-      <column caption='Frequency' datatype='string' name='[frequency]' role='dimension' type='nominal' />
-      <column caption='Is Partial' datatype='string' name='[is_partial]' role='dimension' type='nominal' />
-      <column caption='Kpi Code' datatype='string' name='[kpi_code]' role='dimension' type='nominal' />
-      <column caption='Kpi Name' datatype='string' name='[kpi_name]' role='dimension' type='nominal' />
-      <column caption='Numerator' datatype='real' name='[numerator]' role='measure' type='quantitative' />
-      <column caption='Period' datatype='string' name='[period]' role='dimension' type='nominal' />
-      <column caption='Period Start' datatype='date' name='[period_start]' role='dimension' type='ordinal' />
-      <column caption='Series Type' datatype='string' name='[series_type]' role='dimension' type='nominal' />
-      <column caption='Value' datatype='real' name='[value]' role='measure' type='quantitative' />
-      <column-instance column='[Calculation_0460476561883140]' derivation='None' name='[none:Calculation_0460476561883140:nk]' pivot='key' type='nominal' />
-      <column-instance column='[Forecast Indicator]' derivation='None' forecast-column-base='[Forecast Indicator]' forecast-column-type='forecast-indicator' name='[none:Forecast Indicator:nk]' pivot='key' type='nominal' />
-      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
-        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='C:/Users/User/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Extracts/executive_kpi_timeseries.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/15/2026 08:00:22 PM' username='tableau_internal_user'>
-          <relation name='Extract' table='[Extract].[Extract]' type='table' />
-          <refresh>
-            <refresh-event add-from-file-path='executive_kpi_timeseries' increment-value='%null%' refresh-type='create' rows-inserted='69' timestamp-start='2026-10-15 20:00:22.206' />
-          </refresh>
-          <metadata-records>
-            <metadata-record class='column'>
-              <remote-name>kpi_code</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[kpi_code]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>kpi_code</remote-alias>
-              <ordinal>0</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>kpi_name</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[kpi_name]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>kpi_name</remote-alias>
-              <ordinal>1</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>period</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[period]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>period</remote-alias>
-              <ordinal>2</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>25</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>period_start</remote-name>
-              <remote-type>133</remote-type>
-              <local-name>[period_start]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>period_start</remote-alias>
-              <ordinal>3</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>date</local-type>
-              <aggregation>Year</aggregation>
-              <approx-count>22</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>frequency</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[frequency]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>frequency</remote-alias>
-              <ordinal>4</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>2</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>series_type</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[series_type]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>series_type</remote-alias>
-              <ordinal>5</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>3</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>value</remote-name>
-              <remote-type>5</remote-type>
-              <local-name>[value]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>value</remote-alias>
-              <ordinal>6</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>real</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>66</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>numerator</remote-name>
-              <remote-type>5</remote-type>
-              <local-name>[numerator]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>numerator</remote-alias>
-              <ordinal>7</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>real</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>37</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>denominator</remote-name>
-              <remote-type>20</remote-type>
-              <local-name>[denominator]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>denominator</remote-alias>
-              <ordinal>8</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>integer</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>21</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>forecast_lower_95</remote-name>
-              <remote-type>5</remote-type>
-              <local-name>[forecast_lower_95]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>forecast_lower_95</remote-alias>
-              <ordinal>9</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>real</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>15</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>forecast_upper_95</remote-name>
-              <remote-type>5</remote-type>
-              <local-name>[forecast_upper_95]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>forecast_upper_95</remote-alias>
-              <ordinal>10</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>real</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>18</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>is_partial</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[is_partial]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>is_partial</remote-alias>
-              <ordinal>11</ordinal>
-              <family>executive_kpi_timeseries.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>2</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
-            </metadata-record>
-          </metadata-records>
-        </connection>
-      </extract>
-      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
-      <style>
-        <style-rule element='mark'>
-          <encoding attr='color' field='[none:Calculation_0460476561883140:nk]' type='palette'>
-            <map to='#4e79a7'>
-              <bucket>&quot;CRR - Completed Actual&quot;</bucket>
-            </map>
-            <map to='#4e79a7'>
-              <bucket>&quot;CSAT - Completed Actual&quot;</bucket>
-            </map>
-            <map to='#59a14f'>
-              <bucket>&quot;ARPC - Completed Actual&quot;</bucket>
-            </map>
-            <map to='#76b7b2'>
-              <bucket>&quot;CRR - Forecast&quot;</bucket>
-            </map>
-            <map to='#9c755f'>
-              <bucket>&quot;CGR - Forecast&quot;</bucket>
-            </map>
-            <map to='#b07aa1'>
-              <bucket>&quot;CER - Completed Actual&quot;</bucket>
-            </map>
-            <map to='#bab0ac'>
-              <bucket>&quot;ARPC - Partial Actual&quot;</bucket>
-            </map>
-            <map to='#e15759'>
-              <bucket>&quot;CER - Partial Actual&quot;</bucket>
-            </map>
-            <map to='#e15759'>
-              <bucket>&quot;CGR - Partial Actual&quot;</bucket>
-            </map>
-            <map to='#e15759'>
-              <bucket>&quot;CSAT - Partial Actual&quot;</bucket>
-            </map>
-            <map to='#edc948'>
-              <bucket>&quot;ARPC - Forecast&quot;</bucket>
-            </map>
-            <map to='#edc948'>
-              <bucket>&quot;CRR - Partial Actual&quot;</bucket>
-            </map>
-            <map to='#f28e2b'>
-              <bucket>&quot;CGR - Completed Actual&quot;</bucket>
-            </map>
-            <map to='#f28e2b'>
-              <bucket>&quot;CSAT - Forecast&quot;</bucket>
-            </map>
-            <map to='#ff9da7'>
-              <bucket>&quot;CER - Forecast&quot;</bucket>
-            </map>
-          </encoding>
-        </style-rule>
-      </style>
-      <semantic-values>
-        <semantic-value key='[Country].[Name]' value='&quot;Philippines&quot;' />
-      </semantic-values>
-      <default-sorts>
-        <manual-sort column='[none:Forecast Indicator:nk]' direction='ASC'>
-          <dictionary>
-            <bucket>&quot;Actual&quot;</bucket>
-            <bucket>&quot;Estimate&quot;</bucket>
-          </dictionary>
-        </manual-sort>
-      </default-sorts>
-      <object-graph>
-        <objects>
-          <object caption='KPI Time Series' id='executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148'>
-            <properties context=''>
-              <relation connection='textscan.1syleer0qioabr1ffvp6t0feit6s' name='executive_kpi_timeseries.csv' table='[executive_kpi_timeseries#csv]' type='table'>
-                <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
-                  <column datatype='string' name='kpi_code' ordinal='0' />
-                  <column datatype='string' name='kpi_name' ordinal='1' />
-                  <column datatype='string' name='period' ordinal='2' />
-                  <column datatype='date' name='period_start' ordinal='3' />
-                  <column datatype='string' name='frequency' ordinal='4' />
-                  <column datatype='string' name='series_type' ordinal='5' />
-                  <column datatype='real' name='value' ordinal='6' />
-                  <column datatype='real' name='numerator' ordinal='7' />
-                  <column datatype='integer' name='denominator' ordinal='8' />
-                  <column datatype='real' name='forecast_lower_95' ordinal='9' />
-                  <column datatype='real' name='forecast_upper_95' ordinal='10' />
-                  <column datatype='string' name='is_partial' ordinal='11' />
-                </columns>
-              </relation>
-            </properties>
-            <properties context='extract'>
-              <relation name='Extract' table='[Extract].[Extract]' type='table' />
-            </properties>
-          </object>
-        </objects>
-      </object-graph>
-    </datasource>
-    <datasource caption='executive_kpi_cards' inline='true' name='federated.1iuc8sx134m7dm159rll515louoa' version='18.1'>
-      <connection class='federated'>
-        <named-connections>
-          <named-connection caption='executive_kpi_cards' name='textscan.1m1nyak0ovk9bj1flssna1i4jny5'>
-            <connection class='textscan' directory='C:/Users/User/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='executive_kpi_cards.csv' password='' server='' />
-          </named-connection>
-        </named-connections>
-        <relation connection='textscan.1m1nyak0ovk9bj1flssna1i4jny5' name='executive_kpi_cards.csv' table='[executive_kpi_cards#csv]' type='table'>
-          <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
-            <column datatype='integer' name='display_order' ordinal='0' />
-            <column datatype='string' name='kpi_code' ordinal='1' />
-            <column datatype='string' name='kpi_name' ordinal='2' />
-            <column datatype='string' name='completed_period' ordinal='3' />
-            <column datatype='real' name='completed_value' ordinal='4' />
-            <column datatype='string' name='partial_period' ordinal='5' />
-            <column datatype='real' name='partial_value' ordinal='6' />
-            <column datatype='string' name='forecast_end_period' ordinal='7' />
-            <column datatype='real' name='forecast_end_value' ordinal='8' />
-            <column datatype='string' name='unit' ordinal='9' />
-            <column datatype='string' name='direction' ordinal='10' />
-            <column datatype='string' name='definition' ordinal='11' />
-            <column datatype='string' name='data_warning' ordinal='12' />
-          </columns>
-        </relation>
-        <metadata-records>
-          <metadata-record class='capability'>
-            <remote-name />
-            <remote-type>0</remote-type>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias />
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <attributes>
-              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
-              <attribute datatype='string' name='collation'>&quot;en_GB&quot;</attribute>
-              <attribute datatype='string' name='currency'>&quot;₱&quot;</attribute>
-              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
-              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
-              <attribute datatype='string' name='locale'>&quot;en_PH&quot;</attribute>
-              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
-            </attributes>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>display_order</remote-name>
-            <remote-type>20</remote-type>
-            <local-name>[display_order]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>display_order</remote-alias>
-            <ordinal>0</ordinal>
-            <local-type>integer</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>kpi_code</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[kpi_code]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>kpi_code</remote-alias>
-            <ordinal>1</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>kpi_name</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[kpi_name]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>kpi_name</remote-alias>
-            <ordinal>2</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>completed_period</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[completed_period]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>completed_period</remote-alias>
-            <ordinal>3</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>completed_value</remote-name>
-            <remote-type>5</remote-type>
-            <local-name>[completed_value]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>completed_value</remote-alias>
-            <ordinal>4</ordinal>
-            <local-type>real</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>partial_period</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[partial_period]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>partial_period</remote-alias>
-            <ordinal>5</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>partial_value</remote-name>
-            <remote-type>5</remote-type>
-            <local-name>[partial_value]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>partial_value</remote-alias>
-            <ordinal>6</ordinal>
-            <local-type>real</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>forecast_end_period</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[forecast_end_period]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>forecast_end_period</remote-alias>
-            <ordinal>7</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>forecast_end_value</remote-name>
-            <remote-type>5</remote-type>
-            <local-name>[forecast_end_value]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>forecast_end_value</remote-alias>
-            <ordinal>8</ordinal>
-            <local-type>real</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>unit</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[unit]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>unit</remote-alias>
-            <ordinal>9</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>direction</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[direction]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>direction</remote-alias>
-            <ordinal>10</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>definition</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[definition]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>definition</remote-alias>
-            <ordinal>11</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>data_warning</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[data_warning]</local-name>
-            <parent-name>[executive_kpi_cards.csv]</parent-name>
-            <remote-alias>data_warning</remote-alias>
-            <ordinal>12</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-          </metadata-record>
-        </metadata-records>
-      </connection>
-      <aliases enabled='yes' />
-      <column caption='KPI Cards' datatype='table' name='[__tableau_internal_object_id__].[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]' role='measure' type='quantitative' />
-      <column caption='Completed Period' datatype='string' name='[completed_period]' role='dimension' type='nominal' />
-      <column caption='Completed Value' datatype='real' default-format='n#,##0.0;-#,##0.0' name='[completed_value]' role='measure' type='quantitative' />
-      <column caption='Data Warning' datatype='string' name='[data_warning]' role='dimension' type='nominal' />
-      <column caption='Definition' datatype='string' name='[definition]' role='dimension' type='nominal' />
-      <column caption='Direction' datatype='string' name='[direction]' role='dimension' type='nominal' />
-      <column caption='Display Order' datatype='integer' name='[display_order]' role='measure' type='quantitative' />
-      <column caption='Forecast End Period' datatype='string' name='[forecast_end_period]' role='dimension' type='nominal' />
-      <column caption='Forecast End Value' datatype='real' name='[forecast_end_value]' role='measure' type='quantitative' />
-      <column caption='Kpi Code' datatype='string' name='[kpi_code]' role='dimension' type='nominal' />
-      <column caption='Kpi Name' datatype='string' name='[kpi_name]' role='dimension' type='nominal' />
-      <column caption='Partial Period' datatype='string' name='[partial_period]' role='dimension' type='nominal' />
-      <column caption='Partial Value' datatype='real' name='[partial_value]' role='measure' type='quantitative' />
-      <column caption='Unit' datatype='string' name='[unit]' role='dimension' type='nominal' />
-      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
-        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='C:/Users/User/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Extracts/executive_kpi_cards.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/15/2026 08:00:34 PM' username='tableau_internal_user'>
-          <relation name='Extract' table='[Extract].[Extract]' type='table' />
-          <refresh>
-            <refresh-event add-from-file-path='executive_kpi_cards' increment-value='%null%' refresh-type='create' rows-inserted='5' timestamp-start='2026-10-15 20:00:33.798' />
-          </refresh>
-          <metadata-records>
-            <metadata-record class='column'>
-              <remote-name>display_order</remote-name>
-              <remote-type>20</remote-type>
-              <local-name>[display_order]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>display_order</remote-alias>
-              <ordinal>0</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>integer</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>kpi_code</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[kpi_code]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>kpi_code</remote-alias>
-              <ordinal>1</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>kpi_name</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[kpi_name]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>kpi_name</remote-alias>
-              <ordinal>2</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>completed_period</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[completed_period]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>completed_period</remote-alias>
-              <ordinal>3</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>2</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>completed_value</remote-name>
-              <remote-type>5</remote-type>
-              <local-name>[completed_value]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>completed_value</remote-alias>
-              <ordinal>4</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>real</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>partial_period</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[partial_period]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>partial_period</remote-alias>
-              <ordinal>5</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>2</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>partial_value</remote-name>
-              <remote-type>5</remote-type>
-              <local-name>[partial_value]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>partial_value</remote-alias>
-              <ordinal>6</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>real</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>forecast_end_period</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[forecast_end_period]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>forecast_end_period</remote-alias>
-              <ordinal>7</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>2</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>forecast_end_value</remote-name>
-              <remote-type>5</remote-type>
-              <local-name>[forecast_end_value]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>forecast_end_value</remote-alias>
-              <ordinal>8</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>real</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>unit</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[unit]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>unit</remote-alias>
-              <ordinal>9</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>3</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>direction</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[direction]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>direction</remote-alias>
-              <ordinal>10</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>4</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>definition</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[definition]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>definition</remote-alias>
-              <ordinal>11</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>data_warning</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[data_warning]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>data_warning</remote-alias>
-              <ordinal>12</ordinal>
-              <family>executive_kpi_cards.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
-            </metadata-record>
-          </metadata-records>
-        </connection>
-      </extract>
-      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
-      <semantic-values>
-        <semantic-value key='[Country].[Name]' value='&quot;Philippines&quot;' />
-      </semantic-values>
-      <object-graph>
-        <objects>
-          <object caption='KPI Cards' id='executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D'>
-            <properties context=''>
-              <relation connection='textscan.1m1nyak0ovk9bj1flssna1i4jny5' name='executive_kpi_cards.csv' table='[executive_kpi_cards#csv]' type='table'>
-                <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
-                  <column datatype='integer' name='display_order' ordinal='0' />
-                  <column datatype='string' name='kpi_code' ordinal='1' />
-                  <column datatype='string' name='kpi_name' ordinal='2' />
-                  <column datatype='string' name='completed_period' ordinal='3' />
-                  <column datatype='real' name='completed_value' ordinal='4' />
-                  <column datatype='string' name='partial_period' ordinal='5' />
-                  <column datatype='real' name='partial_value' ordinal='6' />
-                  <column datatype='string' name='forecast_end_period' ordinal='7' />
-                  <column datatype='real' name='forecast_end_value' ordinal='8' />
-                  <column datatype='string' name='unit' ordinal='9' />
-                  <column datatype='string' name='direction' ordinal='10' />
-                  <column datatype='string' name='definition' ordinal='11' />
-                  <column datatype='string' name='data_warning' ordinal='12' />
-                </columns>
-              </relation>
-            </properties>
-            <properties context='extract'>
-              <relation name='Extract' table='[Extract].[Extract]' type='table' />
-            </properties>
-          </object>
-        </objects>
-      </object-graph>
-    </datasource>
-    <datasource caption='executive_recommendations' inline='true' name='federated.00t8cj807yd8d40zm9hmg03ifq7f' version='18.1'>
-      <connection class='federated'>
-        <named-connections>
-          <named-connection caption='executive_recommendations' name='textscan.1uudgyy0cmt5c615zv0qb00eaqjx'>
-            <connection class='textscan' directory='C:/Users/User/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='executive_recommendations.csv' password='' server='' />
-          </named-connection>
-        </named-connections>
-        <relation connection='textscan.1uudgyy0cmt5c615zv0qb00eaqjx' name='executive_recommendations.csv' table='[executive_recommendations#csv]' type='table'>
-          <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
-            <column datatype='integer' name='display_order' ordinal='0' />
-            <column datatype='string' name='kpi_code' ordinal='1' />
-            <column datatype='string' name='latest_finding' ordinal='2' />
-            <column datatype='string' name='principal_risk' ordinal='3' />
-            <column datatype='string' name='recommended_action' ordinal='4' />
-          </columns>
-        </relation>
-        <metadata-records>
-          <metadata-record class='capability'>
-            <remote-name />
-            <remote-type>0</remote-type>
-            <parent-name>[executive_recommendations.csv]</parent-name>
-            <remote-alias />
-            <aggregation>Count</aggregation>
-            <contains-null>true</contains-null>
-            <attributes>
-              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
-              <attribute datatype='string' name='collation'>&quot;en_GB&quot;</attribute>
-              <attribute datatype='string' name='currency'>&quot;₱&quot;</attribute>
-              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
-              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
-              <attribute datatype='string' name='locale'>&quot;en_PH&quot;</attribute>
-              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
-            </attributes>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>display_order</remote-name>
-            <remote-type>20</remote-type>
-            <local-name>[display_order]</local-name>
-            <parent-name>[executive_recommendations.csv]</parent-name>
-            <remote-alias>display_order</remote-alias>
-            <ordinal>0</ordinal>
-            <local-type>integer</local-type>
-            <aggregation>Sum</aggregation>
-            <contains-null>true</contains-null>
-            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>kpi_code</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[kpi_code]</local-name>
-            <parent-name>[executive_recommendations.csv]</parent-name>
-            <remote-alias>kpi_code</remote-alias>
-            <ordinal>1</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>latest_finding</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[latest_finding]</local-name>
-            <parent-name>[executive_recommendations.csv]</parent-name>
-            <remote-alias>latest_finding</remote-alias>
-            <ordinal>2</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>principal_risk</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[principal_risk]</local-name>
-            <parent-name>[executive_recommendations.csv]</parent-name>
-            <remote-alias>principal_risk</remote-alias>
-            <ordinal>3</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-          </metadata-record>
-          <metadata-record class='column'>
-            <remote-name>recommended_action</remote-name>
-            <remote-type>129</remote-type>
-            <local-name>[recommended_action]</local-name>
-            <parent-name>[executive_recommendations.csv]</parent-name>
-            <remote-alias>recommended_action</remote-alias>
-            <ordinal>4</ordinal>
-            <local-type>string</local-type>
-            <aggregation>Count</aggregation>
-            <scale>1</scale>
-            <width>1073741823</width>
-            <contains-null>true</contains-null>
-            <collation flag='0' name='LEN_RGB' />
-            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-          </metadata-record>
-        </metadata-records>
-      </connection>
-      <aliases enabled='yes' />
-      <column caption='Executive Recommendations' datatype='table' name='[__tableau_internal_object_id__].[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]' role='measure' type='quantitative' />
-      <column caption='Display Order' datatype='integer' name='[display_order]' role='measure' type='quantitative' />
-      <column caption='Kpi Code' datatype='string' name='[kpi_code]' role='dimension' type='nominal' />
-      <column caption='Latest Finding' datatype='string' name='[latest_finding]' role='dimension' type='nominal' />
-      <column caption='Principal Risk' datatype='string' name='[principal_risk]' role='dimension' type='nominal' />
-      <column caption='Recommended Action' datatype='string' name='[recommended_action]' role='dimension' type='nominal' />
-      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
-        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='C:/Users/User/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Extracts/executive_recommendations.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/15/2026 07:59:55 PM' username='tableau_internal_user'>
-          <relation name='Extract' table='[Extract].[Extract]' type='table' />
-          <refresh>
-            <refresh-event add-from-file-path='executive_recommendations' increment-value='%null%' refresh-type='create' rows-inserted='5' timestamp-start='2026-10-15 19:59:55.042' />
-          </refresh>
-          <metadata-records>
-            <metadata-record class='column'>
-              <remote-name>display_order</remote-name>
-              <remote-type>20</remote-type>
-              <local-name>[display_order]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>display_order</remote-alias>
-              <ordinal>0</ordinal>
-              <family>executive_recommendations.csv</family>
-              <local-type>integer</local-type>
-              <aggregation>Sum</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>kpi_code</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[kpi_code]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>kpi_code</remote-alias>
-              <ordinal>1</ordinal>
-              <family>executive_recommendations.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>latest_finding</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[latest_finding]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>latest_finding</remote-alias>
-              <ordinal>2</ordinal>
-              <family>executive_recommendations.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>principal_risk</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[principal_risk]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>principal_risk</remote-alias>
-              <ordinal>3</ordinal>
-              <family>executive_recommendations.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-            </metadata-record>
-            <metadata-record class='column'>
-              <remote-name>recommended_action</remote-name>
-              <remote-type>129</remote-type>
-              <local-name>[recommended_action]</local-name>
-              <parent-name>[Extract]</parent-name>
-              <remote-alias>recommended_action</remote-alias>
-              <ordinal>4</ordinal>
-              <family>executive_recommendations.csv</family>
-              <local-type>string</local-type>
-              <aggregation>Count</aggregation>
-              <approx-count>5</approx-count>
-              <contains-null>true</contains-null>
-              <collation flag='0' name='LEN_RGB' />
-              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
-            </metadata-record>
-          </metadata-records>
-        </connection>
-      </extract>
-      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
-      <semantic-values>
-        <semantic-value key='[Country].[Name]' value='&quot;Philippines&quot;' />
-      </semantic-values>
-      <object-graph>
-        <objects>
-          <object caption='Executive Recommendations' id='executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920'>
-            <properties context=''>
-              <relation connection='textscan.1uudgyy0cmt5c615zv0qb00eaqjx' name='executive_recommendations.csv' table='[executive_recommendations#csv]' type='table'>
-                <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
-                  <column datatype='integer' name='display_order' ordinal='0' />
-                  <column datatype='string' name='kpi_code' ordinal='1' />
-                  <column datatype='string' name='latest_finding' ordinal='2' />
-                  <column datatype='string' name='principal_risk' ordinal='3' />
-                  <column datatype='string' name='recommended_action' ordinal='4' />
-                </columns>
-              </relation>
-            </properties>
-            <properties context='extract'>
-              <relation name='Extract' table='[Extract].[Extract]' type='table' />
-            </properties>
-          </object>
-        </objects>
-      </object-graph>
-    </datasource>
     <datasource caption='client_base_timeseries' inline='true' name='federated.0xmsh3519ux56y1h0si241k5i6ax' version='18.1'>
       <connection class='federated'>
         <named-connections>
           <named-connection caption='client_base_timeseries' name='textscan.10wmwyb0atgc0k1ejj4h20tnq40a'>
-            <connection class='textscan' directory='C:/Users/User/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='client_base_timeseries.csv' password='' server='' />
+            <connection class='textscan' directory='C:/Users/RangeShutter/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='client_base_timeseries.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <relation connection='textscan.10wmwyb0atgc0k1ejj4h20tnq40a' name='client_base_timeseries.csv' table='[client_base_timeseries#csv]' type='table'>
@@ -1599,6 +388,1217 @@
                   <column datatype='real' name='cgr_percent' ordinal='7' />
                   <column datatype='string' name='axis_title_left' ordinal='8' />
                   <column datatype='string' name='axis_title_right' ordinal='9' />
+                </columns>
+              </relation>
+            </properties>
+            <properties context='extract'>
+              <relation name='Extract' table='[Extract].[Extract]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+    <datasource caption='executive_recommendations' inline='true' name='federated.00t8cj807yd8d40zm9hmg03ifq7f' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='executive_recommendations' name='textscan.1uudgyy0cmt5c615zv0qb00eaqjx'>
+            <connection class='textscan' directory='C:/Users/RangeShutter/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='executive_recommendations.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.1uudgyy0cmt5c615zv0qb00eaqjx' name='executive_recommendations.csv' table='[executive_recommendations#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
+            <column datatype='integer' name='display_order' ordinal='0' />
+            <column datatype='string' name='kpi_code' ordinal='1' />
+            <column datatype='string' name='latest_finding' ordinal='2' />
+            <column datatype='string' name='principal_risk' ordinal='3' />
+            <column datatype='string' name='recommended_action' ordinal='4' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[executive_recommendations.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_GB&quot;</attribute>
+              <attribute datatype='string' name='currency'>&quot;₱&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_PH&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>display_order</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[display_order]</local-name>
+            <parent-name>[executive_recommendations.csv]</parent-name>
+            <remote-alias>display_order</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>kpi_code</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[kpi_code]</local-name>
+            <parent-name>[executive_recommendations.csv]</parent-name>
+            <remote-alias>kpi_code</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>latest_finding</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[latest_finding]</local-name>
+            <parent-name>[executive_recommendations.csv]</parent-name>
+            <remote-alias>latest_finding</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>principal_risk</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[principal_risk]</local-name>
+            <parent-name>[executive_recommendations.csv]</parent-name>
+            <remote-alias>principal_risk</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>recommended_action</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[recommended_action]</local-name>
+            <parent-name>[executive_recommendations.csv]</parent-name>
+            <remote-alias>recommended_action</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Executive Recommendations' datatype='table' name='[__tableau_internal_object_id__].[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]' role='measure' type='quantitative' />
+      <column caption='Display Order' datatype='integer' name='[display_order]' role='measure' type='quantitative' />
+      <column caption='Kpi Code' datatype='string' name='[kpi_code]' role='dimension' type='nominal' />
+      <column caption='Latest Finding' datatype='string' name='[latest_finding]' role='dimension' type='nominal' />
+      <column caption='Principal Risk' datatype='string' name='[principal_risk]' role='dimension' type='nominal' />
+      <column caption='Recommended Action' datatype='string' name='[recommended_action]' role='dimension' type='nominal' />
+      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
+        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='C:/Users/RangeShutter/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Extracts/executive_recommendations.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/15/2026 07:59:55 PM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <refresh>
+            <refresh-event add-from-file-path='executive_recommendations' increment-value='%null%' refresh-type='create' rows-inserted='5' timestamp-start='2026-10-15 19:59:55.042' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>display_order</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[display_order]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>display_order</remote-alias>
+              <ordinal>0</ordinal>
+              <family>executive_recommendations.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>kpi_code</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[kpi_code]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>kpi_code</remote-alias>
+              <ordinal>1</ordinal>
+              <family>executive_recommendations.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>latest_finding</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[latest_finding]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>latest_finding</remote-alias>
+              <ordinal>2</ordinal>
+              <family>executive_recommendations.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>principal_risk</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[principal_risk]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>principal_risk</remote-alias>
+              <ordinal>3</ordinal>
+              <family>executive_recommendations.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>recommended_action</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[recommended_action]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>recommended_action</remote-alias>
+              <ordinal>4</ordinal>
+              <family>executive_recommendations.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920]</object-id>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Philippines&quot;' />
+      </semantic-values>
+      <object-graph>
+        <objects>
+          <object caption='Executive Recommendations' id='executive_recommendations.csv_731C3C5B33794AD782ED4F0CE7C17920'>
+            <properties context=''>
+              <relation connection='textscan.1uudgyy0cmt5c615zv0qb00eaqjx' name='executive_recommendations.csv' table='[executive_recommendations#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
+                  <column datatype='integer' name='display_order' ordinal='0' />
+                  <column datatype='string' name='kpi_code' ordinal='1' />
+                  <column datatype='string' name='latest_finding' ordinal='2' />
+                  <column datatype='string' name='principal_risk' ordinal='3' />
+                  <column datatype='string' name='recommended_action' ordinal='4' />
+                </columns>
+              </relation>
+            </properties>
+            <properties context='extract'>
+              <relation name='Extract' table='[Extract].[Extract]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+    <datasource caption='executive_kpi_timeseries' inline='true' name='federated.1oo8obc0n7o4bw189t5271g8ssg6' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='executive_kpi_timeseries' name='textscan.1syleer0qioabr1ffvp6t0feit6s'>
+            <connection class='textscan' directory='C:/Users/RangeShutter/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='executive_kpi_timeseries.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.1syleer0qioabr1ffvp6t0feit6s' name='executive_kpi_timeseries.csv' table='[executive_kpi_timeseries#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
+            <column datatype='string' name='kpi_code' ordinal='0' />
+            <column datatype='string' name='kpi_name' ordinal='1' />
+            <column datatype='string' name='period' ordinal='2' />
+            <column datatype='date' name='period_start' ordinal='3' />
+            <column datatype='string' name='frequency' ordinal='4' />
+            <column datatype='string' name='series_type' ordinal='5' />
+            <column datatype='real' name='value' ordinal='6' />
+            <column datatype='real' name='numerator' ordinal='7' />
+            <column datatype='integer' name='denominator' ordinal='8' />
+            <column datatype='real' name='forecast_lower_95' ordinal='9' />
+            <column datatype='real' name='forecast_upper_95' ordinal='10' />
+            <column datatype='string' name='is_partial' ordinal='11' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_GB&quot;</attribute>
+              <attribute datatype='string' name='currency'>&quot;₱&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_PH&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>kpi_code</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[kpi_code]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>kpi_code</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>kpi_name</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[kpi_name]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>kpi_name</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>period</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[period]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>period</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>period_start</remote-name>
+            <remote-type>133</remote-type>
+            <local-name>[period_start]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>period_start</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>frequency</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[frequency]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>frequency</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>series_type</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[series_type]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>series_type</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[value]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>value</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>numerator</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[numerator]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>numerator</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>denominator</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[denominator]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>denominator</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>forecast_lower_95</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[forecast_lower_95]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>forecast_lower_95</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>forecast_upper_95</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[forecast_upper_95]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>forecast_upper_95</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>is_partial</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[is_partial]</local-name>
+            <parent-name>[executive_kpi_timeseries.csv]</parent-name>
+            <remote-alias>is_partial</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Completed Actual Value' datatype='real' name='[Calculation_0460476558860289]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='IF [series_type] = &quot;Completed Actual&quot; THEN [value] END' />
+      </column>
+      <column caption='Forecast Value' datatype='real' name='[Calculation_0460476558966786]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='IF [series_type] = &quot;Forecast&quot; THEN [value] END' />
+      </column>
+      <column caption='Partial Actual Value' datatype='real' name='[Calculation_0460476559036419]' role='measure' type='quantitative'>
+        <calculation class='tableau' formula='IF [series_type] = &quot;Partial Actual&quot; THEN [value] END' />
+      </column>
+      <column caption='Series Label' datatype='string' name='[Calculation_0460476561883140]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='[kpi_code] + &quot; - &quot; + [series_type]' />
+      </column>
+      <column caption='Calculation1' datatype='string' name='[Calculation_1111662210408448]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='[kpi_code] + &quot; - &quot; + [series_type]' />
+      </column>
+      <column caption='KPI Time Series' datatype='table' name='[__tableau_internal_object_id__].[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]' role='measure' type='quantitative' />
+      <column caption='Denominator' datatype='integer' name='[denominator]' role='measure' type='quantitative' />
+      <column caption='Forecast Lower 95' datatype='real' name='[forecast_lower_95]' role='measure' type='quantitative' />
+      <column caption='Forecast Upper 95' datatype='real' name='[forecast_upper_95]' role='measure' type='quantitative' />
+      <column caption='Frequency' datatype='string' name='[frequency]' role='dimension' type='nominal' />
+      <column caption='Is Partial' datatype='string' name='[is_partial]' role='dimension' type='nominal' />
+      <column caption='Kpi Code' datatype='string' name='[kpi_code]' role='dimension' type='nominal' />
+      <column caption='Kpi Name' datatype='string' name='[kpi_name]' role='dimension' type='nominal' />
+      <column caption='Numerator' datatype='real' name='[numerator]' role='measure' type='quantitative' />
+      <column caption='Period' datatype='string' name='[period]' role='dimension' type='nominal' />
+      <column caption='Period Start' datatype='date' name='[period_start]' role='dimension' type='ordinal' />
+      <column caption='Series Type' datatype='string' name='[series_type]' role='dimension' type='nominal' />
+      <column caption='Value' datatype='real' name='[value]' role='measure' type='quantitative' />
+      <column-instance column='[Calculation_0460476561883140]' derivation='None' name='[none:Calculation_0460476561883140:nk]' pivot='key' type='nominal' />
+      <column-instance column='[Forecast Indicator]' derivation='None' forecast-column-base='[Forecast Indicator]' forecast-column-type='forecast-indicator' name='[none:Forecast Indicator:nk]' pivot='key' type='nominal' />
+      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
+        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='C:/Users/RangeShutter/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Extracts/executive_kpi_timeseries.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/15/2026 08:00:22 PM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <refresh>
+            <refresh-event add-from-file-path='executive_kpi_timeseries' increment-value='%null%' refresh-type='create' rows-inserted='69' timestamp-start='2026-10-15 20:00:22.206' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>kpi_code</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[kpi_code]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>kpi_code</remote-alias>
+              <ordinal>0</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>kpi_name</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[kpi_name]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>kpi_name</remote-alias>
+              <ordinal>1</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>period</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[period]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>period</remote-alias>
+              <ordinal>2</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>25</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>period_start</remote-name>
+              <remote-type>133</remote-type>
+              <local-name>[period_start]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>period_start</remote-alias>
+              <ordinal>3</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>date</local-type>
+              <aggregation>Year</aggregation>
+              <approx-count>22</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>frequency</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[frequency]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>frequency</remote-alias>
+              <ordinal>4</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>series_type</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[series_type]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>series_type</remote-alias>
+              <ordinal>5</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>value</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[value]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>value</remote-alias>
+              <ordinal>6</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>66</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>numerator</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[numerator]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>numerator</remote-alias>
+              <ordinal>7</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>37</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>denominator</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[denominator]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>denominator</remote-alias>
+              <ordinal>8</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>21</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>forecast_lower_95</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[forecast_lower_95]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>forecast_lower_95</remote-alias>
+              <ordinal>9</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>15</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>forecast_upper_95</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[forecast_upper_95]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>forecast_upper_95</remote-alias>
+              <ordinal>10</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>18</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>is_partial</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[is_partial]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>is_partial</remote-alias>
+              <ordinal>11</ordinal>
+              <family>executive_kpi_timeseries.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148]</object-id>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <style>
+        <style-rule element='mark'>
+          <encoding attr='color' field='[none:Calculation_0460476561883140:nk]' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>&quot;CRR - Completed Actual&quot;</bucket>
+            </map>
+            <map to='#4e79a7'>
+              <bucket>&quot;CSAT - Completed Actual&quot;</bucket>
+            </map>
+            <map to='#59a14f'>
+              <bucket>&quot;ARPC - Completed Actual&quot;</bucket>
+            </map>
+            <map to='#76b7b2'>
+              <bucket>&quot;CRR - Forecast&quot;</bucket>
+            </map>
+            <map to='#9c755f'>
+              <bucket>&quot;CGR - Forecast&quot;</bucket>
+            </map>
+            <map to='#b07aa1'>
+              <bucket>&quot;CER - Completed Actual&quot;</bucket>
+            </map>
+            <map to='#bab0ac'>
+              <bucket>&quot;ARPC - Partial Actual&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;CER - Partial Actual&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;CGR - Partial Actual&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;CSAT - Partial Actual&quot;</bucket>
+            </map>
+            <map to='#edc948'>
+              <bucket>&quot;ARPC - Forecast&quot;</bucket>
+            </map>
+            <map to='#edc948'>
+              <bucket>&quot;CRR - Partial Actual&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;CGR - Completed Actual&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;CSAT - Forecast&quot;</bucket>
+            </map>
+            <map to='#ff9da7'>
+              <bucket>&quot;CER - Forecast&quot;</bucket>
+            </map>
+          </encoding>
+        </style-rule>
+      </style>
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Philippines&quot;' />
+      </semantic-values>
+      <default-sorts>
+        <manual-sort column='[none:Forecast Indicator:nk]' direction='ASC'>
+          <dictionary>
+            <bucket>&quot;Actual&quot;</bucket>
+            <bucket>&quot;Estimate&quot;</bucket>
+          </dictionary>
+        </manual-sort>
+      </default-sorts>
+      <object-graph>
+        <objects>
+          <object caption='KPI Time Series' id='executive_kpi_timeseries.csv_C3E39587A2B94AFCBBDCB4A0B7402148'>
+            <properties context=''>
+              <relation connection='textscan.1syleer0qioabr1ffvp6t0feit6s' name='executive_kpi_timeseries.csv' table='[executive_kpi_timeseries#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
+                  <column datatype='string' name='kpi_code' ordinal='0' />
+                  <column datatype='string' name='kpi_name' ordinal='1' />
+                  <column datatype='string' name='period' ordinal='2' />
+                  <column datatype='date' name='period_start' ordinal='3' />
+                  <column datatype='string' name='frequency' ordinal='4' />
+                  <column datatype='string' name='series_type' ordinal='5' />
+                  <column datatype='real' name='value' ordinal='6' />
+                  <column datatype='real' name='numerator' ordinal='7' />
+                  <column datatype='integer' name='denominator' ordinal='8' />
+                  <column datatype='real' name='forecast_lower_95' ordinal='9' />
+                  <column datatype='real' name='forecast_upper_95' ordinal='10' />
+                  <column datatype='string' name='is_partial' ordinal='11' />
+                </columns>
+              </relation>
+            </properties>
+            <properties context='extract'>
+              <relation name='Extract' table='[Extract].[Extract]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+    <datasource caption='executive_kpi_cards' inline='true' name='federated.1iuc8sx134m7dm159rll515louoa' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='executive_kpi_cards' name='textscan.1m1nyak0ovk9bj1flssna1i4jny5'>
+            <connection class='textscan' directory='C:/Users/RangeShutter/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Tableau Dashboard Data' filename='executive_kpi_cards.csv' password='' server='' />
+          </named-connection>
+        </named-connections>
+        <relation connection='textscan.1m1nyak0ovk9bj1flssna1i4jny5' name='executive_kpi_cards.csv' table='[executive_kpi_cards#csv]' type='table'>
+          <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
+            <column datatype='integer' name='display_order' ordinal='0' />
+            <column datatype='string' name='kpi_code' ordinal='1' />
+            <column datatype='string' name='kpi_name' ordinal='2' />
+            <column datatype='string' name='completed_period' ordinal='3' />
+            <column datatype='real' name='completed_value' ordinal='4' />
+            <column datatype='string' name='partial_period' ordinal='5' />
+            <column datatype='real' name='partial_value' ordinal='6' />
+            <column datatype='string' name='forecast_end_period' ordinal='7' />
+            <column datatype='real' name='forecast_end_value' ordinal='8' />
+            <column datatype='string' name='unit' ordinal='9' />
+            <column datatype='string' name='direction' ordinal='10' />
+            <column datatype='string' name='definition' ordinal='11' />
+            <column datatype='string' name='data_warning' ordinal='12' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='character-set'>&quot;UTF-8&quot;</attribute>
+              <attribute datatype='string' name='collation'>&quot;en_GB&quot;</attribute>
+              <attribute datatype='string' name='currency'>&quot;₱&quot;</attribute>
+              <attribute datatype='string' name='field-delimiter'>&quot;,&quot;</attribute>
+              <attribute datatype='string' name='header-row'>&quot;true&quot;</attribute>
+              <attribute datatype='string' name='locale'>&quot;en_PH&quot;</attribute>
+              <attribute datatype='string' name='single-char'>&quot;&quot;</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>display_order</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[display_order]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>display_order</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>kpi_code</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[kpi_code]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>kpi_code</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>kpi_name</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[kpi_name]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>kpi_name</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>completed_period</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[completed_period]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>completed_period</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>completed_value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[completed_value]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>completed_value</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>partial_period</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[partial_period]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>partial_period</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>partial_value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[partial_value]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>partial_value</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>forecast_end_period</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[forecast_end_period]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>forecast_end_period</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>forecast_end_value</remote-name>
+            <remote-type>5</remote-type>
+            <local-name>[forecast_end_value]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>forecast_end_value</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>unit</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[unit]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>unit</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>direction</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[direction]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>direction</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>definition</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[definition]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>definition</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>data_warning</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[data_warning]</local-name>
+            <parent-name>[executive_kpi_cards.csv]</parent-name>
+            <remote-alias>data_warning</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <scale>1</scale>
+            <width>1073741823</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='LEN_RGB' />
+            <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='KPI Cards' datatype='table' name='[__tableau_internal_object_id__].[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]' role='measure' type='quantitative' />
+      <column caption='Completed Period' datatype='string' name='[completed_period]' role='dimension' type='nominal' />
+      <column caption='Completed Value' datatype='real' default-format='n#,##0.0;-#,##0.0' name='[completed_value]' role='measure' type='quantitative' />
+      <column caption='Data Warning' datatype='string' name='[data_warning]' role='dimension' type='nominal' />
+      <column caption='Definition' datatype='string' name='[definition]' role='dimension' type='nominal' />
+      <column caption='Direction' datatype='string' name='[direction]' role='dimension' type='nominal' />
+      <column caption='Display Order' datatype='integer' name='[display_order]' role='measure' type='quantitative' />
+      <column caption='Forecast End Period' datatype='string' name='[forecast_end_period]' role='dimension' type='nominal' />
+      <column caption='Forecast End Value' datatype='real' name='[forecast_end_value]' role='measure' type='quantitative' />
+      <column caption='Kpi Code' datatype='string' name='[kpi_code]' role='dimension' type='nominal' />
+      <column caption='Kpi Name' datatype='string' name='[kpi_name]' role='dimension' type='nominal' />
+      <column caption='Partial Period' datatype='string' name='[partial_period]' role='dimension' type='nominal' />
+      <column caption='Partial Value' datatype='real' name='[partial_value]' role='measure' type='quantitative' />
+      <column caption='Unit' datatype='string' name='[unit]' role='dimension' type='nominal' />
+      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
+        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='C:/Users/RangeShutter/Documents/GitHub/MMDC-Adventure/3rd Year/1st term/BIA/Extracts/executive_kpi_cards.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/15/2026 08:00:34 PM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <refresh>
+            <refresh-event add-from-file-path='executive_kpi_cards' increment-value='%null%' refresh-type='create' rows-inserted='5' timestamp-start='2026-10-15 20:00:33.798' />
+          </refresh>
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>display_order</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[display_order]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>display_order</remote-alias>
+              <ordinal>0</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>kpi_code</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[kpi_code]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>kpi_code</remote-alias>
+              <ordinal>1</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>kpi_name</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[kpi_name]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>kpi_name</remote-alias>
+              <ordinal>2</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>completed_period</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[completed_period]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>completed_period</remote-alias>
+              <ordinal>3</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>completed_value</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[completed_value]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>completed_value</remote-alias>
+              <ordinal>4</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>partial_period</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[partial_period]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>partial_period</remote-alias>
+              <ordinal>5</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>partial_value</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[partial_value]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>partial_value</remote-alias>
+              <ordinal>6</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>forecast_end_period</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[forecast_end_period]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>forecast_end_period</remote-alias>
+              <ordinal>7</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>2</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>forecast_end_value</remote-name>
+              <remote-type>5</remote-type>
+              <local-name>[forecast_end_value]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>forecast_end_value</remote-alias>
+              <ordinal>8</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>real</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>unit</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[unit]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>unit</remote-alias>
+              <ordinal>9</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>direction</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[direction]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>direction</remote-alias>
+              <ordinal>10</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>4</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>definition</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[definition]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>definition</remote-alias>
+              <ordinal>11</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>data_warning</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[data_warning]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>data_warning</remote-alias>
+              <ordinal>12</ordinal>
+              <family>executive_kpi_cards.csv</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LEN_RGB' />
+              <object-id>[executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D]</object-id>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Philippines&quot;' />
+      </semantic-values>
+      <object-graph>
+        <objects>
+          <object caption='KPI Cards' id='executive_kpi_cards.csv_28C3C169C24442E386675DFFA9C2D47D'>
+            <properties context=''>
+              <relation connection='textscan.1m1nyak0ovk9bj1flssna1i4jny5' name='executive_kpi_cards.csv' table='[executive_kpi_cards#csv]' type='table'>
+                <columns character-set='UTF-8' header='yes' locale='en_PH' separator=','>
+                  <column datatype='integer' name='display_order' ordinal='0' />
+                  <column datatype='string' name='kpi_code' ordinal='1' />
+                  <column datatype='string' name='kpi_name' ordinal='2' />
+                  <column datatype='string' name='completed_period' ordinal='3' />
+                  <column datatype='real' name='completed_value' ordinal='4' />
+                  <column datatype='string' name='partial_period' ordinal='5' />
+                  <column datatype='real' name='partial_value' ordinal='6' />
+                  <column datatype='string' name='forecast_end_period' ordinal='7' />
+                  <column datatype='real' name='forecast_end_value' ordinal='8' />
+                  <column datatype='string' name='unit' ordinal='9' />
+                  <column datatype='string' name='direction' ordinal='10' />
+                  <column datatype='string' name='definition' ordinal='11' />
+                  <column datatype='string' name='data_warning' ordinal='12' />
                 </columns>
               </relation>
             </properties>
@@ -2894,8 +2894,8 @@ $<[federated.1iuc8sx134m7dm159rll515louoa].[sum:completed_value:qk]>
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='2150' minheight='2150' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='75' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98934' id='74' param='vert' type-v2='layout-flow' w='98934' x='533' y='533'>
+            <zone h='100000' id='77' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98934' id='76' param='vert' type-v2='layout-flow' w='98934' x='533' y='533'>
                 <zone forceUpdate='true' h='8333' id='7' type-v2='text' w='57400' x='1200' y='1000'>
                   <formatted-text>
                     <run bold='true' fontcolor='#000000' fontname='Segoe UI,-apple-system,BlinkMacSystemFont,sans-serif' fontsize='24'>Finmark KPI Dashboard</run>
@@ -3050,7 +3050,7 @@ $<[federated.1iuc8sx134m7dm159rll515louoa].[sum:completed_value:qk]>
       <simple-id uuid='{2433CB2B-914A-4874-8560-2312AB099D90}' />
     </dashboard>
   </dashboards>
-  <windows saved-dpi-scale-factor='1.25' source-height='89'>
+  <windows source-height='89'>
     <window class='worksheet' name='Card-CRR'>
       <cards>
         <edge name='left'>
@@ -4399,297 +4399,236 @@ $<[federated.1iuc8sx134m7dm159rll515louoa].[sum:completed_value:qk]>
       WK2h8ZO/WPn/oWjQnT2L3qs5rg28/9Jewv8Bi5/WTLRqT0cAAAAASUVORK5CYII=
     </thumbnail>
     <thumbnail height='192' name='Dashboard 1' width='192'>
-      iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAABJ0AAASdAHeZh94
-      AAAgAElEQVR4nOydd3gc1bn/P7Ozva+0qpYsyZKb3I0LxYCB0EsSQgiQEGpILiSBJBdIvRfS
-      SCM3IQktgeRHSUgCmNA7xjYuuHdbsnpbbe99Zn5/yAgLN8mW5aL5PI8e7c6cmfPO2fM958xp
-      r9AS8CmoqIxSNEfbABWVo4kqAJVRjXa/ZxQFQVFbRyonNvsUgEXU4bJY0Gr3rw8VlROBvXK4
-      qEChzYZGo7aOVE589srlelFUM7/KqEHN6SqjGlUAKqMaVQAqoxpVACqjGlUAKqMaVQAqo5pB
-      j3T9+YH76Apm+r9f//X/5ic3X0Jm7EKeeuCeI2HbAF596rfc8t3f8tqHjUwrN+0jRI4H7vsZ
-      RVNO4+rLzqVxwwc8/cJbnHbuZyjR+Hj+jQ8A0OqNLDjnQhbOn0FP4yYeefp5Lv/iV5k+vqz/
-      To2bVvD0828AIGhEaidO5ZJLLsZp0Q/a3nefe5Qv3/5j/v3+Zk6pdfUfX/HqU3z+lu/yxGsf
-      cva08kNLjIMwEnGcKAxaAH954BdsCxqZNqkWgMtu/BYT6qeQKak+UrYNIJ2M0tXVRU7eX4g8
-      D/ziXqZ8/i6uPG8u113zBZozxXzt29/j7b/8g3vv/RWnnXU+ofbt/OgHP+Chf7/DPEsn9957
-      L3XzLxsggF2bVnDvvfcyefpJGJUkGzZvp2jsJN55fwlTq4sGZW8mFaerq4tMfqDBmXSy7/j+
-      H+SwGYk4ThSGNNeh/vRLWf6fv/R/31Q5jpyzgI9K3/Ip8/E0rKWpJ8rNX/8WU2rKeOj+e3CO
-      m0uiYytbWr3cdNsdbHn3OZZvaeGzV9/E2SdPY+vapTzz3MuEExlOOfsSrvn0p/pL4VMXnMaS
-      1VuZXfixHSve/g9vLFvPlTfcRn3V3hny9/d8h5VNEd744D1K7Yb+4w88sYhpDg9F9nE8/+KL
-      zLt69gGf9/6/vsCFsytY9uLjnPXpm/jeT+7npcd+wj8ff4xVm7YjGqzc8LWvU19Txs4Ny/nr
-      358jlZW57Oqb+u/RtGUVLz/8BqXjT+Jb//Xl/uOduzZy99P3Y3CV8+1v34HTrKO3bSePPvb/
-      6A0lqJ85n5uuvxqDKPDyPx9n8apNyKKBa274GnPqa3jtub+xoSvHtGKBoK6CL16ygEf/9Ad2
-      tPsodeqG8rOOaob0DtC1cx333HMP99xzP0ngbw/dz1+eeZGPSt+v3HwL21q6ePzB33LD178P
-      wEP338utt3yVtTuaeezB33LGnJm8tHIbLz3zVy6/5mbywOK330Aw2jBLEb74mQt4Y21Lfyl8
-      4y1f58P1W/ptiPc2cdUXrub9Lb1MHLt35m/d+B4//M3jfOve33PunPEDzoWDfpa89Q4JoGZs
-      1aCfe8FlNzBnvJMN69YAMV57eSnFZWNYv+RFzv3MtUhpH+eceRbLNrdRWlxIIBDsv/bhP/yB
-      pq3ruPO263j2vc39x+//xX3Ewl5+/qO7uPV7vyTubWL+3Dn87fm30UhJ7rr1S9x85y8BeO21
-      lyksLqNp/RLOOfczJCR47bm/cc/3v81d9/6eXa0d3HfnV7j1rh8Tz2R5+omnBv1so50hCSDi
-      7eLNN9/kzTffJ7eP82df/mUe/NNDXHneHJqbG/uPz7/wSh568GEumlePqXIGTz/2CLdeezmR
-      lg4iwLkXXIycDNPY0oGAxNbtO/qv/c1jz/Hmvz6udX5wx1dJ2Sfyj8d/hyjsbYPZaseoE1n9
-      4SqkT0xmPWfGWM694r8467PX8pO7vjaEJ5eRJBmdzgCynUs/eyadrbsIhBN0b9pGGAGtqKF5
-      xzZkg4tzz5jff+V9f/wb/+/hXwOwc9fHafKbR57kwcee5uL5dSxdspjFrz5Lmy/Ow08v4oEH
-      /8xNV3yKfzz9JDlkLrn0s3g6W+kNhIl2b6IzvNsqfREfrN/Aj79zPc/861nO+fzNPPbQH/nT
-      r344hGcb3QxJAPWnX8ry5ctZvvxFHPs4b9D3Vb0mi5FcLrfXcVGjwWyyIgBaUQRAjndz5oKF
-      dGds3H3nN/hk5V1aXjbge3l5OSFvOy1dvn3aWFx7Eg/87E6WLnqUnz707IBz72xsJ5lO8ubz
-      T1C8R9PoYLz1zwdZ0xzl3PPP49Unf8cVX/0+p194OVd9+py+AEY3y1av5rrPnMmv/+dbfOkb
-      P+q/VqvTotP3vTzv2SIXtTpAJp1Oo9cbkeW+s4LQ95NIUh5Ro2H1q09y0RVfpf70C7nuqk8P
-      sMtcUITLKAI50sk8+t3xpNLpQT/baOeod4PK2QSRZJb25p08+tCfyR4k/Hd+/FumlWn50tXX
-      EslI+wzzxdv/l8tOq+cn37mFD7a29x93Frgx6gffPv7ODZ9h5tRJnH/VN5l5xmXc971bCQdD
-      kEuzetUHPPNCX08R4TZ+8KtHcZaOpdhhQaMRD3rvb910FV+59vO8tbGTK668krMvvoLKAjO3
-      fflyvnnrV/jbosVcd+PNJMJBIMem1at4+pkX9nM3M+ddsJDXn3mEW277Brf/4BeDfsbRjnjH
-      3Xfds+cBnaDBatxXNyPMnn86J02bOODYzDmn7j6mYf7pC6kfXw1AXf1MTp9/EgBzTl3ItIl9
-      vUf1M+cw/6RpAFSMm8jZF17CKVNrCIWjfPoL11JXW8vChQupKCmkoKSChQsX4jT3ZVp3WTVn
-      n3cRF5wxD50WrAUVjC3b4+14tw3TJk9k4RkLsNgdSIqGWVMnUFIxjoULF2IzDMyc1oISFi5c
-      SEmhbcDxgpIKpkyewJTps7nj7h/xqx9/F4teZNKM2ZhEiYyk4+abrqduwmQWLjyF7etW09Mb
-      4IyLP89Pf/gdTHrtAPs1BisLFy6kurwIp7uML1xxGR5vkC/c+E2+d9u1GG2FXHnFZ8gmwiQl
-      Ddf915388PYbqJ08A5dJJJGRuOHmm6irm8DChQsx6wam8VnnXoRZp5BHzzduv53a2joWLlxI
-      oW3wNd1oRPjkoniTRqTE6dpfeBWVE4qj3gRSUTmaqAJQGdUMSgDxaJxIZuCoYjaX30dIhWxu
-      3y+mByKfTNAe+niaxb7u7e31s0eQg7Jv+z5CYUtDJ+9v6iArK8TjCToCSQBymQzLN7XhjWVp
-      7/KzvtlPPJZg2aZ2ohmJDdvbWbOrrwfK1+PFt7vDxecP8966ZvyxNCs2tbKzOwqKRENHiGwq
-      xTtrmnhnbStpGRRZJpuXae4O7s/AfdLcHRrwPRqJ4YnuK1Ek2jzR/vt7ekMs39pNXlFYv62d
-      9kCS5g4va3Z5yaVSvL22mc5Qaki2nCgMaiQ45A+SdhkxKVk2NvsoLHCwYnMr555Uw66uMOMq
-      CmjrDlFcoGfF9gjXnD2eZDzBxrYQteVOmrvDuJw2lGyKQDyHxajBarOTikWJZWTqS8340nr8
-      PT5MdjObtndy1txaWrqCFLmdZOJxdrX2MPNkNy4DbG7oIhjPM26Mk+ISB97eCNlMhlAWSiwi
-      4USOzS1ezp5VTXNPhLoaN81NffeeUeOmqbED0VXEKTZYsrGTCWV6unwClYVmBFHLKdMqWLyh
-      AwC7RiZd7uKU8S4+aAqSiqY546QxAKRTabCDkkuzuiXCRXPH4e3sRrI4mVBmo621m+WtCWor
-      JzChQEfaVY5RA00NbTRkLchhP92BJPUVNhr8WcrMAt2hFPXVhURzGshmMAgyLYEkDoeVxl3d
-      dAeTnDp1DBpgQ4uPnKTBNamI9R1RDHotLj1kNFrMWi1d/gTjygsoLLSTikZZs60TR0kpja2d
-      nDGjiq5N7fhNEiZXIWNc++74ONEZUhMolcoia6CtN05NmYuNO7sQRYXmDj/+WBqn00JNUd8I
-      wYc7e5lfX0FDq5dZ9RV0eQL0RtJUmGUcJaV4vCH8sSyzx5jZ2BEj3OtjRyBDe2+UylIXYY8X
-      fxbaev30hPNMKHf2GZGO48vpMMkSHd4oGaDdGyGRyrKrI0CLJ0p9bSk1pU42N3YjigqtPQHS
-      kpYZNW4AQok8JU4jeqMRQc4ztvTjUQ1RUFi6oZ1Zk8sRNSJmnUAqk2PJjiDzJriZVVfCGx82
-      DUgXKZPGaLUAUFxRTqGSYNl2D+tbg5SKGTZ1xQeEL3JaqCi2Y7WaKdLmaOyO4C5y0eSJcvKk
-      QtZu7KAjlKHdG2FzR4j5k4rp7Ilgs1mwy1mCOVCkHC3dUdo9YSKxBFqrnUgkTos3zoRyGx3e
-      WH980UicrryeIp2M3axD1Ah4vEGsThvuIjdl+gzvb+4eSlY4YRiUAAxGIw1NnWxvD5JXBOwW
-      PXIuR0WJExmRmnIXxRYt/rhMLNXXlKgtsbJyexdlhTZWbe3EbrdS6DBjMpmw6EScViPhSJxV
-      zWEmVTopLyugyKShdkwBRi0Y7DaMKNSWFyGSoSOcxqABDCaURIwmT5SyYhNrNnUiaHUEoins
-      FgOFTguiAIqcp7zYgYxIbbmLIqepvwkxY3I5aze08OrizVjdhYAGu6Wvq7Wj0wcGI6FoBr0g
-      4c3rCPb4sFn0BGIpPMEYhU7LgPTRWh3oUxFWbe+kpTtIKKNgFGXGjCnhgjOmko9FMRiNmLR9
-      Q9cGk5FgIIrbYcZiMWI1GbEbtDhMWlZt9zFhUjkRn594VqbEpmf1Tg85RcDtMGO1GtEK0OsJ
-      cvaCKVx5WjVNvQlaOnxodHqKXRYEBBwWPXZLXxfojo4AFi3Y3S6272jD5bTT0BkCKUcokcEf
-      SVNeZB+O/HTccVS7QTc39TKttuSQrt2xs5vKieVYDh50/ygK3YE45W7bwcPuA293L7hKKD6C
-      rYee3hBt3gil5SVUF+47okQoiAcrta7BT9dW6UMdB1AZ1ajdoCqjGlUAKqMaVQAqo5q9BJCV
-      pP6puSoqJzp7DYRJAvRGw9gNJrTqHqEqJzj7HAnOyDK+VGKkbVFRGXHUIl5lVKMKQGVUowpA
-      ZVSjCkBlVHPA6dBblgt0Nwmc/8UDza0fHSiCAMI+9mFROa45oAC6mwQ6tuqocheMlD3HLNlc
-      ju5o+KAiWBR8j0tdp2ITzSNk2ciQkvIHfXbHC5eQWvg7xIKJBwx3LHHQBTEatdQDQK/TIShK
-      X01wAB72Ps+pRVOoc4wZIctGhlA8RiR74CV5mlwCt15AfxxNplTfAVQGxWALwuPNweLxZa2K
-      yjCjCkBlVKMKQGVUM3j/AHKGN157l1KniGvqmXSsfB2fbGf82GJWr17P+PEVRIIxDBYNJZXT
-      WLNsKaWFBqrq57J13VJKKiZRZZVY3+bBbrKTEPTUlutZtbaXUnuaqvq5rFjyFlOnz6KjcRsT
-      xpUTVgpIpsKUOk2s3eJnxuQSTpoz9wgmx/ASC4cxmA0oGgNSNk0+k0RjtKMjSziexWnV4/GG
-      KCgqxCQKROJJ0lkJm8WITte3RlmngWQmRygSp6qyHK/XS1FxMZFwCIPBiEGnIZXN4/f5cblc
-      GM1mEpEI0Xic4tIxmAxDcgExrPi8vZisNqxmM6lUgqDPj8XuQGswI+RT+INhHAVu7GYdXn8U
-      q0kkK2tx2Y10eQIUOO2Igowg6gmFQqTTWQqL3YiKgsFsxtvThctdSj4dQ2+00N3djdVqIZHO
-      MXZM2cENZCgCkJIY7GUUu+KE4xFy+mKK8j4Ex2wmTgqTyeSoK7OzJSIibf4A55gqlLQHo0FP
-      Jh4go+iQcmk6vSFOmeBC0lmonVhNJGghFNiG0aCnotDM+h1tzKipo7JYT8OWEKedMYedaxdj
-      18Gu7iAnHeqvcRRYs+wVnDVzSSUS5MOdBLJGxtXUoAt7aAl3I0lO0hqBYpcZi0bA5/didI3B
-      1/ghmrJ6Kh16qh3wTmMCh9lAVWU5Ho8HMe5hc8SKIdPDrGoXK7f30NQdpbbEjmgXIWImkuji
-      vAuPXk9U9/b1dClW4tsbOOvM09mwcSVb1mxn3kkTWOfRM94tEPCHOPNT5/L+4vfQaC0oShpv
-      T4iiskLKbDqWLo9SXmYi3RulbPbJNG9cj8GgIeiN8rkvX8OaNR8ia8y4zTm0jlpyepHEtg3I
-      hsIjIACdi3FjvGgcVWRam5g7bxo7duxifLmdpH0qopyltTfGORMKyWcnodXpCfkKkRWFS664
-      nlw2h8Wg4+ZpJ+HvDaB4fYCV+qlVBH0CsqIw/6yLmZZIYTGbMOs1XFBuoHHLZuYvOJ9MRiaV
-      CB/izzHyyOkg/oydrKeHZOd2Zp93Gf7Vm/D09FBpgmhWpNSgYC4oZFqFiZc+7KbaosfhsGGe
-      NJ2VazZQc9I01u7wYbUV4C5wouRioLOhNeRIRIMkI910mvqWdDtdhWi1IiZNkqTZSom1+KiW
-      /jqDgVBHL/lEhB1NbQBYbA6Meh2VbjOeWJKK4hKcNgsGrUhLRzcl5XZEvYhO0NAbjDB7Zh3L
-      1rRCws951aUkPIVIMphFIwCpaAD7GDcenxd9tpsp80+jy9+C3rGvzfv3zV6L4vfkzSc1dG3T
-      c+8j1sNLjROENr8X5SDdfOfv+AZPTPkR8x31e52TZRlBo2HwIysKkiQj7val4GlrwV5Rg1ns
-      211OGMEux0giTihzYL8Drn+fheXSx9GW9zVTZVkedLfoJ8NKktT/3EeSo1dEjEKG3kcuDMgE
-      pVU1H585Dvrbh/K8nww7EpkfhtgL9MSfH+Cxxx7j3eXr6GnZxg++fSs7PB+XCh++/SL3//4B
-      Hvzrv9m84h0eevAPrN/VyzuvvUxyFHoslKUcy5Z9gKT0VbIdLQ3sau0EoL15J50e/x6hJTra
-      2mhrayOTl4mHA2zash1JVkhGg2zYuIlk5nibk6UQCAT6v+35GSCbjLFx8zZkBdKJCK0dPQBE
-      IpERs3BIAvB4/NSMq2PW9Hps7krOOnXmALc/K7e28O3bvwnRbho7fVxy3gI2r1tJVmuhq2v0
-      bb33yB9/x/p1H7J64042LX2Ft1btpLe3l52r3+TNVQ08/8QjtAf7NqXNBVp4+MlFNDY2ksln
-      eenFVwh7GvjrP15j08YNZFIxfvv7B4/yEw2FHH998P945InnAFj82nN898e/HBDiwT8+QMjT
-      zOP/eIkXFi1i6euL6AmFWbxs9YhZOSQB3HDL16godfGnBx/FarPt3ZZV6DsmK3zqogvY2uSn
-      uMBOb2czK99+k9Hmucpu0tEbSlFTNYalq9YjZPxsb2ghFo1gsbuYVFPKpm3NAAT9ARQpTUeP
-      H73WwFVfuprezi7qJtZSVzOWD1euZPKMA7t1PbbQccOtt+LY7ZFq4YWfY8aEij3OR9Eax7Dw
-      3EuI9jaBopCXBTasXY9WjrNmc8OIWDkkAbz92n9YunQZxWPGsmXNByxeuYGX//0UbU3b+fer
-      y5hW4+bhx/5GUm/HbnFSYoHx005CVLJEMtKoe+G48obbOP+0OTz5xFOYLA6uuOZ63Lkuiude
-      zoRC8AbCOHdPHCsaP5ef/+93qS+CZRubefj39zP59E+zcM5E3BV13HjjDTRuGrmS8cijIyel
-      QMkhCCKf/8LVnH76fJz6PAl9GQ2b1oyIFUPKk1dd91Uy2RxGQ9+mq1PnnNZ/rqoWYAHzEgnM
-      5r4dO2ctOBeAcdffgiQLo04AL/zjcXa09HL6+Z9m6hgjj/3pD2jNLhamOnl903ZymiJOri/i
-      4Uce46KFJ/Hy28tJZSVummfm/f9kWf7OKwT88/E2rCKSFhhTPf7gkR4rpMP87ZnnCQR7eX/l
-      BnL+JoKBEE8/9zJTSjRQMpvJ1Q7++MAfOPmczyDqjXR6o5x5+gKan/4nrvLaETFT7QYdAofS
-      Der3+XEXufcbPpMIk9VYsZmO7eLhULpBjweGkOoKO7ZuwWAvQA4FKZ0+DSnkp7M3hMOkISnr
-      sGgV8oKeaKCHsXX12Ex6ZCCXzWIwGPp9B2sEQKOju6udkpJSEok4DoeTfD6PQa+nu6eH8vLy
-      I/LAI82BMj+AweJE9eN49BjCVIgQGkMZuWSIYpuVHGDQapERyOSBfBq0ekSthnxeIRqL0dXq
-      waYTSWgFOttj2MxgMttAyiAajGR8rbR3dpFRdIxzGuiJxtCYXNgMWo7//J9j/erNGBwOxHCQ
-      0nlzEUJ+drZ04jJrScl6Cm0GIskM8ZCfidNmo2QTKBqRoC+Iy+0k4A9itNjRymm0Zif+3nbM
-      BhvJTAKLtQCtXotRVOju9TOlfvLRfuABxPw9tHrDWC1W/D4/c+fMwtvTSW8ojpKJY3G4EGSJ
-      ZCBI1lHEtAm1hH3diKKBeCaHSacQjSZwFBQSD/qwatMEDOOwCikCnnbKK6rJycphP//gBSAW
-      oBcaiOTyxDQSYjBMPOpHkSQMNjN5RSTg68ZRVIbFasFgMCA67WhEHUIkxsT6Oqx6ARRobWqk
-      oKQcvcOEL5ymsMCBLEm4RAM2qxVZOPYHeQ6KlMLsKoN8lJIiNwog5TK4i0qQMgn0eYlkMkFZ
-      WSU9+QwejwekLG69gKPMzpq1nYwfa0NKJ8gjkEv2kuxpJlsxhVRGxDXWTqTHQ0KWsZiNR/tp
-      9yISiTFu/EQ6m3ZRXNjn3SedSlFaWkYk6COfSZHOKIyrn0TTlg0EU+OIROJohAQCAjm9iKgV
-      SUR6QbTh6WygS6uh2m3C5ijA7+1BYzAf9vMPqeFZXTth4IECJ3t2bFHxiWLb1ed1pKR04OFp
-      s07qH+kr2mPOUtlxX+rvgWjHZYkSSRlIaUEMhtEiEI9GqSh3k1dEor5uorE4ep2O0opKpGSI
-      rKIl4Y1w6rzxiAAKNDXsoLxmAmPKy+jt6aamppRwMIJWZ8BhEslz7DnGqBhXR2vTDiyOYrKp
-      KLFEGkGASDSG3aLHaCmmtbWNRCKFubiaYosANjN6g5lEVqLQae3rUleybNnYyJTZC6mSFLyB
-      CC6bHtluJ5xIH/bzD0kAmZ3b0RSUIDqsCHo9SBL5Xi+i04Gg1aLkJQSTEXJ50O4eys5EyPrz
-      6IodCHodKAqCJIGoQZEUQAFRA5KMHI2isTtA1JBr2IZQWIbkD2CYUIfk7UHRGFBCvQjOErRF
-      BUh+H6LT1R+XHPSTD0XQlpSSD4QwVFeS6+kCjQY5HEXjKEBJRRHMDhRJQl9+aN5pBktxWQXF
-      A444KdjjQFHBbr9n7C4FDH3vC+7+431MmTGr/3NNXV8hZLPve8JXTsqhE3WHYfUwIWiorvto
-      PlTfc9lqBvZiTZ8+DYCPyseSsr7idOCKYhNzTp7T/81m+9ibT0Hh4Zs5JAForHaUpI90Syto
-      QFdTi5xKI0c7kBU7BHJQbkLIKwgaATQadFYZOa6QzWeQPF3oSx3kwhlAh752LPnWBuS0hGBz
-      IeTj6CprETRpMjt2IVRpMJcZyadA8vvAYEMjQq7HA1IeORklHwqjMegBARQFQ2052bY4Gv3u
-      ZpQiI6SjCCUTUAK7kPMiZHygiCjlJUOYmDZE5CSbe1ooNupI6ApxCBmkTIqQ1ohWSlFicZNH
-      RJ/3sTGcY6zFiN1STC6fJJdNYTU7SOdllHwMg95BWsoTiLZRXTyNWMKDKOpJy2DX6cgrGvL5
-      GA5LCevaVzHRXUtPOkmZpYBGXyMljnLc5gLM+pHbqULq6SKXyyOaLCg5Ca3NhEKSfGsUTXkp
-      SjqFxqQDOQ8aPchZBKOVfOtOBFsR6PVorXrkrIQis/v3FJBTOTQWA0ouT67bg766Co1WILFm
-      I/qyIgR7AXLIi0arQTa7EUkjmK1I0QQas+Hj+JQcgsE8tIEwORpC4yhHW+xEP7YCJZNBdDkR
-      3WPQV41FW1mEzl2MrqwEQaP0Geso7jNSyKEfNx5dVQ2i3Y5+jBslk0ZjLUBXXopoMyO6i1AU
-      BcFehGXh6RirysjFBDQk0BaXoDGZEN3l6CuLEQx6RJsVjcUG+RRiSQXaAhvprbvQOM19wsxJ
-      SOEwirkIxdcEOgsIClp3EYLpCLsFFUwUWa0kMjFsJiexTIKOcAdFeglPWqIn0kU8E8Os1VFs
-      NKIzu9jcuRmjksCfl9npbafQZCSaibPL10w8m8BmKsQoimRlhZ0BP1I2QSgTpS3URiSTRKfR
-      4DQ56Ao1k1fSJPJQZC0hn/HjScQObvNwIoOuvJTcjh2QT5HxhBBtFpRkmKwvhoCEFAqjZHIo
-      6QhyIosUCqApKAYkNPk0GU8AORJGSSTIhyIIyEjdreQiKZRcHtFlR7RaEIxmDDVjkZIJsm1t
-      CGYbot2MaBPJBdJkWzrQCDL5/vgSyPEk+d6eodUAhslT+z44P+lUrq/SEqs+LmE0BkNfVSxq
-      EAGx+uOZjIbajz+zn25Cwe5CA2idu6t68/7d4SnZQgS9BowFGKf27WGkdfaNXRjrp+0zHu2B
-      eyeHAZmclKesaArRdAijzkRd+TQi2Syzi4uQ8ilSsgB6ExUFBoLRTmZWzsCs0+PKtmEvGosn
-      EcOkM+Mwu8krAgZBIi1JuK1FFJrs9CajOHRGjA4rdoMZEBBQGFc+n1CsC7fZiCw4EZRSJHlk
-      J9Jp3C6yHb2YTjuZXEcP+lIH+VAO/eRJKFoDggiiLMPucZXsrp2I7nJEpw1Bo5APxjEU2xAE
-      mZw3jNZmQJYUNEXlaCx60IgIaQUpkUS0mBHdbjQWI1Iyh9ZqRNFoURJZtC4dgqUY0ahDs0d8
-      uaYGBFfpkRucFfQj17st6I+BNu8nEUQqC/pGM026j3spHB+VEToTHw0vGoAyZ2V/mHJXNQBW
-      w/68V4qgNVBl2Nu16YTS6X1xuqr2OGrY/TdyCIa+UhlAX1V5kNBgnDJ9wHddycdppq/Yo7be
-      c482x8fPrzEYwGBA3OP1SbQOvGDP5q5hd8F4AvQ3qqgcOqoAVEY1qgBURjUHfAc4/bMy2fMy
-      RFRvSWTz0kEnwp3IyMp+50x+HEZnIS6JmDIH3kP0WOKAs0FVhs5o3h36eEQVgMqoZvTW6Soq
-      qAJQGeWoAlAZ1Rzb6/BUVI4Qgtw3E3m/AtAANr0Bs+7Ym2uuorIn6XyOSCbNYLZe0wCFJgsm
-      gwGNRrNvAWiAUpsDve4YnGOjovIJDAYDJr0BTyxyYBEoCqV254B8vc93AJveoOc6RrcAABze
-      SURBVGZ+leMKvU6Hw3DgpZEWrX6vfL1PAajNHpXjEaP2wIW2Xrv3hrtqL5DKqEYVgMqoRhWA
-      yqhmUAIIB7w0NjYSCB/+ulIpE+Od91cc9n325OXnnsYf71vyl0snaGxspLGxkXA8OazxHBZy
-      jqbddjU2NuIPRYd0eXfLdt5c8uERMm70MigB/OsPP+WKL97CxWfO4e7f/G2v83d+5ct4DzID
-      dteGpdz7f38mEwvy9tLhFcBv7r2T9nDftou925Ywc+4Cbr/9dlZs3DWs8QyVZx//LS+9v77v
-      Sy7M3bffzoK5M7nmhq/y4uKh7X7csH4pf9q9177K8DHokeAZJ59FrdBIRzDEmnee47v3PYxG
-      7+C2my7l4Sf/js8+mUvrtTz8z3dxlE/gjivncvdvnkKIdXHBjT+k9c0/8uLqLqZWmHlj8Qpu
-      v3ojV1/3NVJ5mWtu/QHGjiX8Z20HrVvXcd9ji7hswVQgw7duup51DW18854/sOH5X7AjaGTj
-      6pX8/bWlPPfrW1namKCpc2Bpai8ay4033sisejezx01h2rxatobsvPfUz7joks9SUFJGR9LM
-      i//3He7+xe9pbe/lmRdf5Fe3XckmrwZ/x1YWLV7Hj2+7Fk80xQ3f/jHL//q/hM2VrFi2igvP
-      O4U33l3Ne6tW8Ntv38j2zgDnXPlfZHe8zNqOLFvXreLBRx/lrv/5BaaiFzl55WKKDEU8++qr
-      fHp+HV974AkunKxh0qSZVBWVc+c9N/GL3en54K/u4NPX3U2tS8A+5QLuue5UrrjhDlw2E/ZJ
-      C4f31x/1yIMXwNY1i1nS0crrq/7Ir245D8FURaB5LZqyX1JTYOGnP/0en5tqp+q0K1n79j/Z
-      ecYU7JVTuPfzV3HX3z/gnmuvxVfYxEWnTOYbP/kzLzz5Z6ZfeAP/c8UkZl71E751XhWzzr6c
-      i6cU8sGHG7hswVRyiTimglJKXT5ee/N9zCEfF13zS6qMAVa9t4g/vbKLQOdGzpoycPupXCZJ
-      c3MzsxfMwdObYPHTTzPDPpH/vPZvCqadx5M/+CyTPn03WcBdWEzDhuW899J/+PvqIN7G5cyr
-      trH6nZd4d2MLZ04fy9+ffQGHz8vVv/wzueZLuOD6H+LbcjGLX13EYy+v5PPnz+Opp//NBbUp
-      zr78G0wpzLGxK8PnLziF2ou+RdE+16PL9HgifLhpHXdcfkp/ei5bvZMEdp7+y71MvOwu6qQt
-      XHHbPZzs6OYPb3Uc3u+tMgDP9mWDF8Bp513FwjIvt3z9Li6pn0w6WsyVF17I2afWYrWI/Otf
-      LzN50mSKJ07nwvPPp8YUQq/TohX7orBZLGxdt4Itu04FYOrMGTz8y3/zq+5SZs0+CfCj1ev6
-      wwO0rl/Ki8u3s7DW2u9dRqfVIYo6dLYS3IqP++77GY2dA99NZClHOBympb0dtFp0ohZRC2Or
-      qtm0/J/8+oEgAC/+43FCkhOdKGAqGIM51sF9P/8Zbf4MVXUTsRhNXPi5a6ieNJuH//sNtDod
-      WlHc/V+Lo2wcpXYTp33qMq4YO57FT9+HXqdF1PY9g9Vi4bXnn+WqSxdi31cXtdmGXa9h8h7p
-      ec6pNfz0YT3a3feoqa7iz4ueocEYgsLjyUPMsc/fn3xi3wtiyiw2DIaPi63u1kYSWBhfWciy
-      pSuZOX8+a5a9D5ZCzjh1Dh2NW+gISsydOpbFS1ZSWF5NXbmDjmCKareVpt4oMyfVsPiddxg3
-      qZ5OT4BT585k6/qVdPhSLDz7THxtjUimAvTZMCnRTm1lCSgSy957F0dJOXqjHU0mgL2klri/
-      FVNBJXKsl4buMC6DRN30+dgMIplYgBVrNwNQPWEC3U0dzD99DmuWrmLmvOksW7Kc7obV3L9o
-      Cyue/wNLVm1iTKmLksqJdOxcQ5fHxzdv/RYfNrUTb9vM9uZOZs9fQLB9ByW10+lt2jTgfzbY
-      wfqtDdTPnIsU82AqqCQb7ka0l1Cgl1iyciNnn3cuht1jMJvXrqJ8wkwKzbB01SZOP3Uucj7D
-      kvcWg6WQU2bWsWF7B3OmVrNqUxOnzJ7M4ncX4y6vBK2BaRNHxnHE8Ugmk6HnABuAuQxGHJaB
-      vi4GJYAThVy4ky/eeBtaaxF3/vAeZg3wWQX/c8cNbGxPcO1Xv8kV5y84SlaqHCpHXQAHcow8
-      FCfRQ3GwPNTrFEVGQUDzifWtg7FvQBhFQVZAozm0dbIf2SpJEhpRPHJ7lI4iDkUA4h1333XP
-      JwPa9Ib+NijAB++9wa7mNlylFXg9PZgNIh5vCCmXQtFoCXq9SIKWt155ndKSAnJ5mfffX0FF
-      uZtQLIUoZ3np5TeoqZ+EkEnSG4xiMWrp7vGweuVKXEUlKLksChK9vjDvv/UmFWNKSWRkTAY9
-      UjaJp9eH1mAm4OlCbzLS4/WzZuUHRJNZHBY94XiGd99+jYkTJ/P2qy/Q3NZOly+Cp2UnOzt9
-      jBs7hmjIT8/2JSxuyTOuvJCQ14POZCXk62HJK+9hHTcGHTq0okA8EiSekcglI0SSOXRCjvee
-      fR3ntEmYpByeHSt49cNmzFYnUj5DKhZCNFiI+D14WrfRGkgSCqeRM1G0RgshXw85RUs6HiSH
-      jldff40JNZX8/g+PMmXKBOLJHHIuRTKdIxgMYrNZ6ezoQisqhOMZpHSccNTH2nUtVFeVffIn
-      U6HPu3w8l93veZNWi1H/8Ty3ZW+8NLiXYF8ow2cuP5+3XvoPNeNL+ccLz+GYMo1QVwpnYQxv
-      s4S91IxZk+PRBx+hcGwVYl7LU3/7M2HJRG1pIclE32vsrp1beOGdlUyuKWfeKafT09PJm2++
-      R4kGzBPH8NprS5k9rpLXX36eqaddjMtuIdzyIe+1WzFHliPkYwgytCljKJA6CYUTSIkAS9c0
-      UjO2b1+8WE7ksxedxysv/YeayhKMpiLIR3n9zRXMq9OQScZ4/skHaApqKTNnKJ5yDhopxQuv
-      vMVXr7gcgC2b1rGmsQe7lEJncWA2CsjJvsGOt199lbGlRmK97bz3ShcTZ0/gvbeWM7ZAg7l6
-      HlNMXQT1Aq3L36DqtHOJf/gq3kAHDkcRJTYjrd4s9t3+Qx3Fxbz+xhsoiKRjcYqcBro8vUTF
-      Qi497xw8WzbxwZpGikwZZp95Cp7O4CFkDZV94YsP0nNpcYGRN996G3uhm9b2AOOnTaJwyjTi
-      lhA5bTvN67ZRM60GsyAxeYrApNmn0bhxPWarC4u7imj3LkLxHBrA6wtTMaacMnchnT0BSovd
-      aPUmOpp6KHaaqKwYQ6HbTYGriraNH6AzX4QDCPR2U1lmoT2kpcYh4iqaTN6bRhGdBEN+xpSX
-      UljYV70V23S89uK/COUM+NY2Mu+MUhBNGLVZErKTyZMmEdZ0oXVomTejjjVbWnA6i6k251mz
-      aQvzZkwl5I9QXlpKqbWvKZjNxOjyZ9ABxUUFdHg9lJWWISgWJk6chKe1h7mz61m9fgfmyio0
-      oSzVkyYT9bZTVllFQXHfJr/+rnbKSsdiMouIejNTJ48n0ttBRrRSXjKGsUVmdM5ySl022tvb
-      kZN9zzaxykUwksFmVWevDBefOnPOcLwDJNi8oZtpM4ffhWcqGkNnt5HpbaSbcsaX7H+H6H1a
-      lkhgsQztmlgsNsAJg8rxw1F/CVZROZocigDU+lRlVKMKQGVUowpAZVSjCkBlVKMKQGVUowpA
-      ZVSjCkBlVKMKQGVUowpAZVSjCkBlVKMKQGVUowpAZVSjCkBlVKMKQGVUowpAZVSjCkBlVKMK
-      QGVUowpAZVQzYgKQ5cH48FNRGVmOuJ9gRVGQZbn/T0VluBAEAVHc2+/XUBgWAci5NEs/XM+Z
-      p81n8/oNiGY7erJEkxIzZ03rN/JwjVVRGW6GRQAanZGy4kIgidVRCcQBE5UOSALWA1+uonLU
-      GJZ3gFwmSTgUptefJZf1IgkaNIKEN5tjaLvyqKiMLMNSA+gMZubNmwdAibtgOG6pojIiqN2g
-      KqOaQxJAMpkabjtUVI4KQxZAJpvlT399htb2riNhj4rKiDIkAeRyeX79x78iajTo9ftyeqWi
-      cnwxpJfgXD7P5Zd8CgGB8tLig1+gonKMMyQBmE1G6ieoTtpUThyG/A4gZWI8/49FbGxsPBL2
-      qKiMKEMWQDrcS4/Hy+qNW4+EPSoqI8qQB8KMdjeVtaWkZf3BA6uoHOMc0jiARiMSCqnO2lSO
-      f4ZYA8hs29FEWVkZlTXD7xNsKCTTOVo9YVp6wrR6QrR5IpQUWLnp4lk4rcajatuRQFEUUpEE
-      0Z4QEU+I8qlV2IocR9us454hN4EKChwsWbIMxVLEjCkTj4RN+2Rbq49NTb209ISJJNKYDTqq
-      y5xUlzq57LSJlLttbGv1cd9TyzhzZhUXzKs7ZCfWRxs5LxH1Roh6gkR6QsR6w0h5CZPDgqPM
-      hbnQxobnl1N3xlTKJlcebXOPa4bsJC/euZG/f9DNuBIzn1p45qAjkiTpsNYDrG3oQRQEasqc
-      OA5Qwuclmf8s28Hahh5uuHAm4ysKDznOkUSRFfwtHro2tRIPRLGXOHGUFWAvdWEvcZLMSaze
-      0c2qbV34wgmKbUZOEyQKS5xMOncmGo06rWtEvES2NDXgKnDT2Rtk6qS6QRt3uAIYKr5wgsde
-      WY/TauRL503HajqyL+3ZnEQwliIYTRFNZogmMsSSGaLJLLFEhmgyQyqTQ5YhnspQUeygqsTB
-      DLeFfIePUKefwuoSKqbXYC9zIQgCgUiSldu6WL2jb9rJ3EljmF8/BrfDzNqd3Tzz7lbOLjTh
-      TKaZfcVpGKymI/qMe6IoCpLXi7akZMTiPBgjIoCejmY2b9tJTyjJdVd9bq/zWzdvpLh8LBF/
-      T/+KMA0jL4CPWLOjm3+9t5UL5tdx1qxqBEEgL8n0BuN0B+L0BGJ0+2P0BOPEk1lEjYBW1IAA
-      Jr0Wi0mPdfefxahH1AiE42mC0RTBWIpsTgJApxMpsJkosJtwWAzYzQZsZgN2i77vv9mAydDX
-      4ox6QmxZvoPeXd3UTKpgZx42BRIAlBZacVqN7GwPYDXpmV8/hrmTyrGZ9/49QrE0f1r0IW5F
-      ZlIiwbSL51JYdeARekVRiHQH8TZ2oxE16C0GDBYjeotx938DsqBha4sXu8VA7Zh9T2/P7NxJ
-      7//eS/kDv0NbfGzMChgRAXy49F38iRwT66dTO7Zsr/PtLY0kchqMWg0mwFZTjXH3emBBODpt
-      8mxeYtHSnUQSGWRZwR9J4naYKSu0UuqyUFpopazAil43UKDpbJ54Ktv/l0znyMsKTouBAntf
-      Ztdr9y/qdDRJIhAjn80T9YRQ8jKJYAydUU/plEoKa0oGpImiKHiCCbzhBJPGujHoBldgvLJi
-      F1sbu6mNxJk5u5qqOePRGvrmasl5iXB3kHQ0SdQTIh1OojcbKBxXAoJALpmhxxOmrd1PwB+l
-      0mnGYTGQRqBmTh3jpo7dZ5xyspX08w9hnvElMFhApwWdDvaVHoLQd06n7fvT7ifcEPnkmuAR
-      dZS97xI9T2tTOxqjGaMoE89IjKuqPED4E4tsIk37+mYCrb1kkxlMdjPOCjeuikIc5YVo9Udu
-      D4JUJsejL60j1u7lFL3A2Bk1BFt7yaVzuMeVUDKxAueYQrJ5CX84iScYZ3Ozlx3tfpxWI7Mn
-      lDF7Qhluh3lQ8SmKwo7ODWg0xZgAsyBgQsCkCGjyecjlIZfbz/88SPm9bypoPhZJv2B0UD8B
-      BjH5ckQF0NjYwPjxEw5q1EecyAKIdAdpXrmDZCjO2Nm1FE8Yg8FydLpil2xsY9GbG5lZYMFY
-      XkhMkvGFE8SSWRTAoBNxO8wUuyzUVxcxaay7r8l3CGzs6SaYSpDK5UjmciRzWdK5HLLycZbS
-      akRMOh1mnQ6TTr/7/97fTTo9OkFA+KRg8hKUFMEgbDwUAQy5SEr7Gnny9Q1kol46esOcvWDe
-      UG9xQiBLMj3b2mlb3YjRbqLm5Em4KtxH2yzOmFHFpLFuVu/owu0w43ZaKHKYsZn1w94EnVFW
-      ftAweVkimcv1iySVy5LK5QimUqSikT2O58hK0u6rFARBwCBqsej1XFzkwiwemU6MIQtAaynE
-      bTNgKJuG23bgWuJEJBNP07amAc+OTkomVnDSlQtGtPdlMBS7LFx8yuBr5yOJViNiN4jYDUOr
-      ERVFIZ3Pk87nMGmP3NqTQ2iUCpjMJkwWE9NnzBh+i45hpFyeDS+soGJGDQu+cgGaQ2w6qBwc
-      QRB2N42O7MKrQxIAiozA8TnKejiIOi3zv3TW0TZDZRgZsgB8gSC5RIiQoO74o3L8M+Q6fNnS
-      JaQiPspqRm4ekIrKkWLINcDnr7keKZ9le0MzUHQETFJRGTkO6S1O1OqZWj9puG1RURlx1G4M
-      lVGNKgCVUY0qAJVRjSoAlVGNKgCVUY0qAJVRzRETQMDbQ3Nb55G6vYrKsHDEVmhE4imMQBo4
-      8TYpUTlROGICkCSJHCAoCpIsI0kSyu6FEnsujlE/7//z0Y7/WP8MoNUeXhY+5BVhByMRDRPL
-      SJQW9W1LciKvCFM5NhiRFWGDxWJ3DvAQqSgKUv+Kn71RFOWAK5YO9/yJdA/Vzo85JhxlDyqi
-      g1RVI5HYB6uFRipjHa4dw2HnYGrk4+U3ORyOmW7Qgz3k4Z6Hg5cWg7nHsWDHcNg5mJLzePlN
-      DodjRgDDRSwcJBCOkc8k6fEGUBSJjo4OJEXB5+kimc7tDhfAF4wAkIxHyO6/dXZIfBRXLBwg
-      HEuSyyTp8niRchna2juQd795eXs6iaeyAEQikWG14aM4UWQ6O7tQ9rALlP74cpkk7V0eAJR8
-      hmh8eL2A7i8t5HwWj8dDOtu3RcqRTIv9ccIJQEJDb3dH3xhEIkBvOIG7wMauxmZ0VhetzbtA
-      TtPpiZAOdBHPSjRsWElgOH/zfKY/rh5vAG9PJ8lUFmJ+fEmJYqeB5g4v4Z52JKOTjpYmMvEQ
-      azcNr9ORj+Lc3NCMw2Gmpbmt367ezjaa2vq2XNzV3EaRTUtLp5eW1g66u9uHz4gDpEVjcydG
-      pwu9TjziabE/TjgBRAJeisoq0GpFrEaRXE6iuTPA+PFVdLc2U107HuQsOoMVh8VAU1MToslC
-      PB4fPiNEsT8urVZEqxXJpePkTAWU2nR0ekIY9QKJVBaH3YLeoKelrROjKJPM5IbNjI/itOgE
-      rFY7KPk+u8bV0OMNkY7HkAGdTofJ5iAd6CSazhONJYbNhgOlRc3YUmK9XbS2dx/xtNgfI/YS
-      PFKks1lIxHFaLXjiGRzmBCadQNjnRdEaicVimN0u9IKPHZ0BZp40F5IFZAzWg998kORTsf64
-      jDotkmggmYojKxr8QS2iVovFbMFZ5GBX8y4i8RRzZk0nEPBjNgzfLgjJVBpZ0VDsdtPQ0ERp
-      SQGdHoVYPMXM2bMIBAJoAIfFyLZNm3BWTqa8wEwg4B82Gw6UFvGkjmxOwl1WhN3IEU2L/XHE
-      xgFUVEaaQxkHOOGaQCoqQ0EVgMqoRhXAMODrbscT2H+3nSzLKHs1NAeyZf0GcoC3p4tEKj3w
-      ZD6FLzSwavf5fADEQj7au73Isrz3TRVlr+PtXT0HNmSUccK9BI802UgX765uQIz3MmXefMYW
-      WfFGcrTu2smEqdPYtXkr7S0NjJlzFm4lDKYCTEqcpGKjrtzK0pWbmDC5krfeW8fEWTN55603
-      wexmyrjij8NmJBSDi50bVlFYOZFcpIvl6xv42s1f5vnnX2DeGWfzxOPPMn/hxSR8rRhclYgp
-      L77ebtZ2Ktx+8+eQc3kam9t48t8vcen5Czl17syjnXTHBGoNcJjkk2EKx9RQWmhj89adxEJd
-      bNvViWjSsHXNGvxpA/XjxlI/uY4VK1bR3NTClu1NTKuvY8XKdZz9qVnsbOhk4sSJ6IB8LsuE
-      SeMHhp1cQdO6D8i5xtPSsJkuX4jKsr6dqM8/72yWLltJUXkVk8eVEEtINOzYxvamLs44eRYT
-      J09GBHQ6La+9s5SJdTVq5t8DtQY4TMxl9Zgb3mVLp59zzziFrc0dVJdW4AtJ1IyvQGt0UWhM
-      sW1HI3PnnIRidFFgN6IRYP7c6Sx+bwNzTp5H2NPXhDr59LMYP2ECQiLwcVitlemnLsTT2khV
-      XT0JfxsJqW+VRUtrKxMnTmB8qY0tuzoQUKgZNw6X1YRgL8eQWokEZFJpbr72CjKZ7FFMrWMP
-      tRtU5YRB7QZVURkiqgBURjX7FIB8sD47FZVjkIPl23Ru77lF+xRAND2802FVVEaCZO7AL/gp
-      KU8iNTBv77MXKCVLBGJRXBYrGo3aSlI59oklk8SymT6fxPtDEPAl46TzOaz6vk6effYCfYSo
-      gF5dyK5yjJOVJKRDXDh2wHEASeirDVRUjmkOY9XkwVaqY9Hq0Q+DW3sVlSNFXpYP3vzZjQaw
-      6Q2YdX1+h/crAA1QaneiP8JuKlVUhgNbLocnFmEfUwL70QClNseAPL3fN9xCk0XN/CrHDXqd
-      jkLTgT2X2vSGvfL0PgUgyAomdSqEynGGxWRC2Ne08N181OzZk/3UAIra/akyKlBzucqoRhWA
-      yqjmEAUg09rUjIRCMpEcXouGbIOKyqEzaAFsX/0uC+ZOp7aujv/30jt8avYCmpvWcvlN3z7w
-      hVKKRx57csChV//xIDOnTWHixEk89eryIRmcjfv529+fBzJ8avYCwp84/+5zjzJ52kzOOP10
-      fvOXZ/e6/s1FT9HiO1qiVTmW2LV+8WBXhOX56pev4dYHXuOac2eRy0X5CaA3WaifOJ54oJPv
-      f/9HpPVF/Oqn/81/3/Uzig1JNJVzObUsxTe+cQ9xWcd3vnIVsa5NXPetX7NqwwbGlTrIZrM8
-      8cef0ehJMf+cS9i17D+8t7aBa265HaFnLa4p59G67J+MPe1Kdr79d4LJEPf/+SU0xoeBLD+7
-      8zYU63h++793IACZVJwJ88/nzotq+cZDL/DFM+v4/o9/hdFdxzevPY8bv/JfzP7sFh688wv8
-      6Ce/omj8yfz8R7ejPbJ7sKocg/zfz+8ZZA0ghWjYmeaMBX1rSXW7+1KzsV5efH0Jj/zmHnaF
-      Rbzb3ueZl97i388s4pbvfJM//vw3nHLhBRjt5XzlqksB6GxowFk9A233eurH13D9f/+cNcvf
-      ImEsR+xZwxNLW3nsTz/hG9fejEYr8fzLr/LsP//OP55fxHOvr+T6Ky/FXTWVyy84Fchx/dfv
-      ZtHvfkrvHhMB17yziM/cfDe/vO9eBK2BOfPms/SFh2mRxzC1ys3Nt3yVe75zK6J7PO8/8xs+
-      2Dl8O6GpHD9EwuFB1gDi/2/vfH6SDMA4/nnh5QXel5femdhCREoiM2aEgEAhLgy9wCprJf3c
-      ormah9acujrkyS5tHvoL+g/6B3LrUl3anOFqJVpro59rIj9yVtDFg7Z161Lzc/3entPzfL/f
-      7WmkJ+5gfPQWF1KHaHK6Nss6PYJO4Gx2hM4uLygarlY7cq2GyaIirpYpfC1iVRV2Hwyx9uYa
-      D2ZPc36wn+fr24i/K4zDlGetUmIhv4ioWDiS7OfmZIqTV0eZuT+NJ3kZTbXyrbzM8koVUGhu
-      dWI1f+fHhmMgkDjO0AGJu9P3iNk+U7XHad5uRdAZkI0S7wsF9KIeQTIzMjGFt0X9OxPd4p/i
-      YvYK+uvjY5O/C0K9jiZvTNUEBlLHKLyeI/dyiQ5/CHtjA92Ho8iyxvBwlo+L87z9VCJxtA+z
-      yUwsGgAMRHoTOLWfvCvW8XW4EU3bGEwnefJohrJg4VxmCOdOG3v2+ej0B2kSV3j4OMftO1N4
-      3O1I9SqpU5dw2RQG0ido87QjVT6warSxd1cL3bEoBiAYiWFcryw17HBwJpPhy8IckWSa/Isc
-      4Z44gWAY3343s7lXTIzdYP7ZU0o1hb7e8JYd9p9QrFb+2AlSJeOmRy1t3hC/AKUPPWujp06B
-      AAAAAElFTkSuQmCC
+      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
+      gg==
     </thumbnail>
     <thumbnail height='192' name='Executive Recommendations' width='192'>
       iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAABJ0AAASdAHeZh94
